@@ -1,0 +1,36 @@
+# 开发环境：使用 MySQL（DDL 语法兼容 PostgreSQL，后续可无缝切换）
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://106.14.194.144:3306/paas_metarepo?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: MySql@888888
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 10000
+  redis:
+    host: ${REDIS_HOST:127.0.0.1}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:}
+    database: 0
+    timeout: 3000
+    lettuce:
+      pool:
+        max-active: 16
+        max-idle: 8
+        min-idle: 2
+
+# RocketMQ
+rocketmq:
+  name-server: ${ROCKETMQ_NAMESRV:127.0.0.1:9876}
+  producer:
+    group: paas-metarepo-producer
+    send-message-timeout: 3000
+
+logging:
+  level:
+    com.rkhd.platform.metarepo: DEBUG
+    org.springframework.cloud.openfeign: DEBUG

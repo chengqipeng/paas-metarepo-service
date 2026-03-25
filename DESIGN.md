@@ -2,12 +2,13 @@
 
 ## 1. 服务概述
 
-元数据仓库服务，是 aPaaS 平台的**元数据主动存储中枢**。`paas-metadata-service` 的所有元数据写操作直接通过本服务的 RPC 接口持久化到 PostgreSQL（schema: `xsy_metarepo`），本服务同时为 entity、layout、privilege、rule 等下游服务提供高性能的元数据读取能力。
+元数据仓库服务，是 aPaaS 平台的**元数据主动存储中枢**。`paas-metadata-service` 的所有元数据写操作直接通过本服务的 RPC 接口持久化到数据库（开发环境 MySQL，生产环境 PostgreSQL schema: `xsy_metarepo`），本服务同时为 entity、layout、privilege、rule 等下游服务提供高性能的元数据读取能力。
 
 **核心定位：**
 - 不是被动的"快照接收方"，而是元数据的**唯一持久化层**
 - metadata-service 是业务逻辑层，metarepo-service 是存储层，两者是调用关系而非推送关系
 - 底层采用**通用大宽表（p_meta_metamodel_data）+ metamodel_id 分类**的架构，新增元数据类型无需 DDL 变更
+- **数据库兼容策略：** 开发环境用 MySQL（106.14.194.144），生产环境用 PostgreSQL，所有 DDL/SQL 必须兼容双库
 
 **服务层级：L1（与 metadata-service 同层，平台基础层）**
 
@@ -584,7 +585,16 @@ MetaModelDTO 核心字段：entityId、apiKey、label、dbTable（entity-service
 
 ---
 
-## 9. 底层数据库表结构（PostgreSQL，schema: xsy_metarepo）
+## 9. 底层数据库表结构（开发环境 MySQL / 生产环境 PostgreSQL，DDL 兼容双库）
+
+> **数据库策略：** 开发环境使用 MySQL（106.14.194.144:3306/paas_metarepo），生产环境使用 PostgreSQL（schema: xsy_metarepo）。所有 DDL 和 SQL 必须同时兼容 MySQL 和 PostgreSQL 语法，遵循以下兼容规则：
+> - 主键类型统一用 `BIGINT NOT NULL`，不用 `SERIAL`
+> - 字符串统一用 `VARCHAR(N)`，不用 `TEXT` 做主要存储（长文本除外）
+> - 布尔/枚举统一用 `SMALLINT`，不用 `BOOLEAN` 或 `ENUM`
+> - 时间戳统一用 `BIGINT`（毫秒），不用 `TIMESTAMP` 或 `DATETIME`
+> - 索引语法用标准 `CREATE INDEX`，不用 MySQL 的 `KEY` 内联语法
+> - 不使用 PostgreSQL 的 `WHERE` 条件索引（MySQL 不支持）
+> - 不使用 MySQL 的 `ENGINE=InnoDB` / `COMMENT` / `AUTO_INCREMENT`（PostgreSQL 不支持）
 
 ### 9.1 核心表关系
 
