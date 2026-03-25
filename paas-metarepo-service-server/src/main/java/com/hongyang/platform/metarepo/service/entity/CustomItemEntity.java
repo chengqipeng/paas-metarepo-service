@@ -5,10 +5,14 @@ import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 自定义字段定义（p_custom_item）
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_item")
-public class CustomItem extends BaseEntity {
+public class CustomItemEntity extends BaseEntity {
+
     private Long entityId;
     private String name;
     private String apiKey;

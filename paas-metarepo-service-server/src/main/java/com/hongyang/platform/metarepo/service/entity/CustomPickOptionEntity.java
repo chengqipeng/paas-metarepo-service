@@ -5,10 +5,14 @@ import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 字段选项值（p_custom_pickoption）
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_pickoption")
-public class CustomPickoption extends BaseEntity {
+public class CustomPickOptionEntity extends BaseEntity {
+
     private Long entityId;
     private Long itemId;
     private String apiKey;

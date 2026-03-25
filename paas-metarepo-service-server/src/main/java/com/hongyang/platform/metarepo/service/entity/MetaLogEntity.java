@@ -1,18 +1,23 @@
 package com.hongyang.platform.metarepo.service.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
 
 /**
- * 元数据变更日志
- * 继承 BaseEntity 统一获得 id/tenantId/deleteFlg/审计字段
+ * 元数据变更日志（p_meta_log）
+ * 该表无 delete_flg，不继承 BaseEntity，独立定义
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_log")
-public class MetaLog extends BaseEntity {
+public class MetaLogEntity implements Serializable {
+
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
+    private Long tenantId;
     private Long metadataId;
     private String traceId;
     private Long objectId;
@@ -24,6 +29,8 @@ public class MetaLog extends BaseEntity {
     private Long parentMetamodelId;
     private Long parentMetadataId;
     private Integer sync;
+    private Long createdBy;
+    private Long createdAt;
     private Long entrustTenantId;
     private Long originTenantId;
 }

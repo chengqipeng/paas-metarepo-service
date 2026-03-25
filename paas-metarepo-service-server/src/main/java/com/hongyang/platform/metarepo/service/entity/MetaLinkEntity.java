@@ -5,21 +5,21 @@ import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 元模型关联关系（p_meta_link）
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_custom_entity_link")
-public class CustomEntityLink extends BaseEntity {
-    private String name;
+@TableName("p_meta_link")
+public class MetaLinkEntity extends BaseEntity {
+
     private String apiKey;
     private String label;
     private String labelKey;
-    private String typeProperty;
     private Integer linkType;
-    private Long parentEntityId;
-    private Long childEntityId;
-    private Integer detailLink;
+    private Long referItemId;
+    private Long childMetamodelId;
+    private Long parentMetamodelId;
     private Integer cascadeDelete;
-    private Integer accessControl;
-    private Integer enableFlg;
     private String description;
 }

@@ -6,13 +6,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 自定义对象实体（对应 p_custom_entity 表）
- * 继承 BaseEntity，自动获得 id/tenantId/deleteFlg/审计字段
+ * 自定义对象定义（p_custom_entity）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_entity")
-public class CustomEntity extends BaseEntity {
+public class CustomEntityEntity extends BaseEntity {
+
     private String nameSpace;
     private Long objectId;
     private String name;
