@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.api;
+package com.hongyang.platform.metarepo.service.api.metamodel;
 
 import com.hongyang.platform.metarepo.core.api.MetaRepoWriteApi;
 import com.hongyang.platform.metarepo.core.model.Result;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class MetaRepoWriteController implements MetaRepoWriteApi {
+public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
     private final ICustomEntityService customEntityService;
     private final ICustomItemService customItemService;

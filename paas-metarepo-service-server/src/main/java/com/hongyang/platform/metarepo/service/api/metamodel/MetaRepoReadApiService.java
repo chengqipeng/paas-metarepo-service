@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.api;
+package com.hongyang.platform.metarepo.service.api.metamodel;
 
 import com.hongyang.platform.metarepo.core.api.MetaRepoReadApi;
 import com.hongyang.platform.metarepo.core.model.Result;
@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class MetaRepoReadController implements MetaRepoReadApi {
+public class MetaRepoReadApiService implements MetaRepoReadApi {
 
     private final IMetaModelQueryService metaModelQueryService;
     private final ICustomItemService customItemService;
