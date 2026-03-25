@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * MetaRepo 读接口定义（API 契约，保留在 core 中）
+ * MetaRepo 读接口定义（API 契约）
  */
 public interface MetaRepoReadApi {
 
@@ -23,6 +23,10 @@ public interface MetaRepoReadApi {
     @GetMapping("/rpc/metarepo/read/items")
     List<XItem> listItems(@RequestParam("tenantId") Long tenantId,
                            @RequestParam("entityId") Long entityId);
+
+    @GetMapping("/rpc/metarepo/read/field-meta")
+    List<XItem> getFieldMeta(@RequestParam("tenantId") Long tenantId,
+                              @RequestParam("entityId") Long entityId);
 
     @GetMapping("/rpc/metarepo/read/pick-options")
     List<XPickOption> listPickOptions(@RequestParam("tenantId") Long tenantId,

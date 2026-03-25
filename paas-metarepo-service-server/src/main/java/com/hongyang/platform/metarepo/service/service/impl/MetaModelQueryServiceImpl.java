@@ -54,6 +54,12 @@ public class MetaModelQueryServiceImpl implements IMetaModelQueryService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<XItem> getFieldMeta(Long tenantId, Long entityId) {
+        List<CustomItemEntity> items = customItemService.listByEntityId(tenantId, entityId);
+        return MetaRepoConverter.toXItemList(items);
+    }
+
     private XMetaModel assembleMetaModel(Long tenantId, CustomEntityEntity entity) {
         Long entityId = entity.getId();
 

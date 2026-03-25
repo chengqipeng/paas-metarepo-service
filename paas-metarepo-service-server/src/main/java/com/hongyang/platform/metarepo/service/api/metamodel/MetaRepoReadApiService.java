@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * MetaRepo 读接口实现
- */
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -42,25 +39,26 @@ public class MetaRepoReadApiService implements MetaRepoReadApi {
 
     @Override
     public List<XItem> listItems(Long tenantId, Long entityId) {
-        List<CustomItemEntity> items = customItemService.listByEntityId(tenantId, entityId);
-        return MetaRepoConverter.toXItemList(items);
+        return MetaRepoConverter.toXItemList(customItemService.listByEntityId(tenantId, entityId));
+    }
+
+    @Override
+    public List<XItem> getFieldMeta(Long tenantId, Long entityId) {
+        return metaModelQueryService.getFieldMeta(tenantId, entityId);
     }
 
     @Override
     public List<XPickOption> listPickOptions(Long tenantId, Long itemId) {
-        List<CustomPickOptionEntity> options = customPickOptionService.listByItemId(tenantId, itemId);
-        return MetaRepoConverter.toXPickOptionList(options);
+        return MetaRepoConverter.toXPickOptionList(customPickOptionService.listByItemId(tenantId, itemId));
     }
 
     @Override
     public List<XCheckRule> listCheckRules(Long tenantId, Long entityId) {
-        List<CustomCheckRuleEntity> rules = customCheckRuleService.listByObjectId(tenantId, entityId);
-        return MetaRepoConverter.toXCheckRuleList(rules);
+        return MetaRepoConverter.toXCheckRuleList(customCheckRuleService.listByObjectId(tenantId, entityId));
     }
 
     @Override
     public List<XLink> listEntityLinks(Long tenantId, Long entityId) {
-        List<CustomEntityLinkEntity> links = customEntityLinkService.listByEntityId(tenantId, entityId);
-        return MetaRepoConverter.toXLinkList(links);
+        return MetaRepoConverter.toXLinkList(customEntityLinkService.listByEntityId(tenantId, entityId));
     }
 }

@@ -4,17 +4,20 @@ import com.hongyang.framework.dao.service.IBaseService;
 import com.hongyang.platform.metarepo.service.entity.CustomEntityEntity;
 import java.util.List;
 
-/**
- * 自定义对象 Service 接口
- */
 public interface ICustomEntityService extends IBaseService<CustomEntityEntity> {
 
-    /** 按租户+apiKey 查询唯一对象 */
     CustomEntityEntity getByApiKey(Long tenantId, String apiKey);
 
-    /** 查询租户下所有启用的对象 */
     List<CustomEntityEntity> listByTenant(Long tenantId);
 
-    /** 检查 apiKey 是否已存在 */
     boolean existsApiKey(Long tenantId, String apiKey);
+
+    /** 创建对象（同步写大宽表） */
+    CustomEntityEntity createEntity(CustomEntityEntity entity);
+
+    /** 更新对象 */
+    CustomEntityEntity updateEntity(Long entityId, Long tenantId, CustomEntityEntity updates);
+
+    /** 删除对象（级联处理字段和关系） */
+    void deleteEntityCascade(Long tenantId, Long entityId);
 }

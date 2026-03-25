@@ -28,7 +28,6 @@ public class MetaLogServiceImpl
         logEntity.setNewValue(newValue);
         logEntity.setOpType(opType);
         logEntity.setCreatedAt(System.currentTimeMillis());
-
         try {
             String traceId = GlobalContext.getSystemContext().getTraceId();
             logEntity.setTraceId(traceId != null ? traceId : "");
@@ -38,9 +37,7 @@ public class MetaLogServiceImpl
             }
         } catch (Exception e) {
             logEntity.setTraceId("");
-            log.warn("获取 GlobalContext 信息失败", e);
         }
-
         save(logEntity);
     }
 
@@ -50,6 +47,15 @@ public class MetaLogServiceImpl
                 .eq(MetaLogEntity::getTenantId, tenantId)
                 .eq(MetaLogEntity::getMetadataId, metadataId)
                 .orderByDesc(MetaLogEntity::getCreatedAt)
+                .list();
+    }
+
+    @Override
+    public List<MetaLogEntity> listByTenant(Long tenantId) {
+        return lambdaQuery()
+                .eq(MetaLogEntity::getTenantId, tenantId)
+                .orderByDesc(MetaLogEntity::getCreatedAt)
+                .last("LIMIT 100")
                 .list();
     }
 }

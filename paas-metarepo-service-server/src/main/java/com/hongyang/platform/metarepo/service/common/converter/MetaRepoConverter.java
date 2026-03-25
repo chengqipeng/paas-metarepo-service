@@ -163,6 +163,29 @@ public final class MetaRepoConverter {
         return list.stream().map(MetaRepoConverter::toXPickOption).collect(Collectors.toList());
     }
 
+    /** XPickOption -> CustomPickOptionEntity（用于 savePickOptions） */
+    public static CustomPickOptionEntity fromXPickOption(XPickOption x) {
+        if (x == null) return null;
+        CustomPickOptionEntity e = new CustomPickOptionEntity();
+        e.setId(x.getId());
+        e.setTenantId(x.getTenantId());
+        e.setEntityId(x.getEntityId());
+        e.setItemId(x.getItemId());
+        e.setApiKey(x.getApiKey());
+        e.setOptionCode(x.getOptionCode());
+        e.setOptionLabel(x.getOptionLabel());
+        e.setOptionOrder(x.getOptionOrder());
+        e.setDefaultFlg(x.getDefaultFlg());
+        e.setGlobalFlg(x.getGlobalFlg());
+        e.setEnableFlg(x.getEnableFlg());
+        return e;
+    }
+
+    public static List<CustomPickOptionEntity> fromXPickOptionList(List<XPickOption> list) {
+        if (list == null) return Collections.emptyList();
+        return list.stream().map(MetaRepoConverter::fromXPickOption).collect(Collectors.toList());
+    }
+
     // ==================== CheckRule ====================
 
     public static XCheckRule toXCheckRule(CustomCheckRuleEntity e) {
