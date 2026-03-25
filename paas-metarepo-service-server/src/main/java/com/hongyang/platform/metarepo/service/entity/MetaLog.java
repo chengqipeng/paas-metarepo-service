@@ -1,20 +1,18 @@
 package com.hongyang.platform.metarepo.service.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
+import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
- * 元数据变更日志（不继承 BaseEntity，因为字段结构不同）
+ * 元数据变更日志
+ * 继承 BaseEntity 统一获得 id/tenantId/deleteFlg/审计字段
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_log")
-public class MetaLog implements Serializable {
-    @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
-    private Long tenantId;
+public class MetaLog extends BaseEntity {
     private Long metadataId;
     private String traceId;
     private Long objectId;
@@ -26,8 +24,6 @@ public class MetaLog implements Serializable {
     private Long parentMetamodelId;
     private Long parentMetadataId;
     private Integer sync;
-    private Long createdBy;
-    private Long createdAt;
     private Long entrustTenantId;
     private Long originTenantId;
 }
