@@ -13,10 +13,15 @@
     </parent>
 
     <dependencies>
-        <!-- 基础框架 -->
+        <!-- 框架基础 -->
         <dependency>
             <groupId>com.xxx</groupId>
             <artifactId>framework-base</artifactId>
+        </dependency>
+        <!-- 业务公用枚举/常量 -->
+        <dependency>
+            <groupId>com.xxx</groupId>
+            <artifactId>framework-common</artifactId>
         </dependency>
         <!-- Spring Cloud OpenFeign -->
         <dependency>
