@@ -1,6 +1,6 @@
 package com.hongyang.platform.metarepo.service.common.converter;
 
-import com.hongyang.platform.metarepo.core.model.dto.*;
+import com.hongyang.platform.metarepo.core.model.metamodel.*;
 import com.hongyang.platform.metarepo.service.entity.*;
 
 import java.util.Collections;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Entity → DTO 转换工具
+ * Entity → X 元模型转换工具
  */
 public final class MetaRepoConverter {
 
@@ -16,175 +16,175 @@ public final class MetaRepoConverter {
 
     // ==================== Entity ====================
 
-    public static EntityDTO toEntityDTO(CustomEntityEntity e) {
+    public static XEntity toXEntity(CustomEntityEntity e) {
         if (e == null) return null;
-        EntityDTO dto = new EntityDTO();
-        dto.setId(e.getId());
-        dto.setTenantId(e.getTenantId());
-        dto.setNameSpace(e.getNameSpace());
-        dto.setObjectId(e.getObjectId());
-        dto.setName(e.getName());
-        dto.setApiKey(e.getApiKey());
-        dto.setLabel(e.getLabel());
-        dto.setLabelKey(e.getLabelKey());
-        dto.setObjectType(e.getObjectType());
-        dto.setSvgId(e.getSvgId());
-        dto.setSvgColor(e.getSvgColor());
-        dto.setDescription(e.getDescription());
-        dto.setCustomEntityseq(e.getCustomEntityseq());
-        dto.setDeleteFlg(e.getDeleteFlg());
-        dto.setEnableFlg(e.getEnableFlg());
-        dto.setCustomFlg(e.getCustomFlg());
-        dto.setBusinessCategory(e.getBusinessCategory());
-        dto.setTypeProperty(e.getTypeProperty());
-        dto.setDbTable(e.getDbTable());
-        dto.setDetailFlg(e.getDetailFlg());
-        dto.setEnableTeam(e.getEnableTeam());
-        dto.setEnableSocial(e.getEnableSocial());
-        dto.setEnableConfig(e.getEnableConfig());
-        dto.setHiddenFlg(e.getHiddenFlg());
-        dto.setSearchable(e.getSearchable());
-        dto.setEnableSharing(e.getEnableSharing());
-        dto.setEnableScriptTrigger(e.getEnableScriptTrigger());
-        dto.setEnableActivity(e.getEnableActivity());
-        dto.setEnableHistoryLog(e.getEnableHistoryLog());
-        dto.setEnableReport(e.getEnableReport());
-        dto.setEnableRefer(e.getEnableRefer());
-        dto.setEnableApi(e.getEnableApi());
-        dto.setEnableFlow(e.getEnableFlow());
-        dto.setEnablePackage(e.getEnablePackage());
-        dto.setExtendProperty(e.getExtendProperty());
-        dto.setCreatedAt(e.getCreatedAt());
-        dto.setCreatedBy(e.getCreatedBy());
-        dto.setUpdatedAt(e.getUpdatedAt());
-        dto.setUpdatedBy(e.getUpdatedBy());
-        return dto;
+        XEntity x = new XEntity();
+        x.setId(e.getId());
+        x.setTenantId(e.getTenantId());
+        x.setNameSpace(e.getNameSpace());
+        x.setObjectId(e.getObjectId());
+        x.setName(e.getName());
+        x.setApiKey(e.getApiKey());
+        x.setLabel(e.getLabel());
+        x.setLabelKey(e.getLabelKey());
+        x.setObjectType(e.getObjectType());
+        x.setSvgId(e.getSvgId());
+        x.setSvgColor(e.getSvgColor());
+        x.setDescription(e.getDescription());
+        x.setCustomEntityseq(e.getCustomEntityseq());
+        x.setDeleteFlg(e.getDeleteFlg());
+        x.setEnableFlg(e.getEnableFlg());
+        x.setCustomFlg(e.getCustomFlg());
+        x.setBusinessCategory(e.getBusinessCategory());
+        x.setTypeProperty(e.getTypeProperty());
+        x.setDbTable(e.getDbTable());
+        x.setDetailFlg(e.getDetailFlg());
+        x.setEnableTeam(e.getEnableTeam());
+        x.setEnableSocial(e.getEnableSocial());
+        x.setEnableConfig(e.getEnableConfig());
+        x.setHiddenFlg(e.getHiddenFlg());
+        x.setSearchable(e.getSearchable());
+        x.setEnableSharing(e.getEnableSharing());
+        x.setEnableScriptTrigger(e.getEnableScriptTrigger());
+        x.setEnableActivity(e.getEnableActivity());
+        x.setEnableHistoryLog(e.getEnableHistoryLog());
+        x.setEnableReport(e.getEnableReport());
+        x.setEnableRefer(e.getEnableRefer());
+        x.setEnableApi(e.getEnableApi());
+        x.setEnableFlow(e.getEnableFlow());
+        x.setEnablePackage(e.getEnablePackage());
+        x.setExtendProperty(e.getExtendProperty());
+        x.setCreatedAt(e.getCreatedAt());
+        x.setCreatedBy(e.getCreatedBy());
+        x.setUpdatedAt(e.getUpdatedAt());
+        x.setUpdatedBy(e.getUpdatedBy());
+        return x;
     }
 
     // ==================== Item ====================
 
-    public static ItemDTO toItemDTO(CustomItemEntity e) {
+    public static XItem toXItem(CustomItemEntity e) {
         if (e == null) return null;
-        ItemDTO dto = new ItemDTO();
-        dto.setId(e.getId());
-        dto.setTenantId(e.getTenantId());
-        dto.setEntityId(e.getEntityId());
-        dto.setName(e.getName());
-        dto.setApiKey(e.getApiKey());
-        dto.setLabel(e.getLabel());
-        dto.setLabelKey(e.getLabelKey());
-        dto.setItemType(e.getItemType());
-        dto.setDataType(e.getDataType());
-        dto.setTypeProperty(e.getTypeProperty());
-        dto.setHelpText(e.getHelpText());
-        dto.setHelpTextKey(e.getHelpTextKey());
-        dto.setDescription(e.getDescription());
-        dto.setCustomItemseq(e.getCustomItemseq());
-        dto.setDefaultValue(e.getDefaultValue());
-        dto.setRequireFlg(e.getRequireFlg());
-        dto.setDeleteFlg(e.getDeleteFlg());
-        dto.setCustomFlg(e.getCustomFlg());
-        dto.setEnableFlg(e.getEnableFlg());
-        dto.setCreatable(e.getCreatable());
-        dto.setUpdatable(e.getUpdatable());
-        dto.setUniqueKeyFlg(e.getUniqueKeyFlg());
-        dto.setEnableHistoryLog(e.getEnableHistoryLog());
-        dto.setEnableConfig(e.getEnableConfig());
-        dto.setEnablePackage(e.getEnablePackage());
-        dto.setReadonlyStatus(e.getReadonlyStatus());
-        dto.setVisibleStatus(e.getVisibleStatus());
-        dto.setHiddenFlg(e.getHiddenFlg());
-        dto.setReferEntityId(e.getReferEntityId());
-        dto.setReferLinkId(e.getReferLinkId());
-        dto.setDbColumn(e.getDbColumn());
-        dto.setItemOrder(e.getItemOrder());
-        dto.setSortFlg(e.getSortFlg());
-        dto.setColumnName(e.getColumnName());
-        dto.setCreatedAt(e.getCreatedAt());
-        dto.setCreatedBy(e.getCreatedBy());
-        dto.setUpdatedAt(e.getUpdatedAt());
-        dto.setUpdatedBy(e.getUpdatedBy());
-        return dto;
+        XItem x = new XItem();
+        x.setId(e.getId());
+        x.setTenantId(e.getTenantId());
+        x.setEntityId(e.getEntityId());
+        x.setName(e.getName());
+        x.setApiKey(e.getApiKey());
+        x.setLabel(e.getLabel());
+        x.setLabelKey(e.getLabelKey());
+        x.setItemType(e.getItemType());
+        x.setDataType(e.getDataType());
+        x.setTypeProperty(e.getTypeProperty());
+        x.setHelpText(e.getHelpText());
+        x.setHelpTextKey(e.getHelpTextKey());
+        x.setDescription(e.getDescription());
+        x.setCustomItemseq(e.getCustomItemseq());
+        x.setDefaultValue(e.getDefaultValue());
+        x.setRequireFlg(e.getRequireFlg());
+        x.setDeleteFlg(e.getDeleteFlg());
+        x.setCustomFlg(e.getCustomFlg());
+        x.setEnableFlg(e.getEnableFlg());
+        x.setCreatable(e.getCreatable());
+        x.setUpdatable(e.getUpdatable());
+        x.setUniqueKeyFlg(e.getUniqueKeyFlg());
+        x.setEnableHistoryLog(e.getEnableHistoryLog());
+        x.setEnableConfig(e.getEnableConfig());
+        x.setEnablePackage(e.getEnablePackage());
+        x.setReadonlyStatus(e.getReadonlyStatus());
+        x.setVisibleStatus(e.getVisibleStatus());
+        x.setHiddenFlg(e.getHiddenFlg());
+        x.setReferEntityId(e.getReferEntityId());
+        x.setReferLinkId(e.getReferLinkId());
+        x.setDbColumn(e.getDbColumn());
+        x.setItemOrder(e.getItemOrder());
+        x.setSortFlg(e.getSortFlg());
+        x.setColumnName(e.getColumnName());
+        x.setCreatedAt(e.getCreatedAt());
+        x.setCreatedBy(e.getCreatedBy());
+        x.setUpdatedAt(e.getUpdatedAt());
+        x.setUpdatedBy(e.getUpdatedBy());
+        return x;
     }
 
-    public static List<ItemDTO> toItemDTOList(List<CustomItemEntity> list) {
+    public static List<XItem> toXItemList(List<CustomItemEntity> list) {
         if (list == null) return Collections.emptyList();
-        return list.stream().map(MetaRepoConverter::toItemDTO).collect(Collectors.toList());
+        return list.stream().map(MetaRepoConverter::toXItem).collect(Collectors.toList());
     }
 
     // ==================== Link ====================
 
-    public static LinkDTO toLinkDTO(CustomEntityLinkEntity e) {
+    public static XLink toXLink(CustomEntityLinkEntity e) {
         if (e == null) return null;
-        LinkDTO dto = new LinkDTO();
-        dto.setId(e.getId());
-        dto.setTenantId(e.getTenantId());
-        dto.setName(e.getName());
-        dto.setApiKey(e.getApiKey());
-        dto.setLabel(e.getLabel());
-        dto.setLinkType(e.getLinkType());
-        dto.setParentEntityId(e.getParentEntityId());
-        dto.setChildEntityId(e.getChildEntityId());
-        dto.setCascadeDelete(e.getCascadeDelete());
-        dto.setAccessControl(e.getAccessControl());
-        dto.setEnableFlg(e.getEnableFlg());
-        dto.setDescription(e.getDescription());
-        dto.setCreatedAt(e.getCreatedAt());
-        dto.setCreatedBy(e.getCreatedBy());
-        return dto;
+        XLink x = new XLink();
+        x.setId(e.getId());
+        x.setTenantId(e.getTenantId());
+        x.setName(e.getName());
+        x.setApiKey(e.getApiKey());
+        x.setLabel(e.getLabel());
+        x.setLinkType(e.getLinkType());
+        x.setParentEntityId(e.getParentEntityId());
+        x.setChildEntityId(e.getChildEntityId());
+        x.setCascadeDelete(e.getCascadeDelete());
+        x.setAccessControl(e.getAccessControl());
+        x.setEnableFlg(e.getEnableFlg());
+        x.setDescription(e.getDescription());
+        x.setCreatedAt(e.getCreatedAt());
+        x.setCreatedBy(e.getCreatedBy());
+        return x;
     }
 
-    public static List<LinkDTO> toLinkDTOList(List<CustomEntityLinkEntity> list) {
+    public static List<XLink> toXLinkList(List<CustomEntityLinkEntity> list) {
         if (list == null) return Collections.emptyList();
-        return list.stream().map(MetaRepoConverter::toLinkDTO).collect(Collectors.toList());
+        return list.stream().map(MetaRepoConverter::toXLink).collect(Collectors.toList());
     }
 
     // ==================== PickOption ====================
 
-    public static PickOptionDTO toPickOptionDTO(CustomPickOptionEntity e) {
+    public static XPickOption toXPickOption(CustomPickOptionEntity e) {
         if (e == null) return null;
-        PickOptionDTO dto = new PickOptionDTO();
-        dto.setId(e.getId());
-        dto.setTenantId(e.getTenantId());
-        dto.setEntityId(e.getEntityId());
-        dto.setItemId(e.getItemId());
-        dto.setApiKey(e.getApiKey());
-        dto.setOptionCode(e.getOptionCode());
-        dto.setOptionLabel(e.getOptionLabel());
-        dto.setOptionOrder(e.getOptionOrder());
-        dto.setDefaultFlg(e.getDefaultFlg());
-        dto.setGlobalFlg(e.getGlobalFlg());
-        dto.setEnableFlg(e.getEnableFlg());
-        return dto;
+        XPickOption x = new XPickOption();
+        x.setId(e.getId());
+        x.setTenantId(e.getTenantId());
+        x.setEntityId(e.getEntityId());
+        x.setItemId(e.getItemId());
+        x.setApiKey(e.getApiKey());
+        x.setOptionCode(e.getOptionCode());
+        x.setOptionLabel(e.getOptionLabel());
+        x.setOptionOrder(e.getOptionOrder());
+        x.setDefaultFlg(e.getDefaultFlg());
+        x.setGlobalFlg(e.getGlobalFlg());
+        x.setEnableFlg(e.getEnableFlg());
+        return x;
     }
 
-    public static List<PickOptionDTO> toPickOptionDTOList(List<CustomPickOptionEntity> list) {
+    public static List<XPickOption> toXPickOptionList(List<CustomPickOptionEntity> list) {
         if (list == null) return Collections.emptyList();
-        return list.stream().map(MetaRepoConverter::toPickOptionDTO).collect(Collectors.toList());
+        return list.stream().map(MetaRepoConverter::toXPickOption).collect(Collectors.toList());
     }
 
     // ==================== CheckRule ====================
 
-    public static CheckRuleDTO toCheckRuleDTO(CustomCheckRuleEntity e) {
+    public static XCheckRule toXCheckRule(CustomCheckRuleEntity e) {
         if (e == null) return null;
-        CheckRuleDTO dto = new CheckRuleDTO();
-        dto.setId(e.getId());
-        dto.setTenantId(e.getTenantId());
-        dto.setObjectId(e.getObjectId());
-        dto.setName(e.getName());
-        dto.setApiKey(e.getApiKey());
-        dto.setActiveFlg(e.getActiveFlg());
-        dto.setCheckFormula(e.getCheckFormula());
-        dto.setCheckErrorMsg(e.getCheckErrorMsg());
-        dto.setCheckErrorLocation(e.getCheckErrorLocation());
-        dto.setCheckErrorItemId(e.getCheckErrorItemId());
-        dto.setCreatedAt(e.getCreatedAt());
-        dto.setCreatedBy(e.getCreatedBy());
-        return dto;
+        XCheckRule x = new XCheckRule();
+        x.setId(e.getId());
+        x.setTenantId(e.getTenantId());
+        x.setObjectId(e.getObjectId());
+        x.setName(e.getName());
+        x.setApiKey(e.getApiKey());
+        x.setActiveFlg(e.getActiveFlg());
+        x.setCheckFormula(e.getCheckFormula());
+        x.setCheckErrorMsg(e.getCheckErrorMsg());
+        x.setCheckErrorLocation(e.getCheckErrorLocation());
+        x.setCheckErrorItemId(e.getCheckErrorItemId());
+        x.setCreatedAt(e.getCreatedAt());
+        x.setCreatedBy(e.getCreatedBy());
+        return x;
     }
 
-    public static List<CheckRuleDTO> toCheckRuleDTOList(List<CustomCheckRuleEntity> list) {
+    public static List<XCheckRule> toXCheckRuleList(List<CustomCheckRuleEntity> list) {
         if (list == null) return Collections.emptyList();
-        return list.stream().map(MetaRepoConverter::toCheckRuleDTO).collect(Collectors.toList());
+        return list.stream().map(MetaRepoConverter::toXCheckRule).collect(Collectors.toList());
     }
 }

@@ -1,10 +1,8 @@
 package com.hongyang.platform.metarepo.core.api;
 
-import com.hongyang.platform.metarepo.core.model.Result;
-import com.hongyang.platform.metarepo.core.model.dto.*;
-import com.hongyang.platform.metarepo.core.model.req.*;
+import com.hongyang.platform.metarepo.core.model.metamodel.*;
+import com.hongyang.platform.metarepo.core.model.request.*;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 /**
  * MetaRepo 写接口定义（API 契约，保留在 core 中）
@@ -12,23 +10,23 @@ import java.util.List;
 public interface MetaRepoWriteApi {
 
     @PostMapping("/rpc/metarepo/write/entity")
-    Result<EntityDTO> createEntity(@RequestBody CreateEntityReq req);
+    XEntity createEntity(@RequestBody CreateEntityRequest request);
 
     @PutMapping("/rpc/metarepo/write/entity/{entityId}")
-    Result<EntityDTO> updateEntity(@PathVariable("entityId") Long entityId, @RequestBody CreateEntityReq req);
+    XEntity updateEntity(@PathVariable("entityId") Long entityId, @RequestBody CreateEntityRequest request);
 
     @DeleteMapping("/rpc/metarepo/write/entity")
-    Result<Void> deleteEntity(@RequestParam("tenantId") Long tenantId, @RequestParam("entityId") Long entityId);
+    void deleteEntity(@RequestParam("tenantId") Long tenantId, @RequestParam("entityId") Long entityId);
 
     @PostMapping("/rpc/metarepo/write/item")
-    Result<ItemDTO> createItem(@RequestBody CreateItemReq req);
+    XItem createItem(@RequestBody CreateItemRequest request);
 
     @DeleteMapping("/rpc/metarepo/write/item")
-    Result<Void> deleteItem(@RequestParam("tenantId") Long tenantId, @RequestParam("itemId") Long itemId);
+    void deleteItem(@RequestParam("tenantId") Long tenantId, @RequestParam("itemId") Long itemId);
 
     @PostMapping("/rpc/metarepo/write/entity-link")
-    Result<LinkDTO> createEntityLink(@RequestBody CreateLinkReq req);
+    XLink createEntityLink(@RequestBody CreateLinkRequest request);
 
     @DeleteMapping("/rpc/metarepo/write/entity-link")
-    Result<Void> deleteEntityLink(@RequestParam("tenantId") Long tenantId, @RequestParam("linkId") Long linkId);
+    void deleteEntityLink(@RequestParam("tenantId") Long tenantId, @RequestParam("linkId") Long linkId);
 }

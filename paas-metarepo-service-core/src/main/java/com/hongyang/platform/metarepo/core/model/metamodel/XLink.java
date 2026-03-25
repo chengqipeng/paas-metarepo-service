@@ -1,13 +1,13 @@
-package com.hongyang.platform.metarepo.core.model.dto;
+package com.hongyang.platform.metarepo.core.model.metamodel;
 
 import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 关联关系响应 DTO
+ * 关联关系元模型
  */
 @Data
-public class LinkDTO implements Serializable {
+public class XLink implements Serializable {
     private Long id;
     private Long tenantId;
     private String name;

@@ -1,10 +1,13 @@
-package com.hongyang.platform.metarepo.core.model.dto;
+package com.hongyang.platform.metarepo.core.model.metamodel;
 
 import lombok.Data;
 import java.io.Serializable;
 
+/**
+ * 校验规则元模型
+ */
 @Data
-public class CheckRuleDTO implements Serializable {
+public class XCheckRule implements Serializable {
     private Long id;
     private Long tenantId;
     private Long objectId;

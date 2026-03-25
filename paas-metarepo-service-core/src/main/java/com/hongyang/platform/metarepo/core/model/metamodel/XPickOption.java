@@ -1,10 +1,13 @@
-package com.hongyang.platform.metarepo.core.model.dto;
+package com.hongyang.platform.metarepo.core.model.metamodel;
 
 import lombok.Data;
 import java.io.Serializable;
 
+/**
+ * 字段选项值元模型
+ */
 @Data
-public class PickOptionDTO implements Serializable {
+public class XPickOption implements Serializable {
     private Long id;
     private Long tenantId;
     private Long entityId;

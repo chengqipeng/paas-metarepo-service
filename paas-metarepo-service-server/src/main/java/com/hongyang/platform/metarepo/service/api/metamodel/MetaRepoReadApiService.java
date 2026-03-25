@@ -1,13 +1,9 @@
 package com.hongyang.platform.metarepo.service.api.metamodel;
 
 import com.hongyang.platform.metarepo.core.api.MetaRepoReadApi;
-import com.hongyang.platform.metarepo.core.model.Result;
-import com.hongyang.platform.metarepo.core.model.dto.*;
+import com.hongyang.platform.metarepo.core.model.metamodel.*;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
-import com.hongyang.platform.metarepo.service.entity.CustomCheckRuleEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityLinkEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomItemEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomPickOptionEntity;
+import com.hongyang.platform.metarepo.service.entity.*;
 import com.hongyang.platform.metarepo.service.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,45 +26,41 @@ public class MetaRepoReadApiService implements MetaRepoReadApi {
     private final ICustomEntityLinkService customEntityLinkService;
 
     @Override
-    public Result<MetaModelDTO> getMetaModel(Long tenantId, String objectApiKey) {
-        MetaModelDTO dto = metaModelQueryService.getMetaModel(tenantId, objectApiKey);
-        if (dto == null) {
-            return Result.fail(404, "对象不存在: " + objectApiKey);
-        }
-        return Result.success(dto);
+    public XMetaModel getMetaModel(Long tenantId, String objectApiKey) {
+        return metaModelQueryService.getMetaModel(tenantId, objectApiKey);
     }
 
     @Override
-    public Result<List<MetaModelDTO>> batchGetMetaModel(Long tenantId, List<String> apiKeys) {
-        return Result.success(metaModelQueryService.batchGetMetaModel(tenantId, apiKeys));
+    public List<XMetaModel> batchGetMetaModel(Long tenantId, List<String> apiKeys) {
+        return metaModelQueryService.batchGetMetaModel(tenantId, apiKeys);
     }
 
     @Override
-    public Result<List<MetaModelDTO>> listMetaModels(Long tenantId) {
-        return Result.success(metaModelQueryService.listMetaModels(tenantId));
+    public List<XMetaModel> listMetaModels(Long tenantId) {
+        return metaModelQueryService.listMetaModels(tenantId);
     }
 
     @Override
-    public Result<List<ItemDTO>> listItems(Long tenantId, Long entityId) {
+    public List<XItem> listItems(Long tenantId, Long entityId) {
         List<CustomItemEntity> items = customItemService.listByEntityId(tenantId, entityId);
-        return Result.success(MetaRepoConverter.toItemDTOList(items));
+        return MetaRepoConverter.toXItemList(items);
     }
 
     @Override
-    public Result<List<PickOptionDTO>> listPickOptions(Long tenantId, Long itemId) {
+    public List<XPickOption> listPickOptions(Long tenantId, Long itemId) {
         List<CustomPickOptionEntity> options = customPickOptionService.listByItemId(tenantId, itemId);
-        return Result.success(MetaRepoConverter.toPickOptionDTOList(options));
+        return MetaRepoConverter.toXPickOptionList(options);
     }
 
     @Override
-    public Result<List<CheckRuleDTO>> listCheckRules(Long tenantId, Long entityId) {
+    public List<XCheckRule> listCheckRules(Long tenantId, Long entityId) {
         List<CustomCheckRuleEntity> rules = customCheckRuleService.listByObjectId(tenantId, entityId);
-        return Result.success(MetaRepoConverter.toCheckRuleDTOList(rules));
+        return MetaRepoConverter.toXCheckRuleList(rules);
     }
 
     @Override
-    public Result<List<LinkDTO>> listEntityLinks(Long tenantId, Long entityId) {
+    public List<XLink> listEntityLinks(Long tenantId, Long entityId) {
         List<CustomEntityLinkEntity> links = customEntityLinkService.listByEntityId(tenantId, entityId);
-        return Result.success(MetaRepoConverter.toLinkDTOList(links));
+        return MetaRepoConverter.toXLinkList(links);
     }
 }
