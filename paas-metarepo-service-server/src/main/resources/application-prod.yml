@@ -31,4 +31,4 @@ rocketmq:
 
 logging:
   level:
-    com.rkhd.platform.metarepo: INFO
+    com.hongyang.platform.metarepo: INFO

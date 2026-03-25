@@ -32,5 +32,5 @@ rocketmq:
 
 logging:
   level:
-    com.rkhd.platform.metarepo: DEBUG
+    com.hongyang.platform.metarepo: DEBUG
     org.springframework.cloud.openfeign: DEBUG

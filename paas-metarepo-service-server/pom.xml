@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
 
     <parent>
-        <groupId>com.rkhd.platform</groupId>
+        <groupId>com.hongyang.platform</groupId>
         <artifactId>paas-metarepo-service</artifactId>
         <version>${revision}</version>
     </parent>
@@ -15,7 +15,7 @@
     <dependencies>
         <!-- 内部 core 模块 -->
         <dependency>
-            <groupId>com.rkhd.platform</groupId>
+            <groupId>com.hongyang.platform</groupId>
             <artifactId>paas-metarepo-service-core</artifactId>
         </dependency>
 
@@ -39,11 +39,12 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
 
-        <!-- 数据库 -->
+        <!-- DAO 框架（包含 MyBatis-Plus + 租户拦截 + 审计填充 + ID 生成 + 缓存注解） -->
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <groupId>com.hongyang</groupId>
+            <artifactId>framework-dao</artifactId>
         </dependency>
+        <!-- 数据库驱动 -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>

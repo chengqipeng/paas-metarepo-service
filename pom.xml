@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.rkhd.platform</groupId>
+    <groupId>com.hongyang.platform</groupId>
     <artifactId>paas-metarepo-service</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
@@ -53,12 +53,12 @@
             </dependency>
             <!-- 内部模块 -->
             <dependency>
-                <groupId>com.rkhd.platform</groupId>
+                <groupId>com.hongyang.platform</groupId>
                 <artifactId>paas-metarepo-service-core</artifactId>
                 <version>${paas-metarepo-service.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.rkhd.platform</groupId>
+                <groupId>com.hongyang.platform</groupId>
                 <artifactId>paas-metarepo-service-server</artifactId>
                 <version>${paas-metarepo-service.version}</version>
             </dependency>
