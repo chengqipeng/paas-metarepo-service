@@ -55,7 +55,7 @@
 
         <!-- Redis + Caffeine 缓存 -->
         <dependency>
-            <groupId>com.xxx</groupId>
+            <groupId>com.hongyang</groupId>
             <artifactId>framework-redis-client</artifactId>
         </dependency>
         <dependency>
@@ -65,13 +65,13 @@
 
         <!-- MQ -->
         <dependency>
-            <groupId>com.xxx</groupId>
+            <groupId>com.hongyang</groupId>
             <artifactId>framework-mq-client</artifactId>
         </dependency>
 
         <!-- 生命周期 -->
         <dependency>
-            <groupId>com.xxx</groupId>
+            <groupId>com.hongyang</groupId>
             <artifactId>framework-lifecycle-spring-boot-autoconfigure</artifactId>
         </dependency>
 

@@ -9,7 +9,7 @@
     <packaging>pom</packaging>
 
     <parent>
-        <groupId>com.xxx</groupId>
+        <groupId>com.hongyang</groupId>
         <artifactId>parent-pom</artifactId>
         <version>2025.1</version>
     </parent>
@@ -31,21 +31,21 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.xxx</groupId>
+                <groupId>com.hongyang</groupId>
                 <artifactId>framework-basic</artifactId>
                 <type>pom</type>
                 <scope>import</scope>
                 <version>${framework-basic-import.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.xxx</groupId>
+                <groupId>com.hongyang</groupId>
                 <artifactId>framework-redis</artifactId>
                 <type>pom</type>
                 <scope>import</scope>
                 <version>${framework-redis-import.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.xxx</groupId>
+                <groupId>com.hongyang</groupId>
                 <artifactId>framework-mq</artifactId>
                 <type>pom</type>
                 <scope>import</scope>

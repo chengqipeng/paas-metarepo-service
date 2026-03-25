@@ -15,12 +15,12 @@
     <dependencies>
         <!-- 框架基础 -->
         <dependency>
-            <groupId>com.xxx</groupId>
+            <groupId>com.hongyang</groupId>
             <artifactId>framework-base</artifactId>
         </dependency>
         <!-- 业务公用枚举/常量 -->
         <dependency>
-            <groupId>com.xxx</groupId>
+            <groupId>com.hongyang</groupId>
             <artifactId>framework-common</artifactId>
         </dependency>
         <!-- Spring Cloud OpenFeign -->
