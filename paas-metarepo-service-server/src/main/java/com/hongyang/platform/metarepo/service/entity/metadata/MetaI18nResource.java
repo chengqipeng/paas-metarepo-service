@@ -13,9 +13,9 @@ import lombok.EqualsAndHashCode;
 @TableName("p_meta_i18n_resource")
 public class MetaI18nResource extends BaseEntity {
 
-    private Long metamodelId;
-    private Long metadataId;
-    private Long objectId;
+    private Long metamodelApiKey;
+    private Long metadataApiKey;
+    private Long entityApiKey;
     private String resourceKey;
     private String langCode;
     private String resourceValue;
