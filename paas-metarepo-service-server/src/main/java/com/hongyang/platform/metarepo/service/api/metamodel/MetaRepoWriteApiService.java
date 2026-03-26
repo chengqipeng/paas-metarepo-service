@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
+@RequestMapping("/metarepo")
 @RequiredArgsConstructor
 public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
@@ -47,7 +49,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     private final IMetaLogService metaLogService;
 
     @Override
-    @PostMapping("/metarepo/write/entity")
+    @PostMapping("/write/entity")
     public XEntity createEntity(@RequestBody CreateEntityRequest request) {
         if (customEntityService.existsApiKey(request.getTenantId(), request.getApiKey())) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, request.getApiKey());
@@ -81,7 +83,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @PutMapping("/metarepo/write/entity/{entityId}")
+    @PutMapping("/write/entity/{entityId}")
     public XEntity updateEntity(@PathVariable("entityId") Long entityId,
                                  @RequestBody UpdateEntityRequest request) {
         CustomEntity entity = customEntityService.getByIdAndTenant(entityId, request.getTenantId());
@@ -104,7 +106,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @DeleteMapping("/metarepo/write/entity")
+    @DeleteMapping("/write/entity")
     public void deleteEntity(@RequestParam("tenantId") Long tenantId,
                               @RequestParam("entityId") Long entityId) {
         boolean deleted = customEntityService.softDelete(entityId, tenantId);
@@ -115,7 +117,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @PostMapping("/metarepo/write/item")
+    @PostMapping("/write/item")
     public XItem createItem(@RequestBody CreateItemRequest request) {
         if (customItemService.existsApiKey(request.getTenantId(), request.getEntityId(), request.getApiKey())) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, request.getApiKey());
@@ -151,7 +153,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @PutMapping("/metarepo/write/item/{itemId}")
+    @PutMapping("/write/item/{itemId}")
     public XItem updateItem(@PathVariable("itemId") Long itemId,
                              @RequestBody UpdateItemRequest request) {
         // TODO: 实现字段更新
@@ -159,7 +161,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @DeleteMapping("/metarepo/write/item")
+    @DeleteMapping("/write/item")
     public void deleteItem(@RequestParam("tenantId") Long tenantId,
                             @RequestParam("itemId") Long itemId) {
         boolean deleted = customItemService.softDelete(itemId, tenantId);
@@ -170,14 +172,14 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @PostMapping("/metarepo/write/pick-options")
+    @PostMapping("/write/pick-options")
     public void savePickOptions(@RequestBody SavePickOptionRequest request) {
         // TODO: 实现选项保存
         throw new UnsupportedOperationException("savePickOptions 待实现");
     }
 
     @Override
-    @PostMapping("/metarepo/write/entity-link")
+    @PostMapping("/write/entity-link")
     public XLink createEntityLink(@RequestBody CreateLinkRequest request) {
         CustomEntityLink link = new CustomEntityLink();
         link.setTenantId(request.getTenantId());
@@ -198,7 +200,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @DeleteMapping("/metarepo/write/entity-link")
+    @DeleteMapping("/write/entity-link")
     public void deleteEntityLink(@RequestParam("tenantId") Long tenantId,
                                   @RequestParam("linkId") Long linkId) {
         boolean deleted = customEntityLinkService.softDelete(linkId, tenantId);
@@ -209,14 +211,14 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @PostMapping("/metarepo/write/check-rule")
+    @PostMapping("/write/check-rule")
     public XCheckRule createCheckRule(@RequestBody CreateCheckRuleRequest request) {
         // TODO: 实现校验规则创建
         throw new UnsupportedOperationException("createCheckRule 待实现");
     }
 
     @Override
-    @PutMapping("/metarepo/write/check-rule/{ruleId}")
+    @PutMapping("/write/check-rule/{ruleId}")
     public XCheckRule updateCheckRule(@PathVariable("ruleId") Long ruleId,
                                       @RequestBody UpdateCheckRuleRequest request) {
         // TODO: 实现校验规则更新

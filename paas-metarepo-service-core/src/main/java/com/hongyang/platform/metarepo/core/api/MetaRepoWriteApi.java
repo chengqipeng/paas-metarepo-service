@@ -17,48 +17,50 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * MetaRepo 写接口定义（API 契约）
  */
+@RequestMapping("/metarepo")
 public interface MetaRepoWriteApi {
 
     // ==================== Entity ====================
-    @PostMapping("/metarepo/write/entity")
+    @PostMapping("/write/entity")
     XEntity createEntity(@RequestBody CreateEntityRequest request);
 
-    @PutMapping("/metarepo/write/entity/{entityId}")
+    @PutMapping("/write/entity/{entityId}")
     XEntity updateEntity(@PathVariable("entityId") Long entityId, @RequestBody UpdateEntityRequest request);
 
-    @DeleteMapping("/metarepo/write/entity")
+    @DeleteMapping("/write/entity")
     void deleteEntity(@RequestParam("tenantId") Long tenantId, @RequestParam("entityId") Long entityId);
 
     // ==================== Item ====================
-    @PostMapping("/metarepo/write/item")
+    @PostMapping("/write/item")
     XItem createItem(@RequestBody CreateItemRequest request);
 
-    @PutMapping("/metarepo/write/item/{itemId}")
+    @PutMapping("/write/item/{itemId}")
     XItem updateItem(@PathVariable("itemId") Long itemId, @RequestBody UpdateItemRequest request);
 
-    @DeleteMapping("/metarepo/write/item")
+    @DeleteMapping("/write/item")
     void deleteItem(@RequestParam("tenantId") Long tenantId, @RequestParam("itemId") Long itemId);
 
     // ==================== PickOption ====================
-    @PostMapping("/metarepo/write/pick-options")
+    @PostMapping("/write/pick-options")
     void savePickOptions(@RequestBody SavePickOptionRequest request);
 
     // ==================== EntityLink ====================
-    @PostMapping("/metarepo/write/entity-link")
+    @PostMapping("/write/entity-link")
     XLink createEntityLink(@RequestBody CreateLinkRequest request);
 
-    @DeleteMapping("/metarepo/write/entity-link")
+    @DeleteMapping("/write/entity-link")
     void deleteEntityLink(@RequestParam("tenantId") Long tenantId, @RequestParam("linkId") Long linkId);
 
     // ==================== CheckRule ====================
-    @PostMapping("/metarepo/write/check-rule")
+    @PostMapping("/write/check-rule")
     XCheckRule createCheckRule(@RequestBody CreateCheckRuleRequest request);
 
-    @PutMapping("/metarepo/write/check-rule/{ruleId}")
+    @PutMapping("/write/check-rule/{ruleId}")
     XCheckRule updateCheckRule(@PathVariable("ruleId") Long ruleId, @RequestBody UpdateCheckRuleRequest request);
 }

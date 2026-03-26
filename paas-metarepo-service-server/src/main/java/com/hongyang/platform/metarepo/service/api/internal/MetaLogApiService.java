@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/internal")
+@RequestMapping("/metarepo")
 @RequiredArgsConstructor
 public class MetaLogApiService {
 
