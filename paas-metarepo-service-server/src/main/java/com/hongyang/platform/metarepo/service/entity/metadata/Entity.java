@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 自定义对象定义（Common/Tenant 共用）
- * Tenant 表：p_custom_entity（有 tenant_id）
+ * Tenant 表：p_tenant_entity（有 tenant_id）
  * Common 表：p_common_entity（无 tenant_id）
  */
 @Data
