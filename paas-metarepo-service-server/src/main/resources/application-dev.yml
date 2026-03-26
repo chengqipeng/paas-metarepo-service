@@ -18,10 +18,16 @@ spring:
     database: 0
     timeout: 3000
     lettuce:
-      pool:
-        max-active: 16
-        max-idle: 8
-        min-idle: 2
+      cluster:
+        metadata:
+          nodes: metaredis-cnode1.ingageapp.com:7000,metaredis-cnode2.ingageapp.com:7001,metaredis-cnode3.ingageapp.com:7002
+          max-redirects: 3
+          password: ingage
+          connection-timeout: 3000
+          min-idle: 10
+          max-idle: 50
+          max-active: 150
+          max-wait: 1500
 
 # RocketMQ
 rocketmq:
