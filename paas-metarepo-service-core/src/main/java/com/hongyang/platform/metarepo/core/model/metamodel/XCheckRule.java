@@ -8,14 +8,13 @@ import java.io.Serializable;
  */
 @Data
 public class XCheckRule implements Serializable {
-    private Long id;
-    private Long tenantId;
-    private Long entityId;
-    private String name;
-    private String nameKey;
+    private String entityApiKey;
     private String apiKey;
     private String label;
     private String labelKey;
+    private String namespace;
+    private String name;
+    private String nameKey;
     private Integer activeFlg;
     private String description;
     private String descriptionKey;
@@ -23,9 +22,10 @@ public class XCheckRule implements Serializable {
     private String checkErrorMsg;
     private String checkErrorMsgKey;
     private Integer checkErrorLocation;
-    private Long checkErrorItemId;
+    private String checkErrorItemApiKey;
     private Integer checkAllItemsFlg;
     private Integer checkErrorWay;
+    private Integer deleteFlg;
     private Long createdAt;
     private Long createdBy;
     private Long updatedAt;

@@ -8,14 +8,13 @@ import java.io.Serializable;
  */
 @Data
 public class XItem implements Serializable {
-    private Long id;
-    private Long tenantId;
-    private Long entityId;
-    private String name;
-    private String nameKey;
+    private String entityApiKey;
     private String apiKey;
     private String label;
     private String labelKey;
+    private String namespace;
+    private String name;
+    private String nameKey;
     private Integer itemType;
     private Integer dataType;
     private String typeProperty;
@@ -23,7 +22,7 @@ public class XItem implements Serializable {
     private String helpTextKey;
     private String description;
     private String descriptionKey;
-    private Integer customItemseq;
+    private Integer customItemSeq;
     private String defaultValue;
     private Integer requireFlg;
     private Integer deleteFlg;
@@ -38,8 +37,8 @@ public class XItem implements Serializable {
     private Integer readonlyStatus;
     private Integer visibleStatus;
     private Integer hiddenFlg;
-    private Long referEntityId;
-    private Long referLinkId;
+    private String referEntityApiKey;
+    private String referLinkApiKey;
     private String dbColumn;
     private Integer itemOrder;
     private Integer sortFlg;

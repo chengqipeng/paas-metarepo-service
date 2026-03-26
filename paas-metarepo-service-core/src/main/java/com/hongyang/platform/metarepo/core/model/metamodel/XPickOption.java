@@ -8,14 +8,13 @@ import java.io.Serializable;
  */
 @Data
 public class XPickOption implements Serializable {
-    private Long id;
-    private Long tenantId;
-    private Long entityId;
-    private Long itemId;
+    private String entityApiKey;
+    private String itemApiKey;
     private String apiKey;
-    private Integer optionCode;
     private String label;
     private String labelKey;
+    private String namespace;
+    private Integer optionCode;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer globalFlg;

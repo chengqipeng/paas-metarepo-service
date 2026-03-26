@@ -81,8 +81,6 @@ public final class MetaRepoConverter {
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
         x.setNamespace(e.getNamespace());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
         x.setItemType(e.getItemType());
         x.setDataType(e.getDataType());
         x.setTypeProperty(e.getTypeProperty());
@@ -132,8 +130,6 @@ public final class MetaRepoConverter {
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
         x.setNamespace(e.getNamespace());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
         x.setTypeProperty(e.getTypeProperty());
         x.setLinkType(e.getLinkType());
         x.setParentEntityApiKey(e.getParentEntityApiKey());
@@ -166,7 +162,6 @@ public final class MetaRepoConverter {
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
         x.setNamespace(e.getNamespace());
-        x.setOptionCode(e.getOptionCode());
         x.setOptionOrder(e.getOptionOrder());
         x.setDefaultFlg(e.getDefaultFlg());
         x.setGlobalFlg(e.getGlobalFlg());
@@ -192,8 +187,6 @@ public final class MetaRepoConverter {
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
         x.setNamespace(e.getNamespace());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
         x.setActiveFlg(e.getActiveFlg());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());

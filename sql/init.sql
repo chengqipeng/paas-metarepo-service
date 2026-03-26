@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS p_meta_model (
     api_key                 VARCHAR(255)    NOT NULL,
     label                   VARCHAR(255)    NOT NULL,
     label_key               VARCHAR(255)    NOT NULL,
+    namespace               VARCHAR(50),
     metamodel_type          SMALLINT,
     enable_package          SMALLINT,
     enable_app              SMALLINT        DEFAULT 0,
@@ -22,12 +23,14 @@ CREATE TABLE IF NOT EXISTS p_meta_model (
     delta_scope             SMALLINT,
     delta_mode              SMALLINT,
     enable_module_control   SMALLINT        DEFAULT 0,
+    enable_common           SMALLINT        DEFAULT 1,
+    enable_tenant           SMALLINT        DEFAULT 1,
     db_table                VARCHAR(50),
     description             VARCHAR(500),
     description_key         VARCHAR(255),
-    delete_flg              SMALLINT        DEFAULT 0,
-    xobject_dependency      SMALLINT        DEFAULT 0,
+    entity_dependency       SMALLINT        DEFAULT 0,
     visible                 SMALLINT        DEFAULT 0,
+    delete_flg              SMALLINT        DEFAULT 0,
     created_by              BIGINT,
     created_at              BIGINT,
     updated_by              BIGINT,
@@ -40,10 +43,11 @@ CREATE UNIQUE INDEX uk_meta_model_apikey ON p_meta_model(tenant_id, api_key);
 CREATE TABLE IF NOT EXISTS p_meta_item (
     id                      BIGINT          NOT NULL,
     tenant_id               BIGINT          NOT NULL,
-    metamodel_id            BIGINT          NOT NULL,
+    metamodel_api_key       VARCHAR(255)    NOT NULL,
     api_key                 VARCHAR(255)    NOT NULL,
     label                   VARCHAR(255)    NOT NULL,
     label_key               VARCHAR(255)    NOT NULL,
+    namespace               VARCHAR(50),
     item_type               SMALLINT,
     data_type               SMALLINT,
     item_order              SMALLINT,
@@ -69,7 +73,7 @@ CREATE TABLE IF NOT EXISTS p_meta_item (
     updated_at              BIGINT,
     PRIMARY KEY (id)
 );
-CREATE INDEX idx_meta_item_metamodel ON p_meta_item(tenant_id, metamodel_id);
+CREATE INDEX idx_meta_item_metamodel ON p_meta_item(tenant_id, metamodel_api_key);
 
 -- 3. p_meta_metamodel_data（通用元数据实例大宽表）
 CREATE TABLE IF NOT EXISTS p_meta_metamodel_data (
@@ -267,9 +271,10 @@ CREATE UNIQUE INDEX uk_rule_apikey ON p_custom_check_rule(tenant_id, entity_id, 
 -- 10. p_meta_option（元模型选项值定义）
 CREATE TABLE IF NOT EXISTS p_meta_option (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
-    metamodel_id BIGINT NOT NULL, item_id BIGINT NOT NULL,
-    option_code INTEGER NOT NULL, option_key VARCHAR(100) NOT NULL,
-    option_label VARCHAR(255) NOT NULL, option_label_key VARCHAR(255),
+    metamodel_api_key VARCHAR(255) NOT NULL, item_api_key VARCHAR(255) NOT NULL,
+    api_key VARCHAR(255) NOT NULL, label VARCHAR(255) NOT NULL,
+    label_key VARCHAR(255), namespace VARCHAR(50),
+    option_key VARCHAR(100) NOT NULL,
     option_order SMALLINT DEFAULT 0, default_flg SMALLINT DEFAULT 0,
     enable_flg SMALLINT DEFAULT 1,
     description VARCHAR(500), description_key VARCHAR(255),
@@ -277,18 +282,18 @@ CREATE TABLE IF NOT EXISTS p_meta_option (
     created_by BIGINT, created_at BIGINT, updated_by BIGINT, updated_at BIGINT,
     PRIMARY KEY (id)
 );
-CREATE UNIQUE INDEX uk_option_code ON p_meta_option(tenant_id, metamodel_id, item_id, option_code);
-CREATE INDEX idx_option_item ON p_meta_option(tenant_id, metamodel_id, item_id);
+CREATE UNIQUE INDEX uk_option_apikey ON p_meta_option(tenant_id, metamodel_api_key, item_api_key, api_key);
+CREATE INDEX idx_option_item ON p_meta_option(tenant_id, metamodel_api_key, item_api_key);
 
 -- 11. p_meta_link（元模型关联关系）
 CREATE TABLE IF NOT EXISTS p_meta_link (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
     api_key VARCHAR(255) NOT NULL, label VARCHAR(255) NOT NULL,
-    label_key VARCHAR(255), name VARCHAR(255), name_key VARCHAR(255),
+    label_key VARCHAR(255), namespace VARCHAR(50),
     link_type SMALLINT NOT NULL DEFAULT 2,
-    refer_item_id BIGINT NOT NULL,
-    child_metamodel_id BIGINT NOT NULL DEFAULT 0,
-    parent_metamodel_id BIGINT NOT NULL DEFAULT 0,
+    refer_item_api_key BIGINT NOT NULL,
+    child_metamodel_api_key BIGINT NOT NULL DEFAULT 0,
+    parent_metamodel_api_key BIGINT NOT NULL DEFAULT 0,
     cascade_delete SMALLINT DEFAULT 2,
     description VARCHAR(500), description_key VARCHAR(255),
     delete_flg SMALLINT DEFAULT 0,

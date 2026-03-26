@@ -8,21 +8,23 @@ import java.io.Serializable;
  */
 @Data
 public class XLink implements Serializable {
-    private Long id;
-    private Long tenantId;
-    private String name;
-    private String nameKey;
     private String apiKey;
     private String label;
     private String labelKey;
+    private String namespace;
+    private String name;
+    private String nameKey;
+    private String typeProperty;
     private Integer linkType;
-    private Long parentEntityId;
-    private Long childEntityId;
+    private String parentEntityApiKey;
+    private String childEntityApiKey;
+    private Integer detailLink;
     private Integer cascadeDelete;
     private Integer accessControl;
     private Integer enableFlg;
     private String description;
     private String descriptionKey;
+    private Integer deleteFlg;
     private Long createdAt;
     private Long createdBy;
     private Long updatedAt;

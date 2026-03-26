@@ -13,7 +13,6 @@ import com.hongyang.platform.metarepo.core.model.request.UpdateCheckRuleRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateEntityRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateItemRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,45 +21,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * MetaRepo 写接口定义（API 契约）
+ * tenantId 由 TenantInterceptor 从 GlobalContext 自动注入，无需传递。
  */
 @RequestMapping("/metarepo")
 public interface MetaRepoWriteApi {
 
-    // ==================== Entity ====================
     @PostMapping("/write/entity")
     XEntity createEntity(@RequestBody CreateEntityRequest request);
 
-    @PutMapping("/write/entity/{entityId}")
-    XEntity updateEntity(@PathVariable("entityId") Long entityId, @RequestBody UpdateEntityRequest request);
+    @PutMapping("/write/entity")
+    XEntity updateEntity(@RequestBody UpdateEntityRequest request);
 
     @DeleteMapping("/write/entity")
-    void deleteEntity(@RequestParam("tenantId") Long tenantId, @RequestParam("entityId") Long entityId);
+    void deleteEntity(@RequestParam("apiKey") String apiKey);
 
-    // ==================== Item ====================
     @PostMapping("/write/item")
     XItem createItem(@RequestBody CreateItemRequest request);
 
-    @PutMapping("/write/item/{itemId}")
-    XItem updateItem(@PathVariable("itemId") Long itemId, @RequestBody UpdateItemRequest request);
+    @PutMapping("/write/item")
+    XItem updateItem(@RequestBody UpdateItemRequest request);
 
     @DeleteMapping("/write/item")
-    void deleteItem(@RequestParam("tenantId") Long tenantId, @RequestParam("itemId") Long itemId);
+    void deleteItem(@RequestParam("apiKey") String apiKey);
 
-    // ==================== PickOption ====================
     @PostMapping("/write/pick-options")
     void savePickOptions(@RequestBody SavePickOptionRequest request);
 
-    // ==================== EntityLink ====================
     @PostMapping("/write/entity-link")
     XLink createEntityLink(@RequestBody CreateLinkRequest request);
 
     @DeleteMapping("/write/entity-link")
-    void deleteEntityLink(@RequestParam("tenantId") Long tenantId, @RequestParam("linkId") Long linkId);
+    void deleteEntityLink(@RequestParam("apiKey") String apiKey);
 
-    // ==================== CheckRule ====================
     @PostMapping("/write/check-rule")
     XCheckRule createCheckRule(@RequestBody CreateCheckRuleRequest request);
 
-    @PutMapping("/write/check-rule/{ruleId}")
-    XCheckRule updateCheckRule(@PathVariable("ruleId") Long ruleId, @RequestBody UpdateCheckRuleRequest request);
+    @PutMapping("/write/check-rule")
+    XCheckRule updateCheckRule(@RequestBody UpdateCheckRuleRequest request);
 }

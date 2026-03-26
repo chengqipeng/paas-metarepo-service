@@ -23,6 +23,8 @@ public class MetaModel extends BaseMetaCommonEntity {
     private Integer deltaScope;
     private Integer deltaMode;
     private Integer enableModuleControl;
+    private Integer enableCommon;
+    private Integer enableTenant;
     private String dbTable;
     private String description;
     private String descriptionKey;

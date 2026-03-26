@@ -8,21 +8,16 @@ import java.io.Serializable;
  */
 @Data
 public class XEntity implements Serializable {
-    private Long id;
-    private Long tenantId;
-    private String nameSpace;
-    private Long entityId;
-    private String name;
-    private String nameKey;
     private String apiKey;
     private String label;
     private String labelKey;
-    private Integer objectType;
-    private Long svgId;
+    private String namespace;
+    private Integer entityType;
+    private String svgApiKey;
     private String svgColor;
     private String description;
     private String descriptionKey;
-    private Integer customEntityseq;
+    private Integer customEntitySeq;
     private Integer deleteFlg;
     private Integer enableFlg;
     private Integer customFlg;
