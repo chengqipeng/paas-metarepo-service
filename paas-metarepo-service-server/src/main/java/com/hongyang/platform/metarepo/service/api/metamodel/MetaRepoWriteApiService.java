@@ -17,9 +17,9 @@ import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntity;
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntityLink;
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantItem;
-import com.hongyang.platform.metarepo.service.service.ITenantEntityLinkService;
-import com.hongyang.platform.metarepo.service.service.ITenantEntityService;
-import com.hongyang.platform.metarepo.service.service.ITenantItemService;
+import com.hongyang.platform.metarepo.service.service.metadata.ITenantEntityLinkService;
+import com.hongyang.platform.metarepo.service.service.metadata.ITenantEntityService;
+import com.hongyang.platform.metarepo.service.service.metadata.ITenantItemService;
 import com.hongyang.platform.metarepo.service.service.IMetaLogService;
 import com.hongyang.framework.base.exception.BaseKnownException;
 import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
