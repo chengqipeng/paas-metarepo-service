@@ -16,13 +16,13 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/metarepo/internal")
+@RequestMapping("/metarepo")
 @RequiredArgsConstructor
 public class MetaLogApiService {
 
     private final IMetaLogService metaLogService;
 
-    @GetMapping("/meta-log")
+    @GetMapping("/meta-log/logs")
     public List<MetaLog> listMetaLogs(@RequestParam(required = false) String metadataApiKey) {
         if (metadataApiKey != null) {
             return metaLogService.listByMetadataApiKey(metadataApiKey);
