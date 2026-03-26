@@ -3,14 +3,14 @@ package com.hongyang.platform.metarepo.service.service;
 import com.hongyang.framework.dao.service.IBaseService;
 import com.hongyang.platform.metarepo.core.model.request.CreateCheckRuleRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateCheckRuleRequest;
-import com.hongyang.platform.metarepo.service.entity.CustomCheckRuleEntity;
+import com.hongyang.platform.metarepo.service.entity.CustomCheckRule;
 import java.util.List;
 
-public interface ICustomCheckRuleService extends IBaseService<CustomCheckRuleEntity> {
+public interface ICustomCheckRuleService extends IBaseService<CustomCheckRule> {
 
-    List<CustomCheckRuleEntity> listByObjectId(Long tenantId, Long objectId);
+    List<CustomCheckRule> listByEntityId(Long tenantId, Long entityId);
 
-    CustomCheckRuleEntity createRule(CreateCheckRuleRequest request);
+    CustomCheckRule createRule(CreateCheckRuleRequest request);
 
-    CustomCheckRuleEntity updateRule(Long ruleId, UpdateCheckRuleRequest request);
+    CustomCheckRule updateRule(Long ruleId, UpdateCheckRuleRequest request);
 }

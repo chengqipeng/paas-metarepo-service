@@ -6,19 +6,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 关联过滤条件（p_custom_refer_filter）
+ * 多语言资源（p_meta_i18n_resource）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_custom_refer_filter")
-public class CustomReferFilterEntity extends BaseEntity {
+@TableName("p_meta_i18n_resource")
+public class MetaI18nResource extends BaseEntity {
 
+    private Long metamodelId;
+    private Long metadataId;
     private Long entityId;
-    private Long itemId;
-    private Long linkId;
-    private String filterField;
-    private String filterOperator;
-    private String filterValue;
-    private Integer filterOrder;
+    private String resourceKey;
+    private String langCode;
+    private String resourceValue;
     private String description;
 }

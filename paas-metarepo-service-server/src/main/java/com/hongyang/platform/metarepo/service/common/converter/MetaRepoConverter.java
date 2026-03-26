@@ -16,14 +16,15 @@ public final class MetaRepoConverter {
 
     // ==================== Entity ====================
 
-    public static XEntity toXEntity(CustomEntityEntity e) {
+    public static XEntity toXEntity(CustomEntity e) {
         if (e == null) return null;
         XEntity x = new XEntity();
         x.setId(e.getId());
         x.setTenantId(e.getTenantId());
         x.setNameSpace(e.getNameSpace());
-        x.setObjectId(e.getObjectId());
+        x.setEntityId(e.getEntityId());
         x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
@@ -31,6 +32,7 @@ public final class MetaRepoConverter {
         x.setSvgId(e.getSvgId());
         x.setSvgColor(e.getSvgColor());
         x.setDescription(e.getDescription());
+        x.setDescriptionKey(e.getDescriptionKey());
         x.setCustomEntityseq(e.getCustomEntityseq());
         x.setDeleteFlg(e.getDeleteFlg());
         x.setEnableFlg(e.getEnableFlg());
@@ -63,13 +65,14 @@ public final class MetaRepoConverter {
 
     // ==================== Item ====================
 
-    public static XItem toXItem(CustomItemEntity e) {
+    public static XItem toXItem(CustomItem e) {
         if (e == null) return null;
         XItem x = new XItem();
         x.setId(e.getId());
         x.setTenantId(e.getTenantId());
         x.setEntityId(e.getEntityId());
         x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
@@ -79,6 +82,7 @@ public final class MetaRepoConverter {
         x.setHelpText(e.getHelpText());
         x.setHelpTextKey(e.getHelpTextKey());
         x.setDescription(e.getDescription());
+        x.setDescriptionKey(e.getDescriptionKey());
         x.setCustomItemseq(e.getCustomItemseq());
         x.setDefaultValue(e.getDefaultValue());
         x.setRequireFlg(e.getRequireFlg());
@@ -107,21 +111,23 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XItem> toXItemList(List<CustomItemEntity> list) {
+    public static List<XItem> toXItemList(List<CustomItem> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXItem).collect(Collectors.toList());
     }
 
     // ==================== Link ====================
 
-    public static XLink toXLink(CustomEntityLinkEntity e) {
+    public static XLink toXLink(CustomEntityLink e) {
         if (e == null) return null;
         XLink x = new XLink();
         x.setId(e.getId());
         x.setTenantId(e.getTenantId());
         x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
+        x.setLabelKey(e.getLabelKey());
         x.setLinkType(e.getLinkType());
         x.setParentEntityId(e.getParentEntityId());
         x.setChildEntityId(e.getChildEntityId());
@@ -129,19 +135,20 @@ public final class MetaRepoConverter {
         x.setAccessControl(e.getAccessControl());
         x.setEnableFlg(e.getEnableFlg());
         x.setDescription(e.getDescription());
+        x.setDescriptionKey(e.getDescriptionKey());
         x.setCreatedAt(e.getCreatedAt());
         x.setCreatedBy(e.getCreatedBy());
         return x;
     }
 
-    public static List<XLink> toXLinkList(List<CustomEntityLinkEntity> list) {
+    public static List<XLink> toXLinkList(List<CustomEntityLink> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXLink).collect(Collectors.toList());
     }
 
     // ==================== PickOption ====================
 
-    public static XPickOption toXPickOption(CustomPickOptionEntity e) {
+    public static XPickOption toXPickOption(CustomPickOption e) {
         if (e == null) return null;
         XPickOption x = new XPickOption();
         x.setId(e.getId());
@@ -150,64 +157,128 @@ public final class MetaRepoConverter {
         x.setItemId(e.getItemId());
         x.setApiKey(e.getApiKey());
         x.setOptionCode(e.getOptionCode());
-        x.setOptionLabel(e.getOptionLabel());
+        x.setLabel(e.getLabel());
+        x.setLabelKey(e.getLabelKey());
         x.setOptionOrder(e.getOptionOrder());
         x.setDefaultFlg(e.getDefaultFlg());
         x.setGlobalFlg(e.getGlobalFlg());
+        x.setCustomFlg(e.getCustomFlg());
         x.setEnableFlg(e.getEnableFlg());
+        x.setDescription(e.getDescription());
+        x.setDescriptionKey(e.getDescriptionKey());
         return x;
     }
 
-    public static List<XPickOption> toXPickOptionList(List<CustomPickOptionEntity> list) {
+    public static List<XPickOption> toXPickOptionList(List<CustomPickOption> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXPickOption).collect(Collectors.toList());
     }
 
-    /** XPickOption -> CustomPickOptionEntity（用于 savePickOptions） */
-    public static CustomPickOptionEntity fromXPickOption(XPickOption x) {
+    /** XPickOption -> CustomPickOption（用于 savePickOptions） */
+    public static CustomPickOption fromXPickOption(XPickOption x) {
         if (x == null) return null;
-        CustomPickOptionEntity e = new CustomPickOptionEntity();
+        CustomPickOption e = new CustomPickOption();
         e.setId(x.getId());
         e.setTenantId(x.getTenantId());
         e.setEntityId(x.getEntityId());
         e.setItemId(x.getItemId());
         e.setApiKey(x.getApiKey());
         e.setOptionCode(x.getOptionCode());
-        e.setOptionLabel(x.getOptionLabel());
+        e.setLabel(x.getLabel());
+        e.setLabelKey(x.getLabelKey());
         e.setOptionOrder(x.getOptionOrder());
         e.setDefaultFlg(x.getDefaultFlg());
         e.setGlobalFlg(x.getGlobalFlg());
+        e.setCustomFlg(x.getCustomFlg());
         e.setEnableFlg(x.getEnableFlg());
         return e;
     }
 
-    public static List<CustomPickOptionEntity> fromXPickOptionList(List<XPickOption> list) {
+    public static List<CustomPickOption> fromXPickOptionList(List<XPickOption> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::fromXPickOption).collect(Collectors.toList());
     }
 
     // ==================== CheckRule ====================
 
-    public static XCheckRule toXCheckRule(CustomCheckRuleEntity e) {
+    public static XCheckRule toXCheckRule(CustomCheckRule e) {
         if (e == null) return null;
         XCheckRule x = new XCheckRule();
         x.setId(e.getId());
         x.setTenantId(e.getTenantId());
-        x.setObjectId(e.getObjectId());
+        x.setEntityId(e.getEntityId());
         x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
+        x.setLabel(e.getLabel());
+        x.setLabelKey(e.getLabelKey());
         x.setActiveFlg(e.getActiveFlg());
+        x.setDescription(e.getDescription());
+        x.setDescriptionKey(e.getDescriptionKey());
         x.setCheckFormula(e.getCheckFormula());
         x.setCheckErrorMsg(e.getCheckErrorMsg());
+        x.setCheckErrorMsgKey(e.getCheckErrorMsgKey());
         x.setCheckErrorLocation(e.getCheckErrorLocation());
         x.setCheckErrorItemId(e.getCheckErrorItemId());
+        x.setCheckAllItemsFlg(e.getCheckAllItemsFlg());
+        x.setCheckErrorWay(e.getCheckErrorWay());
         x.setCreatedAt(e.getCreatedAt());
         x.setCreatedBy(e.getCreatedBy());
+        x.setUpdatedAt(e.getUpdatedAt());
+        x.setUpdatedBy(e.getUpdatedBy());
         return x;
     }
 
-    public static List<XCheckRule> toXCheckRuleList(List<CustomCheckRuleEntity> list) {
+    public static List<XCheckRule> toXCheckRuleList(List<CustomCheckRule> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXCheckRule).collect(Collectors.toList());
+    }
+
+    // ==================== Common Entity -> XEntity ====================
+
+    public static XEntity commonToXEntity(CustomEntityCommon e) {
+        if (e == null) return null;
+        XEntity x = new XEntity();
+        x.setId(e.getId());
+        x.setNameSpace(e.getNameSpace());
+        x.setEntityId(e.getEntityId());
+        x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
+        x.setApiKey(e.getApiKey());
+        x.setLabel(e.getLabel());
+        x.setLabelKey(e.getLabelKey());
+        x.setObjectType(e.getObjectType());
+        x.setSvgId(e.getSvgId());
+        x.setSvgColor(e.getSvgColor());
+        x.setDescription(e.getDescription());
+        x.setDescriptionKey(e.getDescriptionKey());
+        x.setCustomEntityseq(e.getCustomEntityseq());
+        x.setDeleteFlg(e.getDeleteFlg());
+        x.setEnableFlg(e.getEnableFlg());
+        x.setCustomFlg(e.getCustomFlg());
+        x.setBusinessCategory(e.getBusinessCategory());
+        x.setTypeProperty(e.getTypeProperty());
+        x.setDbTable(e.getDbTable());
+        x.setDetailFlg(e.getDetailFlg());
+        x.setEnableTeam(e.getEnableTeam());
+        x.setEnableSocial(e.getEnableSocial());
+        x.setEnableConfig(e.getEnableConfig());
+        x.setHiddenFlg(e.getHiddenFlg());
+        x.setSearchable(e.getSearchable());
+        x.setEnableSharing(e.getEnableSharing());
+        x.setEnableScriptTrigger(e.getEnableScriptTrigger());
+        x.setEnableActivity(e.getEnableActivity());
+        x.setEnableHistoryLog(e.getEnableHistoryLog());
+        x.setEnableReport(e.getEnableReport());
+        x.setEnableRefer(e.getEnableRefer());
+        x.setEnableApi(e.getEnableApi());
+        x.setEnableFlow(e.getEnableFlow());
+        x.setEnablePackage(e.getEnablePackage());
+        x.setExtendProperty(e.getExtendProperty());
+        x.setCreatedAt(e.getCreatedAt());
+        x.setCreatedBy(e.getCreatedBy());
+        x.setUpdatedAt(e.getUpdatedAt());
+        x.setUpdatedBy(e.getUpdatedBy());
+        return x;
     }
 }

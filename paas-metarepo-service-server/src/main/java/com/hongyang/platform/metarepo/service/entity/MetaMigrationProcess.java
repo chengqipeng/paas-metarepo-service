@@ -6,22 +6,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 迁移任务单元（p_meta_migration_process_unit）
+ * 迁移任务（p_meta_migration_process）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_meta_migration_process_unit")
-public class MetaMigrationProcessUnitEntity extends BaseEntity {
+@TableName("p_meta_migration_process")
+public class MetaMigrationProcess extends BaseEntity {
 
-    private Long pid;
-    private Long processId;
+    private String packageName;
     private Integer migrationStage;
-    private String unitName;
-    private Integer rollbackUnitFlg;
     private Long startTime;
     private Long endTime;
-    private Long timeConsuming;
-    private String execException;
-    private String rollbackException;
     private Integer status;
+    private String processContent;
 }

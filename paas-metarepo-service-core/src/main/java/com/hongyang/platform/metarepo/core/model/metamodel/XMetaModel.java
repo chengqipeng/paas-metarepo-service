@@ -21,12 +21,9 @@ public class XMetaModel implements Serializable {
     private Integer enableSharing;
     private String typeProperty;
     private String description;
-    /** 字段列表 */
+    private String descriptionKey;
     private List<XItem> items;
-    /** 关联关系列表 */
     private List<XLink> links;
-    /** 校验规则列表 */
     private List<XCheckRule> checkRules;
-    /** 选项值映射：itemId -> List */
     private Map<Long, List<XPickOption>> pickOptionsMap;
 }

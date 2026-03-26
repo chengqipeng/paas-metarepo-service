@@ -28,7 +28,7 @@ public class MetaModelQueryServiceImpl implements IMetaModelQueryService {
 
     @Override
     public XMetaModel getMetaModel(Long tenantId, String objectApiKey) {
-        CustomEntityEntity entity = customEntityService.getByApiKey(tenantId, objectApiKey);
+        CustomEntity entity = customEntityService.getByApiKey(tenantId, objectApiKey);
         if (entity == null) {
             return null;
         }
@@ -48,7 +48,7 @@ public class MetaModelQueryServiceImpl implements IMetaModelQueryService {
 
     @Override
     public List<XMetaModel> listMetaModels(Long tenantId) {
-        List<CustomEntityEntity> entities = customEntityService.listByTenant(tenantId);
+        List<CustomEntity> entities = customEntityService.listByTenant(tenantId);
         return entities.stream()
                 .map(entity -> assembleMetaModel(tenantId, entity))
                 .collect(Collectors.toList());
@@ -56,21 +56,21 @@ public class MetaModelQueryServiceImpl implements IMetaModelQueryService {
 
     @Override
     public List<XItem> getFieldMeta(Long tenantId, Long entityId) {
-        List<CustomItemEntity> items = customItemService.listByEntityId(tenantId, entityId);
+        List<CustomItem> items = customItemService.listByEntityId(tenantId, entityId);
         return MetaRepoConverter.toXItemList(items);
     }
 
-    private XMetaModel assembleMetaModel(Long tenantId, CustomEntityEntity entity) {
+    private XMetaModel assembleMetaModel(Long tenantId, CustomEntity entity) {
         Long entityId = entity.getId();
 
-        List<CustomItemEntity> items = customItemService.listByEntityId(tenantId, entityId);
-        List<CustomEntityLinkEntity> links = customEntityLinkService.listByEntityId(tenantId, entityId);
-        List<CustomCheckRuleEntity> checkRules = customCheckRuleService.listByObjectId(tenantId, entityId);
+        List<CustomItem> items = customItemService.listByEntityId(tenantId, entityId);
+        List<CustomEntityLink> links = customEntityLinkService.listByEntityId(tenantId, entityId);
+        List<CustomCheckRule> checkRules = customCheckRuleService.listByEntityId(tenantId, entityId);
 
         Map<Long, List<XPickOption>> pickOptionsMap = new HashMap<>();
-        for (CustomItemEntity item : items) {
+        for (CustomItem item : items) {
             if (item.getItemType() != null && isPicklistType(item.getItemType())) {
-                List<CustomPickOptionEntity> options = customPickOptionService.listByItemId(tenantId, item.getId());
+                List<CustomPickOption> options = customPickOptionService.listByItemId(tenantId, item.getId());
                 if (!options.isEmpty()) {
                     pickOptionsMap.put(item.getId(), MetaRepoConverter.toXPickOptionList(options));
                 }

@@ -11,10 +11,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_item")
-public class CustomItemEntity extends BaseEntity {
+public class CustomItem extends BaseEntity {
 
     private Long entityId;
     private String name;
+    private String nameKey;
     private String apiKey;
     private String label;
     private String labelKey;
@@ -24,6 +25,7 @@ public class CustomItemEntity extends BaseEntity {
     private String helpText;
     private String helpTextKey;
     private String description;
+    private String descriptionKey;
     private Integer customItemseq;
     private String defaultValue;
     private Integer requireFlg;

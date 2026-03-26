@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS p_meta_model (
     enable_module_control   SMALLINT        DEFAULT 0,
     db_table                VARCHAR(50),
     description             VARCHAR(500),
+    description_key         VARCHAR(255),
     delete_flg              SMALLINT        DEFAULT 0,
     xobject_dependency      SMALLINT        DEFAULT 0,
     visible                 SMALLINT        DEFAULT 0,
@@ -33,7 +34,7 @@ CREATE TABLE IF NOT EXISTS p_meta_model (
     updated_at              BIGINT,
     PRIMARY KEY (id)
 );
-CREATE INDEX idx_meta_model_tenant ON p_meta_model(tenant_id, api_key);
+CREATE UNIQUE INDEX uk_meta_model_apikey ON p_meta_model(tenant_id, api_key);
 
 -- 2. p_meta_item（元模型字段项定义）
 CREATE TABLE IF NOT EXISTS p_meta_item (
@@ -55,6 +56,7 @@ CREATE TABLE IF NOT EXISTS p_meta_item (
     enable_log              SMALLINT        DEFAULT 0,
     db_column               VARCHAR(255),
     description             VARCHAR(500),
+    description_key         VARCHAR(255),
     min_length              INTEGER,
     max_length              INTEGER,
     text_format             SMALLINT,
@@ -75,7 +77,7 @@ CREATE TABLE IF NOT EXISTS p_meta_metamodel_data (
     namespace               VARCHAR(100),
     tenant_id               BIGINT          NOT NULL,
     metamodel_id            BIGINT          NOT NULL,
-    parent_object_id        BIGINT,
+    parent_entity_id        BIGINT,
     api_key                 VARCHAR(255),
     label                   VARCHAR(255),
     label_key               VARCHAR(255),
@@ -117,13 +119,13 @@ CREATE TABLE IF NOT EXISTS p_meta_metamodel_data (
     PRIMARY KEY (id)
 );
 CREATE INDEX idx_mmd_tenant_mm ON p_meta_metamodel_data(tenant_id, metamodel_id);
-CREATE INDEX idx_mmd_apikey ON p_meta_metamodel_data(tenant_id, metamodel_id, api_key);
-CREATE INDEX idx_mmd_parent ON p_meta_metamodel_data(tenant_id, parent_object_id);
+CREATE UNIQUE INDEX uk_mmd_apikey ON p_meta_metamodel_data(tenant_id, metamodel_id, api_key);
+CREATE INDEX idx_mmd_parent ON p_meta_metamodel_data(tenant_id, parent_entity_id);
 
 -- 4. p_meta_tenant_metadata（租户级元数据，结构同 p_meta_metamodel_data）
 CREATE TABLE IF NOT EXISTS p_meta_tenant_metadata (
     id BIGINT NOT NULL, namespace VARCHAR(100), tenant_id BIGINT NOT NULL,
-    metamodel_id BIGINT NOT NULL, parent_object_id BIGINT,
+    metamodel_id BIGINT NOT NULL, parent_entity_id BIGINT,
     api_key VARCHAR(255), label VARCHAR(255), label_key VARCHAR(255),
     custom_flg SMALLINT, metadata_order SMALLINT, owner_id BIGINT,
     description VARCHAR(500), delete_flg SMALLINT,
@@ -160,14 +162,16 @@ CREATE TABLE IF NOT EXISTS p_meta_tenant_metadata (
     PRIMARY KEY (id)
 );
 CREATE INDEX idx_tmd_tenant_mm ON p_meta_tenant_metadata(tenant_id, metamodel_id);
-CREATE INDEX idx_tmd_apikey ON p_meta_tenant_metadata(tenant_id, metamodel_id, api_key);
+CREATE UNIQUE INDEX uk_tmd_apikey ON p_meta_tenant_metadata(tenant_id, metamodel_id, api_key);
 
 -- 5. p_custom_entity（自定义对象定义）
 CREATE TABLE IF NOT EXISTS p_custom_entity (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL, name_space VARCHAR(100),
-    object_id BIGINT, name VARCHAR(255), api_key VARCHAR(255),
+    entity_id BIGINT, name VARCHAR(255), name_key VARCHAR(255),
+    api_key VARCHAR(255),
     label VARCHAR(255), label_key VARCHAR(255), object_type SMALLINT,
-    svg_id BIGINT, svg_color VARCHAR(20), description VARCHAR(500),
+    svg_id BIGINT, svg_color VARCHAR(20),
+    description VARCHAR(500), description_key VARCHAR(255),
     custom_entityseq INTEGER, delete_flg SMALLINT, enable_flg SMALLINT,
     custom_flg SMALLINT, business_category SMALLINT, type_property VARCHAR(500),
     db_table VARCHAR(50), detail_flg SMALLINT, enable_team SMALLINT,
@@ -185,10 +189,12 @@ CREATE INDEX idx_entity_tenant ON p_custom_entity(tenant_id);
 -- 6. p_custom_item（自定义字段定义）
 CREATE TABLE IF NOT EXISTS p_custom_item (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL, entity_id BIGINT NOT NULL,
-    name VARCHAR(255) NOT NULL, api_key VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL, name_key VARCHAR(255),
+    api_key VARCHAR(255) NOT NULL,
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     item_type SMALLINT, data_type SMALLINT, type_property VARCHAR(4000),
-    help_text VARCHAR(500), help_text_key VARCHAR(255), description VARCHAR(500),
+    help_text VARCHAR(500), help_text_key VARCHAR(255),
+    description VARCHAR(500), description_key VARCHAR(255),
     custom_itemseq INTEGER, default_value VARCHAR(4000),
     require_flg SMALLINT NOT NULL, delete_flg SMALLINT NOT NULL,
     custom_flg SMALLINT NOT NULL, enable_flg SMALLINT NOT NULL,
@@ -208,18 +214,21 @@ CREATE INDEX idx_item_refer ON p_custom_item(tenant_id, refer_entity_id);
 -- 7. p_custom_entity_link（对象关联关系）
 CREATE TABLE IF NOT EXISTS p_custom_entity_link (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
-    name VARCHAR(255) NOT NULL, api_key VARCHAR(255),
+    name VARCHAR(255) NOT NULL, name_key VARCHAR(255),
+    api_key VARCHAR(255),
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255) DEFAULT '',
     type_property VARCHAR(500), link_type SMALLINT NOT NULL DEFAULT 0,
     parent_entity_id BIGINT NOT NULL, child_entity_id BIGINT NOT NULL,
     detail_link SMALLINT, cascade_delete SMALLINT NOT NULL,
     access_control SMALLINT NOT NULL, enable_flg SMALLINT NOT NULL,
-    description VARCHAR(500), delete_flg SMALLINT,
+    description VARCHAR(500), description_key VARCHAR(255),
+    delete_flg SMALLINT,
     created_at BIGINT, created_by BIGINT, updated_at BIGINT, updated_by BIGINT,
     PRIMARY KEY (id)
 );
 CREATE INDEX idx_link_parent ON p_custom_entity_link(tenant_id, parent_entity_id);
 CREATE INDEX idx_link_child ON p_custom_entity_link(tenant_id, child_entity_id);
+CREATE UNIQUE INDEX uk_link_apikey ON p_custom_entity_link(tenant_id, api_key);
 
 -- 8. p_custom_pickoption（字段选项值）
 CREATE TABLE IF NOT EXISTS p_custom_pickoption (
@@ -229,19 +238,21 @@ CREATE TABLE IF NOT EXISTS p_custom_pickoption (
     option_label_key VARCHAR(255), option_order SMALLINT,
     default_flg SMALLINT, global_flg SMALLINT, custom_flg SMALLINT,
     delete_flg SMALLINT NOT NULL DEFAULT 0, enable_flg SMALLINT,
-    description VARCHAR(500),
+    description VARCHAR(500), description_key VARCHAR(255),
     created_at BIGINT, created_by BIGINT, updated_at BIGINT, updated_by BIGINT,
     PRIMARY KEY (id)
 );
 CREATE INDEX idx_pick_item ON p_custom_pickoption(tenant_id, item_id);
+CREATE UNIQUE INDEX uk_pick_apikey ON p_custom_pickoption(tenant_id, item_id, api_key);
 
 -- 9. p_custom_check_rule（校验规则）
 CREATE TABLE IF NOT EXISTS p_custom_check_rule (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
-    object_id BIGINT NOT NULL DEFAULT 0,
-    name VARCHAR(255) NOT NULL, api_key VARCHAR(255) NOT NULL,
+    entity_id BIGINT NOT NULL DEFAULT 0,
+    name VARCHAR(255) NOT NULL, name_key VARCHAR(255),
+    api_key VARCHAR(255) NOT NULL,
     rule_label VARCHAR(100), rule_label_key VARCHAR(100),
-    active_flg SMALLINT, description VARCHAR(500),
+    active_flg SMALLINT, description VARCHAR(500), description_key VARCHAR(255),
     check_formula VARCHAR(5000), check_error_msg VARCHAR(5000),
     check_error_msg_key VARCHAR(200), check_error_location SMALLINT,
     check_error_item_id BIGINT, check_all_items_flg SMALLINT DEFAULT 0,
@@ -250,7 +261,8 @@ CREATE TABLE IF NOT EXISTS p_custom_check_rule (
     updated_by BIGINT NOT NULL, updated_at BIGINT NOT NULL,
     PRIMARY KEY (id)
 );
-CREATE INDEX idx_rule_object ON p_custom_check_rule(tenant_id, object_id);
+CREATE INDEX idx_rule_object ON p_custom_check_rule(tenant_id, entity_id);
+CREATE UNIQUE INDEX uk_rule_apikey ON p_custom_check_rule(tenant_id, entity_id, api_key);
 
 -- 10. p_meta_option（元模型选项值定义）
 CREATE TABLE IF NOT EXISTS p_meta_option (
@@ -259,7 +271,8 @@ CREATE TABLE IF NOT EXISTS p_meta_option (
     option_code INTEGER NOT NULL, option_key VARCHAR(100) NOT NULL,
     option_label VARCHAR(255) NOT NULL, option_label_key VARCHAR(255),
     option_order SMALLINT DEFAULT 0, default_flg SMALLINT DEFAULT 0,
-    enable_flg SMALLINT DEFAULT 1, description VARCHAR(500),
+    enable_flg SMALLINT DEFAULT 1,
+    description VARCHAR(500), description_key VARCHAR(255),
     delete_flg SMALLINT DEFAULT 0,
     created_by BIGINT, created_at BIGINT, updated_by BIGINT, updated_at BIGINT,
     PRIMARY KEY (id)
@@ -271,11 +284,13 @@ CREATE INDEX idx_option_item ON p_meta_option(tenant_id, metamodel_id, item_id);
 CREATE TABLE IF NOT EXISTS p_meta_link (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
     api_key VARCHAR(255) NOT NULL, label VARCHAR(255) NOT NULL,
-    label_key VARCHAR(255), link_type SMALLINT NOT NULL DEFAULT 2,
+    label_key VARCHAR(255), name VARCHAR(255), name_key VARCHAR(255),
+    link_type SMALLINT NOT NULL DEFAULT 2,
     refer_item_id BIGINT NOT NULL,
     child_metamodel_id BIGINT NOT NULL DEFAULT 0,
     parent_metamodel_id BIGINT NOT NULL DEFAULT 0,
-    cascade_delete SMALLINT DEFAULT 2, description VARCHAR(500),
+    cascade_delete SMALLINT DEFAULT 2,
+    description VARCHAR(500), description_key VARCHAR(255),
     delete_flg SMALLINT DEFAULT 0,
     created_by BIGINT, created_at BIGINT, updated_by BIGINT, updated_at BIGINT,
     PRIMARY KEY (id)
@@ -285,21 +300,21 @@ CREATE TABLE IF NOT EXISTS p_meta_link (
 CREATE TABLE IF NOT EXISTS p_meta_log (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
     metadata_id BIGINT NOT NULL, trace_id VARCHAR(255) NOT NULL,
-    object_id BIGINT, metamodel_id BIGINT NOT NULL,
+    entity_id BIGINT, metamodel_id BIGINT NOT NULL,
     old_value TEXT, new_value TEXT, op_type SMALLINT,
     from_type SMALLINT, parent_metamodel_id BIGINT, parent_metadata_id BIGINT,
     sync SMALLINT, created_by BIGINT, created_at BIGINT,
     entrust_tenant_id BIGINT, origin_tenant_id BIGINT,
     PRIMARY KEY (id)
 );
-CREATE INDEX idx_log_tenant_obj ON p_meta_log(tenant_id, object_id);
+CREATE INDEX idx_log_tenant_obj ON p_meta_log(tenant_id, entity_id);
 CREATE INDEX idx_log_metadata ON p_meta_log(tenant_id, metadata_id);
 CREATE INDEX idx_log_created ON p_meta_log(tenant_id, created_at);
 
 -- 13. p_meta_i18n_resource（多语言资源）
 CREATE TABLE IF NOT EXISTS p_meta_i18n_resource (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
-    metamodel_id BIGINT, metadata_id BIGINT, object_id BIGINT,
+    metamodel_id BIGINT, metadata_id BIGINT, entity_id BIGINT,
     resource_key VARCHAR(256) NOT NULL, lang_code VARCHAR(8) NOT NULL,
     resource_value TEXT, description VARCHAR(256),
     delete_flg SMALLINT DEFAULT 0,
@@ -334,9 +349,11 @@ CREATE INDEX idx_mpu_process ON p_meta_migration_process_unit(process_id);
 -- 15. x_global_pickitem（全局选项集）
 CREATE TABLE IF NOT EXISTS x_global_pickitem (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
-    name VARCHAR(100) NOT NULL, api_key VARCHAR(100),
+    name VARCHAR(100) NOT NULL, name_key VARCHAR(100),
+    api_key VARCHAR(100),
     label VARCHAR(100), label_key VARCHAR(100),
-    custom_flg SMALLINT NOT NULL, description VARCHAR(500),
+    custom_flg SMALLINT NOT NULL,
+    description VARCHAR(500), description_key VARCHAR(255),
     created_by BIGINT NOT NULL, created_at BIGINT NOT NULL,
     updated_by BIGINT NOT NULL, updated_at BIGINT NOT NULL,
     PRIMARY KEY (id)

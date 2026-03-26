@@ -30,7 +30,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
             return Result.fail(409, "apiKey 已存在: " + request.getApiKey());
         }
 
-        CustomEntityEntity entity = new CustomEntityEntity();
+        CustomEntity entity = new CustomEntity();
         entity.setTenantId(request.getTenantId());
         entity.setNameSpace(request.getNameSpace());
         entity.setName(request.getName());
@@ -63,7 +63,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
     @Override
     public Result<XEntity> updateEntity(Long entityId, CreateEntityRequest request) {
-        CustomEntityEntity entity = customEntityService.getByIdAndTenant(entityId, request.getTenantId());
+        CustomEntity entity = customEntityService.getByIdAndTenant(entityId, request.getTenantId());
         if (entity == null) {
             return Result.fail(404, "对象不存在: " + entityId);
         }
@@ -102,7 +102,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
             return Result.fail(409, "apiKey 已存在: " + request.getApiKey());
         }
 
-        CustomItemEntity item = new CustomItemEntity();
+        CustomItem item = new CustomItem();
         item.setTenantId(request.getTenantId());
         item.setEntityId(request.getEntityId());
         item.setName(request.getName());
@@ -147,7 +147,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
     @Override
     public Result<XLink> createEntityLink(CreateLinkRequest request) {
-        CustomEntityLinkEntity link = new CustomEntityLinkEntity();
+        CustomEntityLink link = new CustomEntityLink();
         link.setTenantId(request.getTenantId());
         link.setName(request.getName());
         link.setApiKey(request.getApiKey());

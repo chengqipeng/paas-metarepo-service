@@ -1,21 +1,22 @@
 package com.hongyang.platform.metarepo.service.entity;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseEntity;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
 
 /**
- * 自定义对象定义（p_custom_entity）
+ * Common 级自定义对象（p_custom_entity_common，无 tenant_id）
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-@TableName("p_custom_entity")
-public class CustomEntityEntity extends BaseEntity {
+@TableName("p_custom_entity_common")
+public class CustomEntityCommon implements Serializable {
 
+    @TableId(type = IdType.ASSIGN_ID)
+    private Long id;
     private String nameSpace;
-    private Long objectId;
+    private Long entityId;
     private String name;
+    private String nameKey;
     private String apiKey;
     private String label;
     private String labelKey;
@@ -23,7 +24,10 @@ public class CustomEntityEntity extends BaseEntity {
     private Long svgId;
     private String svgColor;
     private String description;
+    private String descriptionKey;
     private Integer customEntityseq;
+    @TableLogic(value = "0", delval = "1")
+    private Integer deleteFlg;
     private Integer enableFlg;
     private Integer customFlg;
     private Integer businessCategory;
@@ -45,4 +49,12 @@ public class CustomEntityEntity extends BaseEntity {
     private Long enableFlow;
     private Long enablePackage;
     private String extendProperty;
+    @TableField(fill = FieldFill.INSERT)
+    private Long createdAt;
+    @TableField(fill = FieldFill.INSERT)
+    private Long createdBy;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Long updatedAt;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Long updatedBy;
 }

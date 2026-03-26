@@ -54,7 +54,7 @@ public class MetaRepoReadApiService implements MetaRepoReadApi {
 
     @Override
     public List<XCheckRule> listCheckRules(Long tenantId, Long entityId) {
-        return MetaRepoConverter.toXCheckRuleList(customCheckRuleService.listByObjectId(tenantId, entityId));
+        return MetaRepoConverter.toXCheckRuleList(customCheckRuleService.listByEntityId(tenantId, entityId));
     }
 
     @Override

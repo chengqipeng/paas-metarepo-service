@@ -4,10 +4,10 @@ import com.alibaba.fastjson2.JSON;
 import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
 import com.hongyang.framework.base.exception.BaseKnownException;
 import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityLinkEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomItemEntity;
-import com.hongyang.platform.metarepo.service.entity.MetaMetamodelDataEntity;
+import com.hongyang.platform.metarepo.service.entity.CustomEntity;
+import com.hongyang.platform.metarepo.service.entity.CustomEntityLink;
+import com.hongyang.platform.metarepo.service.entity.CustomItem;
+import com.hongyang.platform.metarepo.service.entity.MetaMetamodelData;
 import com.hongyang.platform.metarepo.service.service.ICustomEntityLinkService;
 import com.hongyang.platform.metarepo.service.service.ICustomEntityService;
 import com.hongyang.platform.metarepo.service.service.ICustomItemService;
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class CustomEntityServiceImpl
-        extends SimpleBaseServiceImpl<CustomEntityEntity>
+        extends SimpleBaseServiceImpl<CustomEntity>
         implements ICustomEntityService {
 
     private final ICustomItemService customItemService;
@@ -41,32 +41,32 @@ public class CustomEntityServiceImpl
     }
 
     @Override
-    public CustomEntityEntity getByApiKey(Long tenantId, String apiKey) {
+    public CustomEntity getByApiKey(Long tenantId, String apiKey) {
         return lambdaQuery()
-                .eq(CustomEntityEntity::getTenantId, tenantId)
-                .eq(CustomEntityEntity::getApiKey, apiKey)
+                .eq(CustomEntity::getTenantId, tenantId)
+                .eq(CustomEntity::getApiKey, apiKey)
                 .one();
     }
 
     @Override
-    public List<CustomEntityEntity> listByTenant(Long tenantId) {
+    public List<CustomEntity> listByTenant(Long tenantId) {
         return lambdaQuery()
-                .eq(CustomEntityEntity::getTenantId, tenantId)
-                .eq(CustomEntityEntity::getEnableFlg, 1)
+                .eq(CustomEntity::getTenantId, tenantId)
+                .eq(CustomEntity::getEnableFlg, 1)
                 .list();
     }
 
     @Override
     public boolean existsApiKey(Long tenantId, String apiKey) {
         return lambdaQuery()
-                .eq(CustomEntityEntity::getTenantId, tenantId)
-                .eq(CustomEntityEntity::getApiKey, apiKey)
+                .eq(CustomEntity::getTenantId, tenantId)
+                .eq(CustomEntity::getApiKey, apiKey)
                 .exists();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public CustomEntityEntity createEntity(CustomEntityEntity entity) {
+    public CustomEntity createEntity(CustomEntity entity) {
         if (existsApiKey(entity.getTenantId(), entity.getApiKey())) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, entity.getApiKey());
         }
@@ -83,8 +83,8 @@ public class CustomEntityServiceImpl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public CustomEntityEntity updateEntity(Long entityId, Long tenantId, CustomEntityEntity updates) {
-        CustomEntityEntity entity = getByIdAndTenant(entityId, tenantId);
+    public CustomEntity updateEntity(Long entityId, Long tenantId, CustomEntity updates) {
+        CustomEntity entity = getByIdAndTenant(entityId, tenantId);
         if (entity == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, String.valueOf(entityId));
         }
@@ -102,6 +102,9 @@ public class CustomEntityServiceImpl
 
         updateById(entity);
 
+        // 同步更新大宽表
+        metamodelDataHelper.syncEntityUpdateToMetamodelData(entity);
+
         metaLogService.log(tenantId, entityId, entityId, null,
                 oldValue, JSON.toJSONString(entity), 2);
         return entity;
@@ -110,7 +113,7 @@ public class CustomEntityServiceImpl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteEntityCascade(Long tenantId, Long entityId) {
-        CustomEntityEntity entity = getByIdAndTenant(entityId, tenantId);
+        CustomEntity entity = getByIdAndTenant(entityId, tenantId);
         if (entity == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, String.valueOf(entityId));
         }
@@ -122,19 +125,22 @@ public class CustomEntityServiceImpl
         String oldValue = JSON.toJSONString(entity);
 
         // 级联软删除字段
-        List<CustomItemEntity> items = customItemService.listByEntityId(tenantId, entityId);
-        for (CustomItemEntity item : items) {
+        List<CustomItem> items = customItemService.listByEntityId(tenantId, entityId);
+        for (CustomItem item : items) {
             customItemService.softDelete(item.getId(), tenantId);
         }
 
         // 级联软删除关联关系
-        List<CustomEntityLinkEntity> links = customEntityLinkService.listByEntityId(tenantId, entityId);
-        for (CustomEntityLinkEntity link : links) {
+        List<CustomEntityLink> links = customEntityLinkService.listByEntityId(tenantId, entityId);
+        for (CustomEntityLink link : links) {
             customEntityLinkService.softDelete(link.getId(), tenantId);
         }
 
         // 软删除对象本身
         removeById(entityId);
+
+        // 同步软删除大宽表记录
+        metamodelDataHelper.syncEntityDeleteToMetamodelData(entity);
 
         metaLogService.log(tenantId, entityId, entityId, null, oldValue, null, 3);
     }

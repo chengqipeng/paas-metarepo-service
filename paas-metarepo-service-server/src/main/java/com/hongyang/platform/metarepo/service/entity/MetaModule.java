@@ -6,20 +6,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 元模型关联关系（p_meta_link）
+ * 模块定义（p_meta_module）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_meta_link")
-public class MetaLinkEntity extends BaseEntity {
+@TableName("p_meta_module")
+public class MetaModule extends BaseEntity {
 
+    private String name;
     private String apiKey;
     private String label;
-    private String labelKey;
-    private Integer linkType;
-    private Long referItemId;
-    private Long childMetamodelId;
-    private Long parentMetamodelId;
-    private Integer cascadeDelete;
+    private String version;
+    private Integer status;
     private String description;
 }

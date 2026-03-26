@@ -14,11 +14,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @DynamicTableNameEntity
 @TableName("p_meta_metamodel_data")
-public class MetaMetamodelDataEntity extends BaseEntity {
+public class MetaMetamodelData extends BaseEntity {
 
     private String namespace;
     private Long metamodelId;
-    private Long parentObjectId;
+    private Long parentEntityId;
     private String apiKey;
     private String label;
     private String labelKey;

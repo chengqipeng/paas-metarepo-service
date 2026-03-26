@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("x_global_pickitem")
-public class GlobalPickItemEntity implements Serializable {
+public class GlobalPickItem implements Serializable {
 
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;

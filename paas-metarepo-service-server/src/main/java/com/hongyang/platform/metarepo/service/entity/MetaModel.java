@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_model")
-public class MetaModelEntity extends BaseEntity {
+public class MetaModel extends BaseEntity {
 
     private String apiKey;
     private String label;
@@ -28,6 +28,7 @@ public class MetaModelEntity extends BaseEntity {
     private Integer enableModuleControl;
     private String dbTable;
     private String description;
+    private String descriptionKey;
     private Integer xobjectDependency;
     private Integer visible;
 }

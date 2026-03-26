@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 /**
  * 自定义字段元模型
- * 字段与 p_custom_item 表完全对齐
  */
 @Data
 public class XItem implements Serializable {
@@ -13,6 +12,7 @@ public class XItem implements Serializable {
     private Long tenantId;
     private Long entityId;
     private String name;
+    private String nameKey;
     private String apiKey;
     private String label;
     private String labelKey;
@@ -22,6 +22,7 @@ public class XItem implements Serializable {
     private String helpText;
     private String helpTextKey;
     private String description;
+    private String descriptionKey;
     private Integer customItemseq;
     private String defaultValue;
     private Integer requireFlg;

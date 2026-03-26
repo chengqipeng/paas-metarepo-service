@@ -13,14 +13,14 @@ import java.io.Serializable;
  */
 @Data
 @TableName("p_meta_log")
-public class MetaLogEntity implements Serializable {
+public class MetaLog implements Serializable {
 
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     private Long tenantId;
     private Long metadataId;
     private String traceId;
-    private Long objectId;
+    private Long entityId;
     private Long metamodelId;
     private String oldValue;
     private String newValue;

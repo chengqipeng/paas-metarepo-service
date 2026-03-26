@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 沙箱元数据项（p_sandbox_meta_item）
+ * 模块包含的元数据清单（p_meta_module_metadata）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_sandbox_meta_item")
-public class SandboxMetaItemEntity extends BaseEntity {
+@TableName("p_meta_module_metadata")
+public class MetaModuleMetadata extends BaseEntity {
 
+    private Long moduleId;
+    private Long metadataId;
     private Long metamodelId;
-    private String metaItemApiKey;
-    private String dataType;
-    private String setMethod;
-    private String getMethod;
+    private String apiKey;
 }

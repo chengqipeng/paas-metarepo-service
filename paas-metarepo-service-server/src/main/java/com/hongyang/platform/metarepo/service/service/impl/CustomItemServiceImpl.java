@@ -4,10 +4,12 @@ import com.alibaba.fastjson2.JSON;
 import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
 import com.hongyang.framework.base.exception.BaseKnownException;
 import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityLinkEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomItemEntity;
+import com.hongyang.platform.metarepo.service.entity.CustomEntityLink;
+import com.hongyang.platform.metarepo.service.entity.CustomItem;
+import com.hongyang.platform.metarepo.service.entity.CustomPickOption;
 import com.hongyang.platform.metarepo.service.service.ICustomEntityLinkService;
 import com.hongyang.platform.metarepo.service.service.ICustomItemService;
+import com.hongyang.platform.metarepo.service.service.ICustomPickOptionService;
 import com.hongyang.platform.metarepo.service.service.IMetaLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -20,50 +22,55 @@ import java.util.List;
 @Slf4j
 @Service
 public class CustomItemServiceImpl
-        extends SimpleBaseServiceImpl<CustomItemEntity>
+        extends SimpleBaseServiceImpl<CustomItem>
         implements ICustomItemService {
 
     private static final int ITEM_TYPE_LOOKUP = 19;
+    private static final int ITEM_TYPE_PICKLIST = 6;
+    private static final int ITEM_TYPE_MULTI_PICKLIST = 7;
 
     private final ICustomEntityLinkService customEntityLinkService;
+    private final ICustomPickOptionService customPickOptionService;
     private final IMetaLogService metaLogService;
 
     public CustomItemServiceImpl(@Lazy ICustomEntityLinkService customEntityLinkService,
+                                  @Lazy ICustomPickOptionService customPickOptionService,
                                   IMetaLogService metaLogService) {
         this.customEntityLinkService = customEntityLinkService;
+        this.customPickOptionService = customPickOptionService;
         this.metaLogService = metaLogService;
     }
 
     @Override
-    public List<CustomItemEntity> listByEntityId(Long tenantId, Long entityId) {
+    public List<CustomItem> listByEntityId(Long tenantId, Long entityId) {
         return lambdaQuery()
-                .eq(CustomItemEntity::getTenantId, tenantId)
-                .eq(CustomItemEntity::getEntityId, entityId)
-                .orderByAsc(CustomItemEntity::getItemOrder)
+                .eq(CustomItem::getTenantId, tenantId)
+                .eq(CustomItem::getEntityId, entityId)
+                .orderByAsc(CustomItem::getItemOrder)
                 .list();
     }
 
     @Override
-    public CustomItemEntity getByApiKey(Long tenantId, Long entityId, String apiKey) {
+    public CustomItem getByApiKey(Long tenantId, Long entityId, String apiKey) {
         return lambdaQuery()
-                .eq(CustomItemEntity::getTenantId, tenantId)
-                .eq(CustomItemEntity::getEntityId, entityId)
-                .eq(CustomItemEntity::getApiKey, apiKey)
+                .eq(CustomItem::getTenantId, tenantId)
+                .eq(CustomItem::getEntityId, entityId)
+                .eq(CustomItem::getApiKey, apiKey)
                 .one();
     }
 
     @Override
     public boolean existsApiKey(Long tenantId, Long entityId, String apiKey) {
         return lambdaQuery()
-                .eq(CustomItemEntity::getTenantId, tenantId)
-                .eq(CustomItemEntity::getEntityId, entityId)
-                .eq(CustomItemEntity::getApiKey, apiKey)
+                .eq(CustomItem::getTenantId, tenantId)
+                .eq(CustomItem::getEntityId, entityId)
+                .eq(CustomItem::getApiKey, apiKey)
                 .exists();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public CustomItemEntity createItem(CustomItemEntity item) {
+    public CustomItem createItem(CustomItem item) {
         if (existsApiKey(item.getTenantId(), item.getEntityId(), item.getApiKey())) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, item.getApiKey());
         }
@@ -77,7 +84,7 @@ public class CustomItemServiceImpl
         // LOOKUP 类型自动创建 entity_link
         if (item.getItemType() != null && item.getItemType() == ITEM_TYPE_LOOKUP
                 && item.getReferEntityId() != null) {
-            CustomEntityLinkEntity link = new CustomEntityLinkEntity();
+            CustomEntityLink link = new CustomEntityLink();
             link.setTenantId(item.getTenantId());
             link.setName(item.getName() + "_link");
             link.setApiKey(item.getApiKey() + "_link");
@@ -94,6 +101,12 @@ public class CustomItemServiceImpl
             updateById(item);
         }
 
+        // PICKLIST/MULTI_PICKLIST 类型：从 typeProperty JSON 中解析默认选项值并创建
+        if (item.getItemType() != null && isPicklistType(item.getItemType())
+                && item.getTypeProperty() != null) {
+            createDefaultPickOptions(item);
+        }
+
         metaLogService.log(item.getTenantId(), item.getId(), item.getEntityId(), null,
                 null, JSON.toJSONString(item), 1);
         return item;
@@ -101,8 +114,8 @@ public class CustomItemServiceImpl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public CustomItemEntity updateItem(Long itemId, Long tenantId, CustomItemEntity updates) {
-        CustomItemEntity item = getByIdAndTenant(itemId, tenantId);
+    public CustomItem updateItem(Long itemId, Long tenantId, CustomItem updates) {
+        CustomItem item = getByIdAndTenant(itemId, tenantId);
         if (item == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, String.valueOf(itemId));
         }
@@ -127,7 +140,7 @@ public class CustomItemServiceImpl
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteItemWithCheck(Long tenantId, Long itemId) {
-        CustomItemEntity item = getByIdAndTenant(itemId, tenantId);
+        CustomItem item = getByIdAndTenant(itemId, tenantId);
         if (item == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, String.valueOf(itemId));
         }
@@ -144,5 +157,43 @@ public class CustomItemServiceImpl
         removeById(itemId);
 
         metaLogService.log(tenantId, itemId, item.getEntityId(), null, oldValue, null, 3);
+    }
+
+    private boolean isPicklistType(Integer itemType) {
+        return itemType == ITEM_TYPE_PICKLIST || itemType == ITEM_TYPE_MULTI_PICKLIST;
+    }
+
+    /**
+     * 从 typeProperty JSON 解析选项值并批量创建
+     * typeProperty 格式示例：{"options":[{"label":"选项1","code":1},{"label":"选项2","code":2}]}
+     */
+    private void createDefaultPickOptions(CustomItem item) {
+        try {
+            com.alibaba.fastjson2.JSONObject tp = com.alibaba.fastjson2.JSON.parseObject(item.getTypeProperty());
+            if (tp == null || !tp.containsKey("options")) return;
+            com.alibaba.fastjson2.JSONArray optionsArr = tp.getJSONArray("options");
+            if (optionsArr == null || optionsArr.isEmpty()) return;
+
+            List<CustomPickOption> options = new java.util.ArrayList<>();
+            for (int i = 0; i < optionsArr.size(); i++) {
+                com.alibaba.fastjson2.JSONObject opt = optionsArr.getJSONObject(i);
+                CustomPickOption po = new CustomPickOption();
+                po.setTenantId(item.getTenantId());
+                po.setEntityId(item.getEntityId());
+                po.setItemId(item.getId());
+                po.setOptionLabel(opt.getString("label"));
+                po.setOptionCode(opt.getIntValue("code", i + 1));
+                po.setOptionOrder(i);
+                po.setDefaultFlg(opt.getIntValue("defaultFlg", 0));
+                po.setCustomFlg(item.getCustomFlg());
+                po.setEnableFlg(1);
+                options.add(po);
+            }
+            if (!options.isEmpty()) {
+                customPickOptionService.saveBatch(options);
+            }
+        } catch (Exception e) {
+            log.warn("解析 typeProperty 创建选项值失败, itemId={}: {}", item.getId(), e.getMessage());
+        }
     }
 }

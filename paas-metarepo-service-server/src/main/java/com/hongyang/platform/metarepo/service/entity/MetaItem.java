@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_item")
-public class MetaItemEntity extends BaseEntity {
+public class MetaItem extends BaseEntity {
 
     private Long metamodelId;
     private String apiKey;
@@ -29,6 +29,7 @@ public class MetaItemEntity extends BaseEntity {
     private Integer enableLog;
     private String dbColumn;
     private String description;
+    private String descriptionKey;
     private Integer minLength;
     private Integer maxLength;
     private Integer textFormat;

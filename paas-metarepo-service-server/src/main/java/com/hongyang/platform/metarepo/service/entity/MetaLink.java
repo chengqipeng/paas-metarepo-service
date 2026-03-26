@@ -6,24 +6,23 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 对象关联关系（p_custom_entity_link）
+ * 元模型关联关系（p_meta_link）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_custom_entity_link")
-public class CustomEntityLinkEntity extends BaseEntity {
+@TableName("p_meta_link")
+public class MetaLink extends BaseEntity {
 
-    private String name;
     private String apiKey;
     private String label;
     private String labelKey;
-    private String typeProperty;
+    private String name;
+    private String nameKey;
     private Integer linkType;
-    private Long parentEntityId;
-    private Long childEntityId;
-    private Integer detailLink;
+    private Long referItemId;
+    private Long childMetamodelId;
+    private Long parentMetamodelId;
     private Integer cascadeDelete;
-    private Integer accessControl;
-    private Integer enableFlg;
     private String description;
+    private String descriptionKey;
 }

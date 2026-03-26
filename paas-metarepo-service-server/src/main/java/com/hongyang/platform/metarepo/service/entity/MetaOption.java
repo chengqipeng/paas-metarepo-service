@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_option")
-public class MetaOptionEntity extends BaseEntity {
+public class MetaOption extends BaseEntity {
 
     private Long metamodelId;
     private Long itemId;
@@ -23,4 +23,5 @@ public class MetaOptionEntity extends BaseEntity {
     private Integer defaultFlg;
     private Integer enableFlg;
     private String description;
+    private String descriptionKey;
 }

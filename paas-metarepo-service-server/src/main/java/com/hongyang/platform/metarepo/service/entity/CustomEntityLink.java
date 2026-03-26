@@ -1,30 +1,31 @@
-package com.hongyang.platform.metarepo.core.model.metamodel;
+package com.hongyang.platform.metarepo.service.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
- * 关联关系元模型
+ * 对象关联关系（p_custom_entity_link）
  */
 @Data
-public class XLink implements Serializable {
-    private Long id;
-    private Long tenantId;
+@EqualsAndHashCode(callSuper = true)
+@TableName("p_custom_entity_link")
+public class CustomEntityLink extends BaseEntity {
+
     private String name;
     private String nameKey;
     private String apiKey;
     private String label;
     private String labelKey;
+    private String typeProperty;
     private Integer linkType;
     private Long parentEntityId;
     private Long childEntityId;
+    private Integer detailLink;
     private Integer cascadeDelete;
     private Integer accessControl;
     private Integer enableFlg;
     private String description;
     private String descriptionKey;
-    private Long createdAt;
-    private Long createdBy;
-    private Long updatedAt;
-    private Long updatedBy;
 }

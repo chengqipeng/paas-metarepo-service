@@ -8,20 +8,23 @@ import lombok.EqualsAndHashCode;
 
 /**
  * 校验规则（p_custom_check_rule）
- * 注意：该表无 tenant_id/delete_flg 在 BaseEntity 中，但 DDL 中有 tenant_id
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_check_rule")
-public class CustomCheckRuleEntity extends BaseEntity {
+public class CustomCheckRule extends BaseEntity {
 
-    private Long objectId;
+    private Long entityId;
     private String name;
+    private String nameKey;
     private String apiKey;
-    private String ruleLabel;
-    private String ruleLabelKey;
+    @TableField("rule_label")
+    private String label;
+    @TableField("rule_label_key")
+    private String labelKey;
     private Integer activeFlg;
     private String description;
+    private String descriptionKey;
     private String checkFormula;
     private String checkErrorMsg;
     private String checkErrorMsgKey;

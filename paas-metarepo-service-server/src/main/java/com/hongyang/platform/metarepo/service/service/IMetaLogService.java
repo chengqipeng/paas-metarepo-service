@@ -1,16 +1,16 @@
 package com.hongyang.platform.metarepo.service.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hongyang.platform.metarepo.service.entity.MetaLogEntity;
+import com.hongyang.platform.metarepo.service.entity.MetaLog;
 import java.util.List;
 
-public interface IMetaLogService extends IService<MetaLogEntity> {
+public interface IMetaLogService extends IService<MetaLog> {
 
     /** 记录变更日志（含 old_value 快照） */
-    void log(Long tenantId, Long metadataId, Long objectId, Long metamodelId,
+    void log(Long tenantId, Long metadataId, Long entityId, Long metamodelId,
              String oldValue, String newValue, Integer opType);
 
-    List<MetaLogEntity> listByMetadataId(Long tenantId, Long metadataId);
+    List<MetaLog> listByMetadataId(Long tenantId, Long metadataId);
 
-    List<MetaLogEntity> listByTenant(Long tenantId);
+    List<MetaLog> listByTenant(Long tenantId);
 }
