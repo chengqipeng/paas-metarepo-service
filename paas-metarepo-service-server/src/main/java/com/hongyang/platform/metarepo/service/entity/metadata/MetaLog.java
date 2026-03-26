@@ -1,35 +1,28 @@
 package com.hongyang.platform.metarepo.service.entity.metadata;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
-import java.io.Serializable;
+import lombok.EqualsAndHashCode;
 
 /**
- * 元数据变更日志（p_meta_log）
- * 该表无 delete_flg，不继承 BaseEntity，独立定义
+ * 元数据变更日志（p_meta_log）。
+ * <p>
+ * 继承 BaseEntity 以复用 AutoMapperRegistrar 自动注册 Mapper，无需手动创建 Mapper。
+ * p_meta_log 在 TenantInterceptor.IGNORE_TABLES 中，不自动注入 tenant_id（运维接口需跨租户查询）。
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_log")
-public class MetaLog implements Serializable {
+public class MetaLog extends BaseEntity {
 
-    @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
     private Long tenantId;
-    private Long metadataId;
+    private String metadataApiKey;
+    private String metamodelApiKey;
     private String traceId;
-    private Long objectId;
-    private Long metamodelId;
     private String oldValue;
     private String newValue;
     private Integer opType;
     private Integer fromType;
-    private Long parentMetamodelId;
-    private Long parentMetadataId;
     private Integer sync;
-    private Long createdBy;
-    private Long createdAt;
-    private Long entrustTenantId;
-    private Long originTenantId;
 }

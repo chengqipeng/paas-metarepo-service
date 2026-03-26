@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.api.internal;
 
 import com.hongyang.platform.metarepo.service.entity.metadata.MetaLog;
-import com.hongyang.platform.metarepo.service.service.IMetaLogService;
+import com.hongyang.platform.metarepo.service.service.metadata.IMetaLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,18 +17,17 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/metarepo")
+@RequestMapping("/metarepo/internal")
 @RequiredArgsConstructor
 public class MetaLogApiService {
 
     private final IMetaLogService metaLogService;
 
-    /** 查询元数据变更日志 */
     @GetMapping("/meta-log/{tenantId}")
     public List<MetaLog> listMetaLogs(@PathVariable Long tenantId,
-                                      @RequestParam(required = false) Long metadataId) {
-        if (metadataId != null) {
-            return metaLogService.listByMetadataId(tenantId, metadataId);
+                                      @RequestParam(required = false) String metadataApiKey) {
+        if (metadataApiKey != null) {
+            return metaLogService.listByMetadataApiKey(tenantId, metadataApiKey);
         }
         return metaLogService.listByTenant(tenantId);
     }
