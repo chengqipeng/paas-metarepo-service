@@ -1,6 +1,6 @@
 package com.hongyang.platform.metarepo.service.service.metamodel;
 
-import com.hongyang.framework.dao.service.IBaseService;
+import com.hongyang.framework.dao.service.IMetaService;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaOption;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 元模型选项值 Service 接口（p_meta_option）
  */
-public interface IMetaOptionService extends IBaseService<MetaOption> {
+public interface IMetaOptionService extends IMetaService<MetaOption> {
 
     /**
      * 根据字段 apiKey 查询选项值列表

@@ -1,6 +1,6 @@
 package com.hongyang.platform.metarepo.service.service.metamodel;
 
-import com.hongyang.framework.dao.service.IBaseService;
+import com.hongyang.framework.dao.service.IMetaService;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaLink;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 元模型关联关系 Service 接口（p_meta_link）
  */
-public interface IMetaLinkService extends IBaseService<MetaLink> {
+public interface IMetaLinkService extends IMetaService<MetaLink> {
 
     /**
      * 根据引用字段 apiKey 查询关联

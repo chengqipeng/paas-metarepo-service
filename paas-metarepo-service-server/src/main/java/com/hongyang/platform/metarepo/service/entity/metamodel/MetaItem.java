@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.entity.metamodel;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseEntity;
+import com.hongyang.framework.dao.entity.BaseMetaCommonEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,12 +11,9 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_item")
-public class MetaItem extends BaseEntity {
+public class MetaItem extends BaseMetaCommonEntity {
 
     private String metamodelApiKey;
-    private String apiKey;
-    private String label;
-    private String labelKey;
     private Integer itemType;
     private Integer dataType;
     private Integer itemOrder;

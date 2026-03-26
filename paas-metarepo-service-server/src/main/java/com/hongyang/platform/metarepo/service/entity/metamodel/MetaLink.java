@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.entity.metamodel;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseEntity;
+import com.hongyang.framework.dao.entity.BaseMetaCommonEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,13 +11,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_link")
-public class MetaLink extends BaseEntity {
+public class MetaLink extends BaseMetaCommonEntity {
 
-    private String apiKey;
-    private String label;
-    private String labelKey;
-    private String name;
-    private String nameKey;
     private Integer linkType;
     private Long referItemApiKey;
     private Long childMetamodelApiKey;

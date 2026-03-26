@@ -1,6 +1,6 @@
 package com.hongyang.platform.metarepo.service.service.metamodel;
 
-import com.hongyang.framework.dao.service.IBaseService;
+import com.hongyang.framework.dao.service.IMetaService;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaItem;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 元模型字段项 Service 接口（p_meta_item）
  */
-public interface IMetaItemService extends IBaseService<MetaItem> {
+public interface IMetaItemService extends IMetaService<MetaItem> {
 
     /**
      * 根据元模型 apiKey 查询所有字段项

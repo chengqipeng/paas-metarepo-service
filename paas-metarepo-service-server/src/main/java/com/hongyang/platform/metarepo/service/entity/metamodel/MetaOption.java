@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.entity.metamodel;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseEntity;
+import com.hongyang.framework.dao.entity.BaseMetaCommonEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,14 +11,11 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_option")
-public class MetaOption extends BaseEntity {
+public class MetaOption extends BaseMetaCommonEntity {
 
     private String metamodelApiKey;
     private String itemApiKey;
-    private Integer optionCode;
     private String optionKey;
-    private String label;
-    private String labelKey;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer enableFlg;
