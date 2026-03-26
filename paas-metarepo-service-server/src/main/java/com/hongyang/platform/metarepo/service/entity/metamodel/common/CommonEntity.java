@@ -25,9 +25,7 @@ public class CommonEntity extends BaseEntity {
     private String svgColor;
     private String description;
     private String descriptionKey;
-    private Integer customEntityseq;
-    @TableLogic(value = "0", delval = "1")
-    private Integer deleteFlg;
+    private Integer customEntitySeq;
     private Integer enableFlg;
     private Integer customFlg;
     private Integer businessCategory;
@@ -49,12 +47,4 @@ public class CommonEntity extends BaseEntity {
     private Long enableFlow;
     private Long enablePackage;
     private String extendProperty;
-    @TableField(fill = FieldFill.INSERT)
-    private Long createdAt;
-    @TableField(fill = FieldFill.INSERT)
-    private Long createdBy;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updatedAt;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updatedBy;
 }

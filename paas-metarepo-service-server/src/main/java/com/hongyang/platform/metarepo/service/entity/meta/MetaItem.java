@@ -13,10 +13,10 @@ import lombok.EqualsAndHashCode;
 @TableName("p_meta_item")
 public class MetaItem extends BaseEntity {
 
-    private Long metamodelId;
     private String apiKey;
     private String label;
     private String labelKey;
+    private String metaModelApiKey;
     private Integer itemType;
     private Integer dataType;
     private Integer itemOrder;
@@ -35,4 +35,5 @@ public class MetaItem extends BaseEntity {
     private Integer textFormat;
     private String jsonSchema;
     private Integer nameField;
+
 }

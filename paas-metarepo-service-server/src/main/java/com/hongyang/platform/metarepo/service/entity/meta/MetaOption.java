@@ -13,15 +13,16 @@ import lombok.EqualsAndHashCode;
 @TableName("p_meta_option")
 public class MetaOption extends BaseEntity {
 
-    private Long metamodelId;
-    private Long itemId;
-    private Integer optionCode;
-    private String optionKey;
+    private String apiKey;
     private String label;
     private String labelKey;
+    private String entityApiKey;
+    private String itemApiKey;
+    private String metaModelApiKey;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer enableFlg;
     private String description;
     private String descriptionKey;
+
 }
