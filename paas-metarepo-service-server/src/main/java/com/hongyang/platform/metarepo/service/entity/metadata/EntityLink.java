@@ -17,8 +17,6 @@ import lombok.EqualsAndHashCode;
 @CommonTenantSplit(commonTable = "p_common_entity_link")
 public class EntityLink extends BaseMetaTenantEntity {
 
-    private String name;
-    private String nameKey;
     private String typeProperty;
     private Integer linkType;
     private String parentEntityApiKey;

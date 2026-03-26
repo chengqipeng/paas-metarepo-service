@@ -19,12 +19,6 @@ import lombok.EqualsAndHashCode;
 public class CheckRule extends BaseMetaTenantEntity {
 
     private String entityApiKey;
-    private String name;
-    private String nameKey;
-    @TableField("rule_label")
-    private String label;
-    @TableField("rule_label_key")
-    private String labelKey;
     private Integer activeFlg;
     private String description;
     private String descriptionKey;

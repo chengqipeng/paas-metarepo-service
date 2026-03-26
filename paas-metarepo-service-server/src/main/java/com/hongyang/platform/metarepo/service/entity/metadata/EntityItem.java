@@ -18,8 +18,6 @@ import lombok.EqualsAndHashCode;
 public class EntityItem extends BaseMetaTenantEntity {
 
     private String entityApiKey;
-    private String name;
-    private String nameKey;
     private Integer itemType;
     private Integer dataType;
     private String typeProperty;
