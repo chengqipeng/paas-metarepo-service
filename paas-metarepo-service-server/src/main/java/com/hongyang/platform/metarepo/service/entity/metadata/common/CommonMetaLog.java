@@ -1,6 +1,5 @@
-package com.hongyang.platform.metarepo.service.entity.metamodel.tenant;
+package com.hongyang.platform.metarepo.service.entity.metadata.common;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -13,7 +12,7 @@ import java.io.Serializable;
  */
 @Data
 @TableName("p_meta_log")
-public class MetaLog implements Serializable {
+public class CommonMetaLog implements Serializable {
 
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;

@@ -5,12 +5,12 @@ import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
 import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
-import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantCheckRule;
-import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntity;
-import com.hongyang.platform.metarepo.service.entity.metamodel.common.CommonEntity;
-import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntityLink;
-import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantItem;
-import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantPickOption;
+import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantCheckRule;
+import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntity;
+import com.hongyang.platform.metarepo.service.entity.metadata.common.CommonEntity;
+import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntityLink;
+import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantItem;
+import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantPickOption;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,14 +1,8 @@
-package com.hongyang.platform.metarepo.service.entity.metamodel.common;
+package com.hongyang.platform.metarepo.service.entity.metadata.common;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
-import java.io.Serializable;
 
 /**
  * Common 级自定义对象（p_custom_entity_common，无 tenant_id）

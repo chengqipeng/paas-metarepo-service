@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity.meta;
+package com.hongyang.platform.metarepo.service.entity.metamodel;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseEntity;

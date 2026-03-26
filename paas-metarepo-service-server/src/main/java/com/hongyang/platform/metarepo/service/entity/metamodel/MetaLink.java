@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity.metamodel.tenant;
+package com.hongyang.platform.metarepo.service.entity.metamodel;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseEntity;
@@ -19,10 +19,11 @@ public class MetaLink extends BaseEntity {
     private String name;
     private String nameKey;
     private Integer linkType;
-    private Long referItemId;
-    private Long childMetamodelId;
-    private Long parentMetamodelId;
+    private Long referItemApiKey;
+    private Long childMetamodelApiKey;
+    private Long parentMetamodelApiKey;
     private Integer cascadeDelete;
     private String description;
     private String descriptionKey;
+
 }
