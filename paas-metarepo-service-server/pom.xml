@@ -44,6 +44,10 @@
             <groupId>com.hongyang</groupId>
             <artifactId>framework-dao</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.hongyang</groupId>
+            <artifactId>framework-log4j2</artifactId>
+        </dependency>
         <!-- 数据库驱动 -->
         <dependency>
             <groupId>com.mysql</groupId>

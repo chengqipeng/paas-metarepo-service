@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.service.impl;
 
 import com.alibaba.fastjson2.JSON;
-import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
+import com.hongyang.framework.dao.split.CommonTenantServiceImpl;
 import com.hongyang.framework.base.exception.BaseKnownException;
 import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
 import com.hongyang.platform.metarepo.service.entity.CustomEntity;
@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class CustomEntityServiceImpl
-        extends SimpleBaseServiceImpl<CustomEntity>
+        extends CommonTenantServiceImpl<CustomEntity>
         implements ICustomEntityService {
 
     private final ICustomItemService customItemService;
@@ -42,18 +42,14 @@ public class CustomEntityServiceImpl
 
     @Override
     public CustomEntity getByApiKey(Long tenantId, String apiKey) {
-        return lambdaQuery()
-                .eq(CustomEntity::getTenantId, tenantId)
-                .eq(CustomEntity::getApiKey, apiKey)
-                .one();
+        return getByApiKeyMerged(tenantId, apiKey, CustomEntity::getApiKey);
     }
 
     @Override
     public List<CustomEntity> listByTenant(Long tenantId) {
-        return lambdaQuery()
-                .eq(CustomEntity::getTenantId, tenantId)
-                .eq(CustomEntity::getEnableFlg, 1)
-                .list();
+        return listMerged(tenantId, CustomEntity::getApiKey).stream()
+                .filter(e -> e.getEnableFlg() != null && e.getEnableFlg() == 1)
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override

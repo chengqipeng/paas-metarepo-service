@@ -34,3 +34,8 @@ logging:
   level:
     com.hongyang.platform.metarepo: DEBUG
     org.springframework.cloud.openfeign: DEBUG
+
+# 开发环境 SQL 日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

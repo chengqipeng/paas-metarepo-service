@@ -2,15 +2,19 @@ package com.hongyang.platform.metarepo.service.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseEntity;
+import com.hongyang.framework.dao.split.CommonTenantSplit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 自定义对象定义（p_custom_entity）
+ * 自定义对象定义
+ * Tenant 表：p_custom_entity（有 tenant_id）
+ * Common 表：p_common_entity（无 tenant_id）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_entity")
+@CommonTenantSplit(commonTable = "p_common_entity")
 public class CustomEntity extends BaseEntity {
 
     private String nameSpace;

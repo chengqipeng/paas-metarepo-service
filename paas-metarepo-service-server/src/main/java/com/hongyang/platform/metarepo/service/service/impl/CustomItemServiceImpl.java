@@ -181,7 +181,7 @@ public class CustomItemServiceImpl
                 po.setTenantId(item.getTenantId());
                 po.setEntityId(item.getEntityId());
                 po.setItemId(item.getId());
-                po.setOptionLabel(opt.getString("label"));
+                po.setLabel(opt.getString("label"));
                 po.setOptionCode(opt.getIntValue("code", i + 1));
                 po.setOptionOrder(i);
                 po.setDefaultFlg(opt.getIntValue("defaultFlg", 0));
