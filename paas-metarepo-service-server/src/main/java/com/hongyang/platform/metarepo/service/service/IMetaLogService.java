@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.hongyang.platform.metarepo.service.entity.MetaLog;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.MetaLog;
 import java.util.List;
 
 public interface IMetaLogService extends IService<MetaLog> {

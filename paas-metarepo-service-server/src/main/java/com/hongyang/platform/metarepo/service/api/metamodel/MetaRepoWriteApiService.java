@@ -14,12 +14,12 @@ import com.hongyang.platform.metarepo.core.model.request.UpdateCheckRuleRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateEntityRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateItemRequest;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
-import com.hongyang.platform.metarepo.service.entity.CustomEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityLink;
-import com.hongyang.platform.metarepo.service.entity.CustomItem;
-import com.hongyang.platform.metarepo.service.service.ICustomEntityLinkService;
-import com.hongyang.platform.metarepo.service.service.ICustomEntityService;
-import com.hongyang.platform.metarepo.service.service.ICustomItemService;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntity;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntityLink;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantItem;
+import com.hongyang.platform.metarepo.service.service.ITenantEntityLinkService;
+import com.hongyang.platform.metarepo.service.service.ITenantEntityService;
+import com.hongyang.platform.metarepo.service.service.ITenantItemService;
 import com.hongyang.platform.metarepo.service.service.IMetaLogService;
 import com.hongyang.framework.base.exception.BaseKnownException;
 import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
@@ -43,9 +43,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
-    private final ICustomEntityService customEntityService;
-    private final ICustomItemService customItemService;
-    private final ICustomEntityLinkService customEntityLinkService;
+    private final ITenantEntityService customEntityService;
+    private final ITenantItemService customItemService;
+    private final ITenantEntityLinkService customEntityLinkService;
     private final IMetaLogService metaLogService;
 
     @Override
@@ -54,7 +54,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         if (customEntityService.existsApiKey(request.getTenantId(), request.getApiKey())) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, request.getApiKey());
         }
-        CustomEntity entity = new CustomEntity();
+        TenantEntity entity = new TenantEntity();
         entity.setTenantId(request.getTenantId());
         entity.setNameSpace(request.getNameSpace());
         entity.setName(request.getName());
@@ -86,7 +86,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     @PutMapping("/write/entity/{entityId}")
     public XEntity updateEntity(@PathVariable("entityId") Long entityId,
                                  @RequestBody UpdateEntityRequest request) {
-        CustomEntity entity = customEntityService.getByIdAndTenant(entityId, request.getTenantId());
+        TenantEntity entity = customEntityService.getByIdAndTenant(entityId, request.getTenantId());
         if (entity == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, entityId);
         }
@@ -122,7 +122,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         if (customItemService.existsApiKey(request.getTenantId(), request.getEntityId(), request.getApiKey())) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, request.getApiKey());
         }
-        CustomItem item = new CustomItem();
+        TenantItem item = new TenantItem();
         item.setTenantId(request.getTenantId());
         item.setEntityId(request.getEntityId());
         item.setName(request.getName());
@@ -181,7 +181,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     @Override
     @PostMapping("/write/entity-link")
     public XLink createEntityLink(@RequestBody CreateLinkRequest request) {
-        CustomEntityLink link = new CustomEntityLink();
+        TenantEntityLink link = new TenantEntityLink();
         link.setTenantId(request.getTenantId());
         link.setName(request.getName());
         link.setApiKey(request.getApiKey());

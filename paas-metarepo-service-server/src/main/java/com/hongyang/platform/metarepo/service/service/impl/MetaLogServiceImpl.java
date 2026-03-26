@@ -3,7 +3,7 @@ package com.hongyang.platform.metarepo.service.service.impl;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hongyang.framework.multi.context.context.GlobalContext;
-import com.hongyang.platform.metarepo.service.entity.MetaLog;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.MetaLog;
 import com.hongyang.platform.metarepo.service.service.IMetaLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class MetaLogServiceImpl
         MetaLog logEntity = new MetaLog();
         logEntity.setTenantId(tenantId);
         logEntity.setMetadataId(metadataId);
-        logEntity.setEntityId(entityId);
+        logEntity.setObjectId(entityId);
         logEntity.setMetamodelId(metamodelId);
         logEntity.setOldValue(oldValue);
         logEntity.setNewValue(newValue);

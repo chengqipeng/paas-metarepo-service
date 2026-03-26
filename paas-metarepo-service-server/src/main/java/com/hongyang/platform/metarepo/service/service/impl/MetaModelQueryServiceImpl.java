@@ -1,21 +1,19 @@
 package com.hongyang.platform.metarepo.service.service.impl;
 
-import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
 import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
-import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XMetaModel;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
-import com.hongyang.platform.metarepo.service.entity.CustomCheckRule;
-import com.hongyang.platform.metarepo.service.entity.CustomEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityLink;
-import com.hongyang.platform.metarepo.service.entity.CustomItem;
-import com.hongyang.platform.metarepo.service.entity.CustomPickOption;
-import com.hongyang.platform.metarepo.service.service.ICustomCheckRuleService;
-import com.hongyang.platform.metarepo.service.service.ICustomEntityLinkService;
-import com.hongyang.platform.metarepo.service.service.ICustomEntityService;
-import com.hongyang.platform.metarepo.service.service.ICustomItemService;
-import com.hongyang.platform.metarepo.service.service.ICustomPickOptionService;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantCheckRule;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntity;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntityLink;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantItem;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantPickOption;
+import com.hongyang.platform.metarepo.service.service.ITenantCheckRuleService;
+import com.hongyang.platform.metarepo.service.service.ITenantEntityLinkService;
+import com.hongyang.platform.metarepo.service.service.ITenantEntityService;
+import com.hongyang.platform.metarepo.service.service.ITenantItemService;
+import com.hongyang.platform.metarepo.service.service.ITenantPickOptionService;
 import com.hongyang.platform.metarepo.service.service.IMetaModelQueryService;
 import lombok.RequiredArgsConstructor;
 import java.util.Map;
@@ -24,7 +22,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -38,15 +35,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MetaModelQueryServiceImpl implements IMetaModelQueryService {
 
-    private final ICustomEntityService customEntityService;
-    private final ICustomItemService customItemService;
-    private final ICustomEntityLinkService customEntityLinkService;
-    private final ICustomPickOptionService customPickOptionService;
-    private final ICustomCheckRuleService customCheckRuleService;
+    private final ITenantEntityService customEntityService;
+    private final ITenantItemService customItemService;
+    private final ITenantEntityLinkService customEntityLinkService;
+    private final ITenantPickOptionService customPickOptionService;
+    private final ITenantCheckRuleService customCheckRuleService;
 
     @Override
     public XMetaModel getMetaModel(Long tenantId, String objectApiKey) {
-        CustomEntity entity = customEntityService.getByApiKey(tenantId, objectApiKey);
+        TenantEntity entity = customEntityService.getByApiKey(tenantId, objectApiKey);
         if (entity == null) {
             return null;
         }
@@ -66,7 +63,7 @@ public class MetaModelQueryServiceImpl implements IMetaModelQueryService {
 
     @Override
     public List<XMetaModel> listMetaModels(Long tenantId) {
-        List<CustomEntity> entities = customEntityService.listByTenant(tenantId);
+        List<TenantEntity> entities = customEntityService.listByTenant(tenantId);
         return entities.stream()
                 .map(entity -> assembleMetaModel(tenantId, entity))
                 .collect(Collectors.toList());
@@ -74,21 +71,21 @@ public class MetaModelQueryServiceImpl implements IMetaModelQueryService {
 
     @Override
     public List<XItem> getFieldMeta(Long tenantId, Long entityId) {
-        List<CustomItem> items = customItemService.listByEntityId(tenantId, entityId);
+        List<TenantItem> items = customItemService.listByEntityId(tenantId, entityId);
         return MetaRepoConverter.toXItemList(items);
     }
 
-    private XMetaModel assembleMetaModel(Long tenantId, CustomEntity entity) {
+    private XMetaModel assembleMetaModel(Long tenantId, TenantEntity entity) {
         Long entityId = entity.getId();
 
-        List<CustomItem> items = customItemService.listByEntityId(tenantId, entityId);
-        List<CustomEntityLink> links = customEntityLinkService.listByEntityId(tenantId, entityId);
-        List<CustomCheckRule> checkRules = customCheckRuleService.listByEntityId(tenantId, entityId);
+        List<TenantItem> items = customItemService.listByEntityId(tenantId, entityId);
+        List<TenantEntityLink> links = customEntityLinkService.listByEntityId(tenantId, entityId);
+        List<TenantCheckRule> checkRules = customCheckRuleService.listByEntityId(tenantId, entityId);
 
         Map<Long, List<XPickOption>> pickOptionsMap = new HashMap<>();
-        for (CustomItem item : items) {
+        for (TenantItem item : items) {
             if (item.getItemType() != null && isPicklistType(item.getItemType())) {
-                List<CustomPickOption> options = customPickOptionService.listByItemId(tenantId, item.getId());
+                List<TenantPickOption> options = customPickOptionService.listByItemId(tenantId, item.getId());
                 if (!options.isEmpty()) {
                     pickOptionsMap.put(item.getId(), MetaRepoConverter.toXPickOptionList(options));
                 }

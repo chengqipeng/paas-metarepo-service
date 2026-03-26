@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.service;
 
 import com.hongyang.framework.dao.service.IBaseService;
-import com.hongyang.platform.metarepo.service.entity.MetaOption;
+import com.hongyang.platform.metarepo.service.entity.meta.MetaOption;
 
 import java.util.List;
 import java.util.Set;

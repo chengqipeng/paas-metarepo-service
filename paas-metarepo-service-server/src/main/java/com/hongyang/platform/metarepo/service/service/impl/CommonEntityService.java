@@ -2,7 +2,7 @@ package com.hongyang.platform.metarepo.service.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityCommon;
+import com.hongyang.platform.metarepo.service.entity.metamodel.common.CommonEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +11,5 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-public class CommonEntityService extends ServiceImpl<BaseMapper<CustomEntityCommon>, CustomEntityCommon> {
+public class CommonEntityService extends ServiceImpl<BaseMapper<CommonEntity>, CommonEntity> {
 }

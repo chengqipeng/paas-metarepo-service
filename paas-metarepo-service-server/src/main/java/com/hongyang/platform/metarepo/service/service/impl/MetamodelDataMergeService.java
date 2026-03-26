@@ -2,7 +2,7 @@ package com.hongyang.platform.metarepo.service.service.impl;
 
 import com.hongyang.framework.dao.dynamic.DynamicTableNameHolder;
 import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
-import com.hongyang.platform.metarepo.service.entity.MetaMetamodelData;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.MetaMetamodelData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

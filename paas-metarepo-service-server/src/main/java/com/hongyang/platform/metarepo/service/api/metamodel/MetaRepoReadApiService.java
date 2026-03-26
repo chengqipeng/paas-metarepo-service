@@ -7,10 +7,10 @@ import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XMetaModel;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
-import com.hongyang.platform.metarepo.service.service.ICustomCheckRuleService;
-import com.hongyang.platform.metarepo.service.service.ICustomEntityLinkService;
-import com.hongyang.platform.metarepo.service.service.ICustomItemService;
-import com.hongyang.platform.metarepo.service.service.ICustomPickOptionService;
+import com.hongyang.platform.metarepo.service.service.ITenantCheckRuleService;
+import com.hongyang.platform.metarepo.service.service.ITenantEntityLinkService;
+import com.hongyang.platform.metarepo.service.service.ITenantItemService;
+import com.hongyang.platform.metarepo.service.service.ITenantPickOptionService;
 import com.hongyang.platform.metarepo.service.service.IMetaModelQueryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,10 +30,10 @@ import java.util.List;
 public class MetaRepoReadApiService implements MetaRepoReadApi {
 
     private final IMetaModelQueryService metaModelQueryService;
-    private final ICustomItemService customItemService;
-    private final ICustomPickOptionService customPickOptionService;
-    private final ICustomCheckRuleService customCheckRuleService;
-    private final ICustomEntityLinkService customEntityLinkService;
+    private final ITenantItemService customItemService;
+    private final ITenantPickOptionService customPickOptionService;
+    private final ITenantCheckRuleService customCheckRuleService;
+    private final ITenantEntityLinkService customEntityLinkService;
 
     @Override
     @GetMapping("/read/metamodel")

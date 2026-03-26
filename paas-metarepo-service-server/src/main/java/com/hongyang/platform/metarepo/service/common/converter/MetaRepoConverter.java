@@ -5,12 +5,12 @@ import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
 import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
-import com.hongyang.platform.metarepo.service.entity.CustomCheckRule;
-import com.hongyang.platform.metarepo.service.entity.CustomEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityCommon;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityLink;
-import com.hongyang.platform.metarepo.service.entity.CustomItem;
-import com.hongyang.platform.metarepo.service.entity.CustomPickOption;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantCheckRule;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntity;
+import com.hongyang.platform.metarepo.service.entity.metamodel.common.CommonEntity;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntityLink;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantItem;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantPickOption;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,13 +25,13 @@ public final class MetaRepoConverter {
 
     // ==================== Entity ====================
 
-    public static XEntity toXEntity(CustomEntity e) {
+    public static XEntity toXEntity(TenantEntity e) {
         if (e == null) return null;
         XEntity x = new XEntity();
         x.setId(e.getId());
         x.setTenantId(e.getTenantId());
         x.setNameSpace(e.getNameSpace());
-        x.setEntityId(e.getEntityId());
+        x.setEntityId(e.getObjectId());
         x.setName(e.getName());
         x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
@@ -42,7 +42,7 @@ public final class MetaRepoConverter {
         x.setSvgColor(e.getSvgColor());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());
-        x.setCustomEntityseq(e.getCustomEntityseq());
+        x.setTenantEntityseq(e.getTenantEntityseq());
         x.setDeleteFlg(e.getDeleteFlg());
         x.setEnableFlg(e.getEnableFlg());
         x.setCustomFlg(e.getCustomFlg());
@@ -74,7 +74,7 @@ public final class MetaRepoConverter {
 
     // ==================== Item ====================
 
-    public static XItem toXItem(CustomItem e) {
+    public static XItem toXItem(TenantItem e) {
         if (e == null) return null;
         XItem x = new XItem();
         x.setId(e.getId());
@@ -92,7 +92,7 @@ public final class MetaRepoConverter {
         x.setHelpTextKey(e.getHelpTextKey());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());
-        x.setCustomItemseq(e.getCustomItemseq());
+        x.setTenantItemseq(e.getTenantItemseq());
         x.setDefaultValue(e.getDefaultValue());
         x.setRequireFlg(e.getRequireFlg());
         x.setDeleteFlg(e.getDeleteFlg());
@@ -120,14 +120,14 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XItem> toXItemList(List<CustomItem> list) {
+    public static List<XItem> toXItemList(List<TenantItem> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXItem).collect(Collectors.toList());
     }
 
     // ==================== Link ====================
 
-    public static XLink toXLink(CustomEntityLink e) {
+    public static XLink toXLink(TenantEntityLink e) {
         if (e == null) return null;
         XLink x = new XLink();
         x.setId(e.getId());
@@ -150,14 +150,14 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XLink> toXLinkList(List<CustomEntityLink> list) {
+    public static List<XLink> toXLinkList(List<TenantEntityLink> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXLink).collect(Collectors.toList());
     }
 
     // ==================== PickOption ====================
 
-    public static XPickOption toXPickOption(CustomPickOption e) {
+    public static XPickOption toXPickOption(TenantPickOption e) {
         if (e == null) return null;
         XPickOption x = new XPickOption();
         x.setId(e.getId());
@@ -178,15 +178,15 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XPickOption> toXPickOptionList(List<CustomPickOption> list) {
+    public static List<XPickOption> toXPickOptionList(List<TenantPickOption> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXPickOption).collect(Collectors.toList());
     }
 
-    /** XPickOption -> CustomPickOption（用于 savePickOptions） */
-    public static CustomPickOption fromXPickOption(XPickOption x) {
+    /** XPickOption -> TenantPickOption（用于 savePickOptions） */
+    public static TenantPickOption fromXPickOption(XPickOption x) {
         if (x == null) return null;
-        CustomPickOption e = new CustomPickOption();
+        TenantPickOption e = new TenantPickOption();
         e.setId(x.getId());
         e.setTenantId(x.getTenantId());
         e.setEntityId(x.getEntityId());
@@ -203,19 +203,19 @@ public final class MetaRepoConverter {
         return e;
     }
 
-    public static List<CustomPickOption> fromXPickOptionList(List<XPickOption> list) {
+    public static List<TenantPickOption> fromXPickOptionList(List<XPickOption> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::fromXPickOption).collect(Collectors.toList());
     }
 
     // ==================== CheckRule ====================
 
-    public static XCheckRule toXCheckRule(CustomCheckRule e) {
+    public static XCheckRule toXCheckRule(TenantCheckRule e) {
         if (e == null) return null;
         XCheckRule x = new XCheckRule();
         x.setId(e.getId());
         x.setTenantId(e.getTenantId());
-        x.setEntityId(e.getEntityId());
+        x.setEntityId(e.getObjectId());
         x.setName(e.getName());
         x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
@@ -238,19 +238,19 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XCheckRule> toXCheckRuleList(List<CustomCheckRule> list) {
+    public static List<XCheckRule> toXCheckRuleList(List<TenantCheckRule> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXCheckRule).collect(Collectors.toList());
     }
 
     // ==================== Common Entity -> XEntity ====================
 
-    public static XEntity commonToXEntity(CustomEntityCommon e) {
+    public static XEntity commonToXEntity(CommonEntity e) {
         if (e == null) return null;
         XEntity x = new XEntity();
         x.setId(e.getId());
         x.setNameSpace(e.getNameSpace());
-        x.setEntityId(e.getEntityId());
+        x.setEntityId(e.getObjectId());
         x.setName(e.getName());
         x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
@@ -261,7 +261,7 @@ public final class MetaRepoConverter {
         x.setSvgColor(e.getSvgColor());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());
-        x.setCustomEntityseq(e.getCustomEntityseq());
+        x.setTenantEntityseq(e.getTenantEntityseq());
         x.setDeleteFlg(e.getDeleteFlg());
         x.setEnableFlg(e.getEnableFlg());
         x.setCustomFlg(e.getCustomFlg());

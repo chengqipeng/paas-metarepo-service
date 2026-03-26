@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.service.impl;
 
 import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
-import com.hongyang.platform.metarepo.service.entity.MetaOption;
+import com.hongyang.platform.metarepo.service.entity.meta.MetaOption;
 import com.hongyang.platform.metarepo.service.service.IMetaOptionService;
 import org.springframework.stereotype.Service;
 

@@ -1,8 +1,8 @@
 package com.hongyang.platform.metarepo.service.service.impl;
 
 import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
-import com.hongyang.platform.metarepo.service.entity.CustomEntity;
-import com.hongyang.platform.metarepo.service.entity.MetaMetamodelData;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntity;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.MetaMetamodelData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class MetaMetamodelDataServiceHelper
     /**
      * 创建对象时同步写入大宽表
      */
-    public void syncEntityToMetamodelData(CustomEntity entity) {
+    public void syncEntityToMetamodelData(TenantEntity entity) {
         MetaMetamodelData data = new MetaMetamodelData();
         data.setTenantId(entity.getTenantId());
         data.setNamespace(entity.getNameSpace());
@@ -31,21 +31,21 @@ public class MetaMetamodelDataServiceHelper
         data.setCustomFlg(entity.getCustomFlg());
         data.setDescription(entity.getDescription());
         save(data);
-        // 回写 entity_id
-        entity.setEntityId(data.getId());
+        // 回写 object_id
+        entity.setObjectId(data.getId());
     }
 
     /**
      * 更新对象时同步更新大宽表
      */
-    public void syncEntityUpdateToMetamodelData(CustomEntity entity) {
-        if (entity.getEntityId() == null) {
-            log.warn("对象 {} 无 entityId，跳过大宽表同步", entity.getId());
+    public void syncEntityUpdateToMetamodelData(TenantEntity entity) {
+        if (entity.getObjectId() == null) {
+            log.warn("对象 {} 无 objectId，跳过大宽表同步", entity.getId());
             return;
         }
-        MetaMetamodelData data = getById(entity.getEntityId());
+        MetaMetamodelData data = getById(entity.getObjectId());
         if (data == null) {
-            log.warn("大宽表记录不存在, entityId={}", entity.getEntityId());
+            log.warn("大宽表记录不存在, objectId={}", entity.getObjectId());
             return;
         }
         data.setLabel(entity.getLabel());
@@ -57,8 +57,8 @@ public class MetaMetamodelDataServiceHelper
     /**
      * 删除对象时同步软删除大宽表记录
      */
-    public void syncEntityDeleteToMetamodelData(CustomEntity entity) {
-        if (entity.getEntityId() == null) return;
-        removeById(entity.getEntityId());
+    public void syncEntityDeleteToMetamodelData(TenantEntity entity) {
+        if (entity.getObjectId() == null) return;
+        removeById(entity.getObjectId());
     }
 }

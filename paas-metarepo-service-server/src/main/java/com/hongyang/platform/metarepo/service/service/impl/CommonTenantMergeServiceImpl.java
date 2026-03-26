@@ -1,15 +1,14 @@
 package com.hongyang.platform.metarepo.service.service.impl;
 
-import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
 import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
-import com.hongyang.platform.metarepo.service.entity.CustomEntity;
-import com.hongyang.platform.metarepo.service.entity.CustomEntityCommon;
-import com.hongyang.platform.metarepo.service.entity.CustomItem;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantEntity;
+import com.hongyang.platform.metarepo.service.entity.metamodel.common.CommonEntity;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.TenantItem;
 import com.hongyang.platform.metarepo.service.service.ICommonTenantMergeService;
-import com.hongyang.platform.metarepo.service.service.ICustomEntityService;
-import com.hongyang.platform.metarepo.service.service.ICustomItemService;
+import com.hongyang.platform.metarepo.service.service.ITenantEntityService;
+import com.hongyang.platform.metarepo.service.service.ITenantItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,19 +34,19 @@ import java.util.stream.Collectors;
 public class CommonTenantMergeServiceImpl implements ICommonTenantMergeService {
 
     private final CommonEntityService commonEntityService;
-    private final ICustomEntityService tenantEntityService;
+    private final ITenantEntityService tenantEntityService;
     private final CommonItemService commonItemService;
-    private final ICustomItemService tenantItemService;
+    private final ITenantItemService tenantItemService;
 
     @Override
     public List<XEntity> listMergedEntities(Long tenantId) {
         // 查 Common 层
-        List<CustomEntityCommon> commonList = commonEntityService.lambdaQuery()
-                .eq(CustomEntityCommon::getEnableFlg, 1)
+        List<CommonEntity> commonList = commonEntityService.lambdaQuery()
+                .eq(CommonEntity::getEnableFlg, 1)
                 .list();
 
         // 查 Tenant 层
-        List<CustomEntity> tenantList = tenantEntityService.listByTenant(tenantId);
+        List<TenantEntity> tenantList = tenantEntityService.listByTenant(tenantId);
 
         return mergeEntityLists(commonList, tenantList);
     }
@@ -68,19 +67,19 @@ public class CommonTenantMergeServiceImpl implements ICommonTenantMergeService {
 
     @Override
     public List<XItem> listMergedItems(Long tenantId, Long entityId) {
-        List<CustomItem> tenantItems = tenantItemService.listByEntityId(tenantId, entityId);
+        List<TenantItem> tenantItems = tenantItemService.listByEntityId(tenantId, entityId);
         // Common 级字段通过 commonItemService 查询
-        List<CustomItem> commonItems = commonItemService.listByEntityId(entityId);
+        List<TenantItem> commonItems = commonItemService.listByEntityId(entityId);
 
         return mergeItemLists(commonItems, tenantItems);
     }
 
     @Override
     public XEntity getMergedEntity(Long tenantId, String apiKey) {
-        CustomEntityCommon common = commonEntityService.lambdaQuery()
-                .eq(CustomEntityCommon::getApiKey, apiKey)
+        CommonEntity common = commonEntityService.lambdaQuery()
+                .eq(CommonEntity::getApiKey, apiKey)
                 .one();
-        CustomEntity tenant = tenantEntityService.getByApiKey(tenantId, apiKey);
+        TenantEntity tenant = tenantEntityService.getByApiKey(tenantId, apiKey);
 
         if (tenant != null && tenant.getDeleteFlg() != null && tenant.getDeleteFlg() == 1) {
             return null; // 租户隐藏
@@ -93,15 +92,15 @@ public class CommonTenantMergeServiceImpl implements ICommonTenantMergeService {
     /**
      * 合并 Entity 列表
      */
-    private List<XEntity> mergeEntityLists(List<CustomEntityCommon> commonList, List<CustomEntity> tenantList) {
-        Map<String, CustomEntity> tenantMap = tenantList.stream()
+    private List<XEntity> mergeEntityLists(List<CommonEntity> commonList, List<TenantEntity> tenantList) {
+        Map<String, TenantEntity> tenantMap = tenantList.stream()
                 .filter(e -> e.getApiKey() != null)
-                .collect(Collectors.toMap(CustomEntity::getApiKey, e -> e, (a, b) -> b));
+                .collect(Collectors.toMap(TenantEntity::getApiKey, e -> e, (a, b) -> b));
 
         List<XEntity> result = new ArrayList<>();
 
-        for (CustomEntityCommon common : commonList) {
-            CustomEntity tenant = tenantMap.remove(common.getApiKey());
+        for (CommonEntity common : commonList) {
+            TenantEntity tenant = tenantMap.remove(common.getApiKey());
             if (tenant != null) {
                 if (tenant.getDeleteFlg() != null && tenant.getDeleteFlg() == 1) continue;
                 result.add(MetaRepoConverter.toXEntity(tenant));
@@ -111,7 +110,7 @@ public class CommonTenantMergeServiceImpl implements ICommonTenantMergeService {
         }
 
         // 纯租户自定义
-        for (CustomEntity tenant : tenantMap.values()) {
+        for (TenantEntity tenant : tenantMap.values()) {
             if (tenant.getDeleteFlg() == null || tenant.getDeleteFlg() != 1) {
                 result.add(MetaRepoConverter.toXEntity(tenant));
             }
@@ -123,15 +122,15 @@ public class CommonTenantMergeServiceImpl implements ICommonTenantMergeService {
     /**
      * 合并 Item 列表
      */
-    private List<XItem> mergeItemLists(List<CustomItem> commonItems, List<CustomItem> tenantItems) {
-        Map<String, CustomItem> tenantMap = tenantItems.stream()
+    private List<XItem> mergeItemLists(List<TenantItem> commonItems, List<TenantItem> tenantItems) {
+        Map<String, TenantItem> tenantMap = tenantItems.stream()
                 .filter(e -> e.getApiKey() != null)
-                .collect(Collectors.toMap(CustomItem::getApiKey, e -> e, (a, b) -> b));
+                .collect(Collectors.toMap(TenantItem::getApiKey, e -> e, (a, b) -> b));
 
         List<XItem> result = new ArrayList<>();
 
-        for (CustomItem common : commonItems) {
-            CustomItem tenant = tenantMap.remove(common.getApiKey());
+        for (TenantItem common : commonItems) {
+            TenantItem tenant = tenantMap.remove(common.getApiKey());
             if (tenant != null) {
                 if (tenant.getDeleteFlg() != null && tenant.getDeleteFlg() == 1) continue;
                 result.add(MetaRepoConverter.toXItem(tenant));
@@ -140,7 +139,7 @@ public class CommonTenantMergeServiceImpl implements ICommonTenantMergeService {
             }
         }
 
-        for (CustomItem tenant : tenantMap.values()) {
+        for (TenantItem tenant : tenantMap.values()) {
             if (tenant.getDeleteFlg() == null || tenant.getDeleteFlg() != 1) {
                 result.add(MetaRepoConverter.toXItem(tenant));
             }

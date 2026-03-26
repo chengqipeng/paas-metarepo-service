@@ -1,6 +1,6 @@
 package com.hongyang.platform.metarepo.service.api.internal;
 
-import com.hongyang.platform.metarepo.service.entity.MetaLog;
+import com.hongyang.platform.metarepo.service.entity.metamodel.tenant.MetaLog;
 import com.hongyang.platform.metarepo.service.service.IMetaLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

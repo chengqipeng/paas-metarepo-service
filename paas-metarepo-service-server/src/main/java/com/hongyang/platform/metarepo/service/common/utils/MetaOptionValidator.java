@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
  * 校验写入字段值是否在 p_meta_option 定义的合法范围内
  *
  * p_meta_item 中 item_type=6 的字段（select 类型）必须通过 MetaOption 管控取值：
- * - metamodel#1 (CustomEntity): object_type(103), enable_sharing(105),
+ * - metamodel#1 (TenantEntity): object_type(103), enable_sharing(105),
  *   enable_team(106), searchable(107), enable_report(108), enable_api(109)
- * - metamodel#2 (CustomItem): item_type(203), data_type(204), require_flg(205)
+ * - metamodel#2 (TenantItem): item_type(203), data_type(204), require_flg(205)
  */
 @Component
 @RequiredArgsConstructor
