@@ -52,7 +52,6 @@ public class MetaOptionServiceImpl extends MetaServiceImpl<MetaOption> implement
         MetaQueryCondition<MetaOption> condition = MetaQueryCondition.<MetaOption>create()
                 .eq(MetaOption::getMetamodelApiKey, metamodelApiKey)
                 .eq(MetaOption::getItemApiKey, itemApiKey)
-                .eq(MetaOption::getOptionCode, optionCode)
                 .eq(MetaOption::getEnableFlg, 1);
         return countByCondition(condition) > 0;
     }

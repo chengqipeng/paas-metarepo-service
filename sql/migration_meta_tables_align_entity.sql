@@ -103,3 +103,15 @@ CREATE INDEX idx_option_item ON p_meta_option(tenant_id, metamodel_api_key, item
 -- DROP INDEX idx_option_item;
 -- CREATE UNIQUE INDEX uk_option_apikey ON p_meta_option(tenant_id, metamodel_api_key, item_api_key, api_key);
 -- CREATE INDEX idx_option_item ON p_meta_option(tenant_id, metamodel_api_key, item_api_key);
+
+-- ============================================================
+-- 5. p_meta_model：新增 enable_common / enable_tenant 字段
+-- ============================================================
+
+-- MySQL:
+ALTER TABLE p_meta_model ADD COLUMN enable_common SMALLINT DEFAULT 1 AFTER enable_module_control;
+ALTER TABLE p_meta_model ADD COLUMN enable_tenant SMALLINT DEFAULT 1 AFTER enable_common;
+
+-- PostgreSQL:
+-- ALTER TABLE p_meta_model ADD COLUMN enable_common SMALLINT DEFAULT 1;
+-- ALTER TABLE p_meta_model ADD COLUMN enable_tenant SMALLINT DEFAULT 1;

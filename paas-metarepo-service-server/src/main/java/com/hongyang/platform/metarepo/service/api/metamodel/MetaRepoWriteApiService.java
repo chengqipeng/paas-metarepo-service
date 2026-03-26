@@ -102,7 +102,6 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         item.setApiKey(request.getApiKey());
         item.setLabel(request.getLabel());
         item.setLabelKey(request.getLabelKey());
-        item.setName(request.getName());
         item.setItemType(request.getItemType());
         item.setDataType(request.getDataType());
         item.setTypeProperty(request.getTypeProperty());
@@ -148,7 +147,6 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         EntityLink link = new EntityLink();
         link.setApiKey(request.getApiKey());
         link.setLabel(request.getLabel());
-        link.setName(request.getName());
         link.setLinkType(request.getLinkType());
         link.setParentEntityApiKey(request.getParentEntityApiKey());
         link.setChildEntityApiKey(request.getChildEntityApiKey());
