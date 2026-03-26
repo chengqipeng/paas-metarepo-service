@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.repository;
+package com.hongyang.platform.metarepo.service.service.impl;
 
 import com.hongyang.framework.dao.service.SimpleBaseServiceImpl;
 import com.hongyang.platform.metarepo.service.entity.CustomEntityLink;
