@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity.metadata.tenant;
+package com.hongyang.platform.metarepo.service.entity.metadata;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_refer_filter")
-public class TenantReferFilter extends BaseMetaTenantEntity {
+public class ReferFilter extends BaseMetaTenantEntity {
 
     private String entityApiKey;
     private String itemApiKey;

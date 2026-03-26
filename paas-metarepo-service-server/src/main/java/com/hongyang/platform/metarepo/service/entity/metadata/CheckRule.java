@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity.metadata.tenant;
+package com.hongyang.platform.metarepo.service.entity.metadata;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -16,9 +16,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_check_rule")
 @CommonTenantSplit(commonTable = "p_common_check_rule")
-public class TenantCheckRule extends BaseMetaTenantEntity {
+public class CheckRule extends BaseMetaTenantEntity {
 
     private String entityApiKey;
+    private String name;
+    private String nameKey;
+    @TableField("rule_label")
+    private String label;
+    @TableField("rule_label_key")
+    private String labelKey;
     private Integer activeFlg;
     private String description;
     private String descriptionKey;
@@ -26,7 +32,7 @@ public class TenantCheckRule extends BaseMetaTenantEntity {
     private String checkErrorMsg;
     private String checkErrorMsgKey;
     private Integer checkErrorLocation;
-    private Long checkErrorItemApiKey;
+    private String checkErrorItemApiKey;
     private Integer checkAllItemsFlg;
     private Integer checkErrorWay;
 }

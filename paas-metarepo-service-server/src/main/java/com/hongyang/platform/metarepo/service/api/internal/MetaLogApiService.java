@@ -1,6 +1,6 @@
 package com.hongyang.platform.metarepo.service.api.internal;
 
-import com.hongyang.platform.metarepo.service.entity.metadata.common.CommonMetaLog;
+import com.hongyang.platform.metarepo.service.entity.metadata.MetaLog;
 import com.hongyang.platform.metarepo.service.service.IMetaLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +25,8 @@ public class MetaLogApiService {
 
     /** 查询元数据变更日志 */
     @GetMapping("/meta-log/{tenantId}")
-    public List<CommonMetaLog> listMetaLogs(@PathVariable Long tenantId,
-                                            @RequestParam(required = false) Long metadataId) {
+    public List<MetaLog> listMetaLogs(@PathVariable Long tenantId,
+                                      @RequestParam(required = false) Long metadataId) {
         if (metadataId != null) {
             return metaLogService.listByMetadataId(tenantId, metadataId);
         }

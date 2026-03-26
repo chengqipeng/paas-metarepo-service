@@ -5,11 +5,11 @@ import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
 import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantCheckRule;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntity;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntityLink;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantItem;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantPickOption;
+import com.hongyang.platform.metarepo.service.entity.metadata.CheckRule;
+import com.hongyang.platform.metarepo.service.entity.metadata.Entity;
+import com.hongyang.platform.metarepo.service.entity.metadata.EntityLink;
+import com.hongyang.platform.metarepo.service.entity.metadata.EntityItem;
+import com.hongyang.platform.metarepo.service.entity.metadata.PickOption;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,25 +24,19 @@ public final class MetaRepoConverter {
 
     // ==================== Entity ====================
 
-    public static XEntity toXEntity(TenantEntity e) {
+    public static XEntity toXEntity(Entity e) {
         if (e == null) return null;
         XEntity x = new XEntity();
-        x.setId(e.getId());
-        x.setTenantId(e.getTenantId());
-        x.setNameSpace(e.getNameSpace());
-        x.setEntityId(e.getObjectId());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
-        x.setObjectType(e.getObjectType());
-        x.setSvgId(e.getSvgId());
+        x.setNamespace(e.getNamespace());
+        x.setEntityType(e.getEntityType());
+        x.setSvgApiKey(e.getSvgApiKey());
         x.setSvgColor(e.getSvgColor());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());
-        x.setTenantEntityseq(e.getTenantEntityseq());
-        x.setDeleteFlg(e.getDeleteFlg());
+        x.setCustomEntitySeq(e.getCustomEntitySeq());
         x.setEnableFlg(e.getEnableFlg());
         x.setCustomFlg(e.getCustomFlg());
         x.setBusinessCategory(e.getBusinessCategory());
@@ -64,6 +58,7 @@ public final class MetaRepoConverter {
         x.setEnableFlow(e.getEnableFlow());
         x.setEnablePackage(e.getEnablePackage());
         x.setExtendProperty(e.getExtendProperty());
+        x.setDeleteFlg(e.getDeleteFlg());
         x.setCreatedAt(e.getCreatedAt());
         x.setCreatedBy(e.getCreatedBy());
         x.setUpdatedAt(e.getUpdatedAt());
@@ -71,19 +66,23 @@ public final class MetaRepoConverter {
         return x;
     }
 
+    public static List<XEntity> toXEntityList(List<Entity> list) {
+        if (list == null) return Collections.emptyList();
+        return list.stream().map(MetaRepoConverter::toXEntity).collect(Collectors.toList());
+    }
+
     // ==================== Item ====================
 
-    public static XItem toXItem(TenantItem e) {
+    public static XItem toXItem(EntityItem e) {
         if (e == null) return null;
         XItem x = new XItem();
-        x.setId(e.getId());
-        x.setTenantId(e.getTenantId());
-        x.setEntityId(e.getEntityId());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
+        x.setEntityApiKey(e.getEntityApiKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
+        x.setNamespace(e.getNamespace());
+        x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
         x.setItemType(e.getItemType());
         x.setDataType(e.getDataType());
         x.setTypeProperty(e.getTypeProperty());
@@ -91,10 +90,9 @@ public final class MetaRepoConverter {
         x.setHelpTextKey(e.getHelpTextKey());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());
-        x.setTenantItemseq(e.getTenantItemseq());
+        x.setCustomItemSeq(e.getCustomItemSeq());
         x.setDefaultValue(e.getDefaultValue());
         x.setRequireFlg(e.getRequireFlg());
-        x.setDeleteFlg(e.getDeleteFlg());
         x.setCustomFlg(e.getCustomFlg());
         x.setEnableFlg(e.getEnableFlg());
         x.setCreatable(e.getCreatable());
@@ -106,12 +104,13 @@ public final class MetaRepoConverter {
         x.setReadonlyStatus(e.getReadonlyStatus());
         x.setVisibleStatus(e.getVisibleStatus());
         x.setHiddenFlg(e.getHiddenFlg());
-        x.setReferEntityId(e.getReferEntityId());
-        x.setReferLinkId(e.getReferLinkId());
+        x.setReferEntityApiKey(e.getReferEntityApiKey());
+        x.setReferLinkApiKey(e.getReferLinkApiKey());
         x.setDbColumn(e.getDbColumn());
         x.setItemOrder(e.getItemOrder());
         x.setSortFlg(e.getSortFlg());
         x.setColumnName(e.getColumnName());
+        x.setDeleteFlg(e.getDeleteFlg());
         x.setCreatedAt(e.getCreatedAt());
         x.setCreatedBy(e.getCreatedBy());
         x.setUpdatedAt(e.getUpdatedAt());
@@ -119,54 +118,55 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XItem> toXItemList(List<TenantItem> list) {
+    public static List<XItem> toXItemList(List<EntityItem> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXItem).collect(Collectors.toList());
     }
 
     // ==================== Link ====================
 
-    public static XLink toXLink(TenantEntityLink e) {
+    public static XLink toXLink(EntityLink e) {
         if (e == null) return null;
         XLink x = new XLink();
-        x.setId(e.getId());
-        x.setTenantId(e.getTenantId());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
+        x.setNamespace(e.getNamespace());
+        x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
+        x.setTypeProperty(e.getTypeProperty());
         x.setLinkType(e.getLinkType());
-        x.setParentEntityId(e.getParentEntityId());
-        x.setChildEntityId(e.getChildEntityId());
+        x.setParentEntityApiKey(e.getParentEntityApiKey());
+        x.setChildEntityApiKey(e.getChildEntityApiKey());
+        x.setDetailLink(e.getDetailLink());
         x.setCascadeDelete(e.getCascadeDelete());
         x.setAccessControl(e.getAccessControl());
         x.setEnableFlg(e.getEnableFlg());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());
+        x.setDeleteFlg(e.getDeleteFlg());
         x.setCreatedAt(e.getCreatedAt());
         x.setCreatedBy(e.getCreatedBy());
         return x;
     }
 
-    public static List<XLink> toXLinkList(List<TenantEntityLink> list) {
+    public static List<XLink> toXLinkList(List<EntityLink> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXLink).collect(Collectors.toList());
     }
 
     // ==================== PickOption ====================
 
-    public static XPickOption toXPickOption(TenantPickOption e) {
+    public static XPickOption toXPickOption(PickOption e) {
         if (e == null) return null;
         XPickOption x = new XPickOption();
-        x.setId(e.getId());
-        x.setTenantId(e.getTenantId());
-        x.setEntityId(e.getEntityId());
-        x.setItemId(e.getItemId());
+        x.setEntityApiKey(e.getEntityApiKey());
+        x.setItemApiKey(e.getItemApiKey());
         x.setApiKey(e.getApiKey());
-        x.setOptionCode(e.getOptionCode());
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
+        x.setNamespace(e.getNamespace());
+        x.setOptionCode(e.getOptionCode());
         x.setOptionOrder(e.getOptionOrder());
         x.setDefaultFlg(e.getDefaultFlg());
         x.setGlobalFlg(e.getGlobalFlg());
@@ -177,49 +177,23 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XPickOption> toXPickOptionList(List<TenantPickOption> list) {
+    public static List<XPickOption> toXPickOptionList(List<PickOption> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXPickOption).collect(Collectors.toList());
     }
 
-    /** XPickOption -> TenantPickOption（用于 savePickOptions） */
-    public static TenantPickOption fromXPickOption(XPickOption x) {
-        if (x == null) return null;
-        TenantPickOption e = new TenantPickOption();
-        e.setId(x.getId());
-        e.setTenantId(x.getTenantId());
-        e.setEntityId(x.getEntityId());
-        e.setItemId(x.getItemId());
-        e.setApiKey(x.getApiKey());
-        e.setOptionCode(x.getOptionCode());
-        e.setLabel(x.getLabel());
-        e.setLabelKey(x.getLabelKey());
-        e.setOptionOrder(x.getOptionOrder());
-        e.setDefaultFlg(x.getDefaultFlg());
-        e.setGlobalFlg(x.getGlobalFlg());
-        e.setCustomFlg(x.getCustomFlg());
-        e.setEnableFlg(x.getEnableFlg());
-        return e;
-    }
-
-    public static List<TenantPickOption> fromXPickOptionList(List<XPickOption> list) {
-        if (list == null) return Collections.emptyList();
-        return list.stream().map(MetaRepoConverter::fromXPickOption).collect(Collectors.toList());
-    }
-
     // ==================== CheckRule ====================
 
-    public static XCheckRule toXCheckRule(TenantCheckRule e) {
+    public static XCheckRule toXCheckRule(CheckRule e) {
         if (e == null) return null;
         XCheckRule x = new XCheckRule();
-        x.setId(e.getId());
-        x.setTenantId(e.getTenantId());
-        x.setEntityId(e.getObjectId());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
+        x.setEntityApiKey(e.getEntityApiKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
         x.setLabelKey(e.getLabelKey());
+        x.setNamespace(e.getNamespace());
+        x.setName(e.getName());
+        x.setNameKey(e.getNameKey());
         x.setActiveFlg(e.getActiveFlg());
         x.setDescription(e.getDescription());
         x.setDescriptionKey(e.getDescriptionKey());
@@ -227,9 +201,10 @@ public final class MetaRepoConverter {
         x.setCheckErrorMsg(e.getCheckErrorMsg());
         x.setCheckErrorMsgKey(e.getCheckErrorMsgKey());
         x.setCheckErrorLocation(e.getCheckErrorLocation());
-        x.setCheckErrorItemId(e.getCheckErrorItemId());
+        x.setCheckErrorItemApiKey(e.getCheckErrorItemApiKey());
         x.setCheckAllItemsFlg(e.getCheckAllItemsFlg());
         x.setCheckErrorWay(e.getCheckErrorWay());
+        x.setDeleteFlg(e.getDeleteFlg());
         x.setCreatedAt(e.getCreatedAt());
         x.setCreatedBy(e.getCreatedBy());
         x.setUpdatedAt(e.getUpdatedAt());
@@ -237,9 +212,8 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XCheckRule> toXCheckRuleList(List<TenantCheckRule> list) {
+    public static List<XCheckRule> toXCheckRuleList(List<CheckRule> list) {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXCheckRule).collect(Collectors.toList());
     }
-
 }

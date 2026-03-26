@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity.metadata.tenant;
+package com.hongyang.platform.metarepo.service.entity.metadata;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -16,10 +16,15 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_pickoption")
 @CommonTenantSplit(commonTable = "p_common_pick_option")
-public class TenantPickOption extends BaseMetaTenantEntity {
+public class PickOption extends BaseMetaTenantEntity {
 
     private String entityApiKey;
     private String itemApiKey;
+    private Integer optionCode;
+    @TableField("option_label")
+    private String label;
+    @TableField("option_label_key")
+    private String labelKey;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer globalFlg;

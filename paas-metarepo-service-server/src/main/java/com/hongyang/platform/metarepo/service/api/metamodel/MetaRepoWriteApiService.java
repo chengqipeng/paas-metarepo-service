@@ -14,19 +14,17 @@ import com.hongyang.platform.metarepo.core.model.request.UpdateCheckRuleRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateEntityRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateItemRequest;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntity;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntityLink;
-import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantItem;
-import com.hongyang.platform.metarepo.service.service.metadata.ITenantEntityLinkService;
-import com.hongyang.platform.metarepo.service.service.metadata.ITenantEntityService;
-import com.hongyang.platform.metarepo.service.service.metadata.ITenantItemService;
-import com.hongyang.platform.metarepo.service.service.IMetaLogService;
+import com.hongyang.platform.metarepo.service.entity.metadata.Entity;
+import com.hongyang.platform.metarepo.service.entity.metadata.EntityLink;
+import com.hongyang.platform.metarepo.service.entity.metadata.EntityItem;
+import com.hongyang.platform.metarepo.service.service.metadata.IEntityLinkService;
+import com.hongyang.platform.metarepo.service.service.metadata.IEntityService;
+import com.hongyang.platform.metarepo.service.service.metadata.IItemService;
 import com.hongyang.framework.base.exception.BaseKnownException;
 import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,92 +41,68 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
-    private final ITenantEntityService customEntityService;
-    private final ITenantItemService customItemService;
-    private final ITenantEntityLinkService customEntityLinkService;
-    private final IMetaLogService metaLogService;
+    private final IEntityService customEntityService;
+    private final IItemService customItemService;
+    private final IEntityLinkService customEntityLinkService;
 
     @Override
     @PostMapping("/write/entity")
     public XEntity createEntity(@RequestBody CreateEntityRequest request) {
-        if (customEntityService.existsApiKey(request.getTenantId(), request.getApiKey())) {
+        if (customEntityService.existsApiKey(request.getApiKey())) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, request.getApiKey());
         }
-        TenantEntity entity = new TenantEntity();
-        entity.setTenantId(request.getTenantId());
-        entity.setNameSpace(request.getNameSpace());
-        entity.setName(request.getName());
+        Entity entity = new Entity();
         entity.setApiKey(request.getApiKey());
         entity.setLabel(request.getLabel());
         entity.setLabelKey(request.getLabelKey());
-        entity.setObjectType(request.getObjectType());
-        entity.setSvgId(request.getSvgId());
-        entity.setSvgColor(request.getSvgColor());
+        entity.setNamespace(request.getNamespace());
         entity.setDescription(request.getDescription());
+        entity.setEntityType(request.getEntityType());
+        entity.setSvgApiKey(request.getSvgApiKey());
+        entity.setSvgColor(request.getSvgColor());
         entity.setCustomFlg(request.getCustomFlg());
         entity.setBusinessCategory(request.getBusinessCategory());
         entity.setTypeProperty(request.getTypeProperty());
         entity.setDbTable(request.getDbTable());
-        entity.setEnableTeam(request.getEnableTeam());
-        entity.setEnableSharing(request.getEnableSharing());
-        entity.setEnableHistoryLog(request.getEnableHistoryLog());
-        entity.setEnableReport(request.getEnableReport());
-        entity.setEnableApi(request.getEnableApi());
-        entity.setEnablePackage(request.getEnablePackage());
         entity.setEnableFlg(1);
         customEntityService.save(entity);
-        metaLogService.log(request.getTenantId(), entity.getId(), entity.getId(), null,
-                null, entity.getApiKey(), 1);
         return MetaRepoConverter.toXEntity(entity);
     }
 
     @Override
-    @PutMapping("/write/entity/{entityId}")
-    public XEntity updateEntity(@PathVariable("entityId") Long entityId,
-                                 @RequestBody UpdateEntityRequest request) {
-        TenantEntity entity = customEntityService.getByIdAndTenant(entityId, request.getTenantId());
+    @PutMapping("/write/entity")
+    public XEntity updateEntity(@RequestBody UpdateEntityRequest request) {
+        Entity entity = customEntityService.getByApiKeyMerged(request.getApiKey());
         if (entity == null) {
-            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, entityId);
+            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, request.getApiKey());
         }
         if (request.getLabel() != null) entity.setLabel(request.getLabel());
         if (request.getDescription() != null) entity.setDescription(request.getDescription());
-        if (request.getSvgId() != null) entity.setSvgId(request.getSvgId());
+        if (request.getSvgApiKey() != null) entity.setSvgApiKey(request.getSvgApiKey());
         if (request.getSvgColor() != null) entity.setSvgColor(request.getSvgColor());
-        if (request.getEnableTeam() != null) entity.setEnableTeam(request.getEnableTeam());
-        if (request.getEnableSharing() != null) entity.setEnableSharing(request.getEnableSharing());
-        if (request.getEnableHistoryLog() != null) entity.setEnableHistoryLog(request.getEnableHistoryLog());
-        if (request.getEnableReport() != null) entity.setEnableReport(request.getEnableReport());
-        if (request.getEnableApi() != null) entity.setEnableApi(request.getEnableApi());
         customEntityService.updateById(entity);
-        metaLogService.log(request.getTenantId(), entityId, entityId, null,
-                null, entity.getApiKey(), 2);
         return MetaRepoConverter.toXEntity(entity);
     }
 
     @Override
     @DeleteMapping("/write/entity")
-    public void deleteEntity(@RequestParam("tenantId") Long tenantId,
-                              @RequestParam("entityId") Long entityId) {
-        boolean deleted = customEntityService.softDelete(entityId, tenantId);
-        if (!deleted) {
-            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, entityId);
+    public void deleteEntity(@RequestParam("apiKey") String apiKey) {
+        Entity entity = customEntityService.getByApiKeyMerged(apiKey);
+        if (entity == null) {
+            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, apiKey);
         }
-        metaLogService.log(tenantId, entityId, entityId, null, null, null, 3);
+        customEntityService.removeById(entity.getId());
     }
 
     @Override
     @PostMapping("/write/item")
     public XItem createItem(@RequestBody CreateItemRequest request) {
-        if (customItemService.existsApiKey(request.getTenantId(), request.getEntityId(), request.getApiKey())) {
-            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, request.getApiKey());
-        }
-        TenantItem item = new TenantItem();
-        item.setTenantId(request.getTenantId());
-        item.setEntityId(request.getEntityId());
-        item.setName(request.getName());
+        EntityItem item = new EntityItem();
+        item.setEntityApiKey(request.getEntityApiKey());
         item.setApiKey(request.getApiKey());
         item.setLabel(request.getLabel());
         item.setLabelKey(request.getLabelKey());
+        item.setName(request.getName());
         item.setItemType(request.getItemType());
         item.setDataType(request.getDataType());
         item.setTypeProperty(request.getTypeProperty());
@@ -138,37 +112,27 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         item.setRequireFlg(request.getRequireFlg() != null ? request.getRequireFlg() : 0);
         item.setCustomFlg(request.getCustomFlg() != null ? request.getCustomFlg() : 1);
         item.setEnableFlg(1);
-        item.setDeleteFlg(0);
-        item.setCreatable(request.getCreatable());
-        item.setUpdatable(request.getUpdatable());
-        item.setUniqueKeyFlg(request.getUniqueKeyFlg());
-        item.setHiddenFlg(request.getHiddenFlg());
-        item.setReferEntityId(request.getReferEntityId());
         item.setDbColumn(request.getDbColumn());
         item.setItemOrder(request.getItemOrder() != null ? request.getItemOrder() : 0);
         customItemService.save(item);
-        metaLogService.log(request.getTenantId(), item.getId(), request.getEntityId(), null,
-                null, item.getApiKey(), 1);
         return MetaRepoConverter.toXItem(item);
     }
 
     @Override
-    @PutMapping("/write/item/{itemId}")
-    public XItem updateItem(@PathVariable("itemId") Long itemId,
-                             @RequestBody UpdateItemRequest request) {
+    @PutMapping("/write/item")
+    public XItem updateItem(@RequestBody UpdateItemRequest request) {
         // TODO: 实现字段更新
         throw new UnsupportedOperationException("updateItem 待实现");
     }
 
     @Override
     @DeleteMapping("/write/item")
-    public void deleteItem(@RequestParam("tenantId") Long tenantId,
-                            @RequestParam("itemId") Long itemId) {
-        boolean deleted = customItemService.softDelete(itemId, tenantId);
-        if (!deleted) {
-            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, itemId);
+    public void deleteItem(@RequestParam("apiKey") String apiKey) {
+        EntityItem item = customItemService.getByApiKeyMerged(apiKey);
+        if (item == null) {
+            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, apiKey);
         }
-        metaLogService.log(tenantId, itemId, null, null, null, null, 3);
+        customItemService.removeById(item.getId());
     }
 
     @Override
@@ -181,33 +145,25 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     @Override
     @PostMapping("/write/entity-link")
     public XLink createEntityLink(@RequestBody CreateLinkRequest request) {
-        TenantEntityLink link = new TenantEntityLink();
-        link.setTenantId(request.getTenantId());
-        link.setName(request.getName());
+        EntityLink link = new EntityLink();
         link.setApiKey(request.getApiKey());
         link.setLabel(request.getLabel());
+        link.setName(request.getName());
         link.setLinkType(request.getLinkType());
-        link.setParentEntityId(request.getParentEntityId());
-        link.setChildEntityId(request.getChildEntityId());
+        link.setParentEntityApiKey(request.getParentEntityApiKey());
+        link.setChildEntityApiKey(request.getChildEntityApiKey());
         link.setCascadeDelete(request.getCascadeDelete() != null ? request.getCascadeDelete() : 0);
         link.setAccessControl(request.getAccessControl() != null ? request.getAccessControl() : 0);
         link.setEnableFlg(1);
-        link.setDeleteFlg(0);
         customEntityLinkService.save(link);
-        metaLogService.log(request.getTenantId(), link.getId(), null, null,
-                null, link.getApiKey(), 1);
         return MetaRepoConverter.toXLink(link);
     }
 
     @Override
     @DeleteMapping("/write/entity-link")
-    public void deleteEntityLink(@RequestParam("tenantId") Long tenantId,
-                                  @RequestParam("linkId") Long linkId) {
-        boolean deleted = customEntityLinkService.softDelete(linkId, tenantId);
-        if (!deleted) {
-            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, linkId);
-        }
-        metaLogService.log(tenantId, linkId, null, null, null, null, 3);
+    public void deleteEntityLink(@RequestParam("apiKey") String apiKey) {
+        // TODO: 按 apiKey 查找并删除
+        throw new UnsupportedOperationException("deleteEntityLink 待实现");
     }
 
     @Override
@@ -218,9 +174,8 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     }
 
     @Override
-    @PutMapping("/write/check-rule/{ruleId}")
-    public XCheckRule updateCheckRule(@PathVariable("ruleId") Long ruleId,
-                                      @RequestBody UpdateCheckRuleRequest request) {
+    @PutMapping("/write/check-rule")
+    public XCheckRule updateCheckRule(@RequestBody UpdateCheckRuleRequest request) {
         // TODO: 实现校验规则更新
         throw new UnsupportedOperationException("updateCheckRule 待实现");
     }

@@ -2,21 +2,19 @@ package com.hongyang.platform.metarepo.service.api.metamodel;
 
 import com.hongyang.platform.metarepo.core.api.MetaRepoReadApi;
 import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
+import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
 import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
-import com.hongyang.platform.metarepo.core.model.metamodel.XMetaModel;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
-import com.hongyang.platform.metarepo.service.service.metadata.ITenantCheckRuleService;
-import com.hongyang.platform.metarepo.service.service.metadata.ITenantEntityLinkService;
-import com.hongyang.platform.metarepo.service.service.metadata.ITenantItemService;
-import com.hongyang.platform.metarepo.service.service.metadata.ITenantPickOptionService;
-import com.hongyang.platform.metarepo.service.service.IMetaModelQueryService;
+import com.hongyang.platform.metarepo.service.service.metadata.ICheckRuleService;
+import com.hongyang.platform.metarepo.service.service.metadata.IEntityLinkService;
+import com.hongyang.platform.metarepo.service.service.metadata.IEntityService;
+import com.hongyang.platform.metarepo.service.service.metadata.IItemService;
+import com.hongyang.platform.metarepo.service.service.metadata.IPickOptionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,64 +27,45 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MetaRepoReadApiService implements MetaRepoReadApi {
 
-    private final IMetaModelQueryService metaModelQueryService;
-    private final ITenantItemService customItemService;
-    private final ITenantPickOptionService customPickOptionService;
-    private final ITenantCheckRuleService customCheckRuleService;
-    private final ITenantEntityLinkService customEntityLinkService;
+    private final IEntityService customEntityService;
+    private final IItemService customItemService;
+    private final IPickOptionService customPickOptionService;
+    private final ICheckRuleService customCheckRuleService;
+    private final IEntityLinkService customEntityLinkService;
 
     @Override
-    @GetMapping("/read/metamodel")
-    public XMetaModel getMetaModel(@RequestParam("tenantId") Long tenantId,
-                                    @RequestParam("objectApiKey") String objectApiKey) {
-        return metaModelQueryService.getMetaModel(tenantId, objectApiKey);
+    @GetMapping("/read/entities")
+    public List<XEntity> listEntities() {
+        return MetaRepoConverter.toXEntityList(customEntityService.listMerged());
     }
 
     @Override
-    @PostMapping("/read/metamodel/batch")
-    public List<XMetaModel> batchGetMetaModel(@RequestParam("tenantId") Long tenantId,
-                                               @RequestBody List<String> apiKeys) {
-        return metaModelQueryService.batchGetMetaModel(tenantId, apiKeys);
-    }
-
-    @Override
-    @GetMapping("/read/metamodel/list")
-    public List<XMetaModel> listMetaModels(@RequestParam("tenantId") Long tenantId) {
-        return metaModelQueryService.listMetaModels(tenantId);
+    @GetMapping("/read/entity")
+    public XEntity getEntity(@RequestParam("apiKey") String apiKey) {
+        return MetaRepoConverter.toXEntity(customEntityService.getByApiKeyMerged(apiKey));
     }
 
     @Override
     @GetMapping("/read/items")
-    public List<XItem> listItems(@RequestParam("tenantId") Long tenantId,
-                                  @RequestParam("entityId") Long entityId) {
-        return MetaRepoConverter.toXItemList(customItemService.listByEntityId(tenantId, entityId));
-    }
-
-    @Override
-    @GetMapping("/read/field-meta")
-    public List<XItem> getFieldMeta(@RequestParam("tenantId") Long tenantId,
-                                     @RequestParam("entityId") Long entityId) {
-        return metaModelQueryService.getFieldMeta(tenantId, entityId);
+    public List<XItem> listItems(@RequestParam("entityApiKey") String entityApiKey) {
+        return MetaRepoConverter.toXItemList(customItemService.listMerged(entityApiKey));
     }
 
     @Override
     @GetMapping("/read/pick-options")
-    public List<XPickOption> listPickOptions(@RequestParam("tenantId") Long tenantId,
-                                              @RequestParam("itemId") Long itemId) {
-        return MetaRepoConverter.toXPickOptionList(customPickOptionService.listByItemId(tenantId, itemId));
+    public List<XPickOption> listPickOptions(@RequestParam("itemApiKey") String itemApiKey) {
+        return MetaRepoConverter.toXPickOptionList(customPickOptionService.listMerged(itemApiKey));
     }
 
     @Override
     @GetMapping("/read/check-rules")
-    public List<XCheckRule> listCheckRules(@RequestParam("tenantId") Long tenantId,
-                                            @RequestParam("entityId") Long entityId) {
-        return MetaRepoConverter.toXCheckRuleList(customCheckRuleService.listByEntityId(tenantId, entityId));
+    public List<XCheckRule> listCheckRules(@RequestParam("entityApiKey") String entityApiKey) {
+        return MetaRepoConverter.toXCheckRuleList(customCheckRuleService.listMerged(entityApiKey));
     }
 
     @Override
     @GetMapping("/read/entity-links")
-    public List<XLink> listEntityLinks(@RequestParam("tenantId") Long tenantId,
-                                        @RequestParam("entityId") Long entityId) {
-        return MetaRepoConverter.toXLinkList(customEntityLinkService.listByEntityId(tenantId, entityId));
+    public List<XLink> listEntityLinks(@RequestParam("entityApiKey") String entityApiKey) {
+        return MetaRepoConverter.toXLinkList(customEntityLinkService.listMerged(entityApiKey));
     }
 }

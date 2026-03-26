@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity.metadata.tenant;
+package com.hongyang.platform.metarepo.service.entity.metadata;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.IdType;

@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity.metadata.tenant;
+package com.hongyang.platform.metarepo.service.entity.metadata;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_entity_link")
 @CommonTenantSplit(commonTable = "p_common_entity_link")
-public class TenantEntityLink extends BaseMetaTenantEntity {
+public class EntityLink extends BaseMetaTenantEntity {
 
     private String name;
     private String nameKey;
