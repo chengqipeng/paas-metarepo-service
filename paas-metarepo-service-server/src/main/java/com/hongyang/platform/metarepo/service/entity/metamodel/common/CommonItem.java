@@ -1,29 +1,23 @@
-package com.hongyang.platform.metarepo.service.entity;
+package com.hongyang.platform.metarepo.service.entity.metamodel.common;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
-import java.io.Serializable;
 
 /**
  * Common 级字段定义（p_common_item，无 tenant_id）
  */
 @Data
 @TableName("p_common_item")
-public class CommonItem implements Serializable {
+public class CommonItem extends BaseEntity {
 
-    @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
-    private Long entityId;
-    private String name;
-    private String nameKey;
+    private String entityApiKey;
     private String apiKey;
+    private String namespace;
     private String label;
     private String labelKey;
+    private String name;
+    private String nameKey;
     private Integer itemType;
     private Integer dataType;
     private String typeProperty;
@@ -34,8 +28,6 @@ public class CommonItem implements Serializable {
     private Integer customItemseq;
     private String defaultValue;
     private Integer requireFlg;
-    @TableLogic(value = "0", delval = "1")
-    private Integer deleteFlg;
     private Integer customFlg;
     private Integer enableFlg;
     private Integer creatable;
@@ -47,18 +39,11 @@ public class CommonItem implements Serializable {
     private Integer readonlyStatus;
     private Integer visibleStatus;
     private Integer hiddenFlg;
-    private Long referEntityId;
-    private Long referLinkId;
+    private String referEntityApiKey;
+    private String referLinkApiKey;
     private String dbColumn;
     private Integer itemOrder;
     private Integer sortFlg;
     private String columnName;
-    @TableField(fill = FieldFill.INSERT)
-    private Long createdAt;
-    @TableField(fill = FieldFill.INSERT)
-    private Long createdBy;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updatedAt;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Long updatedBy;
+
 }

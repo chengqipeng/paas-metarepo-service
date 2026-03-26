@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component;
  * 校验写入字段值是否在 p_meta_option 定义的合法范围内
  *
  * p_meta_item 中 item_type=6 的字段（select 类型）必须通过 MetaOption 管控取值：
- * - metamodel#1 (TenantEntity): object_type(103), enable_sharing(105),
- *   enable_team(106), searchable(107), enable_report(108), enable_api(109)
- * - metamodel#2 (TenantItem): item_type(203), data_type(204), require_flg(205)
+ * - CustomEntity: object_type, enable_sharing, enable_team, searchable, enable_report, enable_api
+ * - CustomItem: item_type, data_type, require_flg
  */
 @Component
 @RequiredArgsConstructor
@@ -21,20 +20,20 @@ public class MetaOptionValidator {
 
     private final IMetaOptionService metaOptionService;
 
-    // ==================== metamodel#1 字段项 ID ====================
-    private static final long METAMODEL_ENTITY = 1L;
-    private static final long ITEM_OBJECT_TYPE = 103L;
-    private static final long ITEM_ENABLE_SHARING = 105L;
-    private static final long ITEM_ENABLE_TEAM = 106L;
-    private static final long ITEM_SEARCHABLE = 107L;
-    private static final long ITEM_ENABLE_REPORT = 108L;
-    private static final long ITEM_ENABLE_API = 109L;
+    // ==================== CustomEntity 元模型字段项 apiKey ====================
+    private static final String METAMODEL_ENTITY = "CustomEntity";
+    private static final String ITEM_OBJECT_TYPE = "object_type";
+    private static final String ITEM_ENABLE_SHARING = "enable_sharing";
+    private static final String ITEM_ENABLE_TEAM = "enable_team";
+    private static final String ITEM_SEARCHABLE = "searchable";
+    private static final String ITEM_ENABLE_REPORT = "enable_report";
+    private static final String ITEM_ENABLE_API = "enable_api";
 
-    // ==================== metamodel#2 字段项 ID ====================
-    private static final long METAMODEL_ITEM = 2L;
-    private static final long ITEM_ITEM_TYPE = 203L;
-    private static final long ITEM_DATA_TYPE = 204L;
-    private static final long ITEM_REQUIRE_FLG = 205L;
+    // ==================== CustomItem 元模型字段项 apiKey ====================
+    private static final String METAMODEL_ITEM = "CustomItem";
+    private static final String ITEM_ITEM_TYPE = "item_type";
+    private static final String ITEM_DATA_TYPE = "data_type";
+    private static final String ITEM_REQUIRE_FLG = "require_flg";
 
     /**
      * 校验 createEntity 请求中的 select 类型字段
@@ -62,11 +61,11 @@ public class MetaOptionValidator {
     /**
      * 通用校验：值是否在 MetaOption 定义的合法 option_code 范围内
      */
-    private void validateField(Long metamodelId, Long itemId, Integer value, String fieldName) {
+    private void validateField(String metamodelApiKey, String itemApiKey, Integer value, String fieldName) {
         if (value == null) {
             return;
         }
-        if (!metaOptionService.isValidCode(metamodelId, itemId, value)) {
+        if (!metaOptionService.isValidCode(metamodelApiKey, itemApiKey, value)) {
             throw new BaseKnownException(
                     MetaRepoErrorCodeEnum.META_OPTION_INVALID,
                     fieldName + "=" + value

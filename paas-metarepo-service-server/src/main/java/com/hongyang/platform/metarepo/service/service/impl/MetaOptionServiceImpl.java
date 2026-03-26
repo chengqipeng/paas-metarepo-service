@@ -18,22 +18,22 @@ public class MetaOptionServiceImpl
         implements IMetaOptionService {
 
     @Override
-    public List<MetaOption> listByItemId(Long metamodelId, Long itemId) {
+    public List<MetaOption> listByItemApiKey(String metamodelApiKey, String itemApiKey) {
         return lambdaQuery()
-                .eq(MetaOption::getMetamodelId, metamodelId)
-                .eq(MetaOption::getItemId, itemId)
+                .eq(MetaOption::getMetamodelApiKey, metamodelApiKey)
+                .eq(MetaOption::getItemApiKey, itemApiKey)
                 .list();
     }
 
     @Override
-    public Set<Integer> getValidCodes(Long metamodelId, Long itemId) {
-        return listByItemId(metamodelId, itemId).stream()
+    public Set<Integer> getValidCodes(String metamodelApiKey, String itemApiKey) {
+        return listByItemApiKey(metamodelApiKey, itemApiKey).stream()
                 .map(MetaOption::getOptionCode)
                 .collect(Collectors.toSet());
     }
 
     @Override
-    public boolean isValidCode(Long metamodelId, Long itemId, Integer code) {
-        return getValidCodes(metamodelId, itemId).contains(code);
+    public boolean isValidCode(String metamodelApiKey, String itemApiKey, Integer code) {
+        return getValidCodes(metamodelApiKey, itemApiKey).contains(code);
     }
 }

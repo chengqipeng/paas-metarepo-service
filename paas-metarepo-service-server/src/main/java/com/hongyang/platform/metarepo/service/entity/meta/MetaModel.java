@@ -1,6 +1,5 @@
 package com.hongyang.platform.metarepo.service.entity.meta;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseEntity;
 import lombok.Data;
@@ -15,6 +14,7 @@ import lombok.EqualsAndHashCode;
 public class MetaModel extends BaseEntity {
 
     private String apiKey;
+    private String namespace;
     private String label;
     private String labelKey;
     private Integer metamodelType;
@@ -30,7 +30,7 @@ public class MetaModel extends BaseEntity {
     private String dbTable;
     private String description;
     private String descriptionKey;
-    private Integer entityDependency;
+    private Integer xobjectDependency;
     private Integer visible;
 
 }

@@ -15,16 +15,16 @@ public interface IMetaOptionService extends IBaseService<MetaOption> {
     /**
      * 查询指定元模型字段项的所有选项值
      */
-    List<MetaOption> listByItemId(Long metamodelId, Long itemId);
+    List<MetaOption> listByItemApiKey(String metamodelApiKey, String itemApiKey);
 
     /**
      * 获取指定元模型字段项的合法 option_code 集合
      */
-    Set<Integer> getValidCodes(Long metamodelId, Long itemId);
+    Set<Integer> getValidCodes(String metamodelApiKey, String itemApiKey);
 
     /**
      * 校验 option_code 是否在合法范围内
      * @return true=合法
      */
-    boolean isValidCode(Long metamodelId, Long itemId, Integer code);
+    boolean isValidCode(String metamodelApiKey, String itemApiKey, Integer code);
 }
