@@ -7,7 +7,6 @@ import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantCheckRule;
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntity;
-import com.hongyang.platform.metarepo.service.entity.metadata.common.CommonEntity;
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantEntityLink;
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantItem;
 import com.hongyang.platform.metarepo.service.entity.metadata.tenant.TenantPickOption;
@@ -243,51 +242,4 @@ public final class MetaRepoConverter {
         return list.stream().map(MetaRepoConverter::toXCheckRule).collect(Collectors.toList());
     }
 
-    // ==================== Common Entity -> XEntity ====================
-
-    public static XEntity commonToXEntity(CommonEntity e) {
-        if (e == null) return null;
-        XEntity x = new XEntity();
-        x.setId(e.getId());
-        x.setNameSpace(e.getNameSpace());
-        x.setEntityId(e.getObjectId());
-        x.setName(e.getName());
-        x.setNameKey(e.getNameKey());
-        x.setApiKey(e.getApiKey());
-        x.setLabel(e.getLabel());
-        x.setLabelKey(e.getLabelKey());
-        x.setObjectType(e.getObjectType());
-        x.setSvgId(e.getSvgId());
-        x.setSvgColor(e.getSvgColor());
-        x.setDescription(e.getDescription());
-        x.setDescriptionKey(e.getDescriptionKey());
-        x.setTenantEntityseq(e.getTenantEntityseq());
-        x.setDeleteFlg(e.getDeleteFlg());
-        x.setEnableFlg(e.getEnableFlg());
-        x.setCustomFlg(e.getCustomFlg());
-        x.setBusinessCategory(e.getBusinessCategory());
-        x.setTypeProperty(e.getTypeProperty());
-        x.setDbTable(e.getDbTable());
-        x.setDetailFlg(e.getDetailFlg());
-        x.setEnableTeam(e.getEnableTeam());
-        x.setEnableSocial(e.getEnableSocial());
-        x.setEnableConfig(e.getEnableConfig());
-        x.setHiddenFlg(e.getHiddenFlg());
-        x.setSearchable(e.getSearchable());
-        x.setEnableSharing(e.getEnableSharing());
-        x.setEnableScriptTrigger(e.getEnableScriptTrigger());
-        x.setEnableActivity(e.getEnableActivity());
-        x.setEnableHistoryLog(e.getEnableHistoryLog());
-        x.setEnableReport(e.getEnableReport());
-        x.setEnableRefer(e.getEnableRefer());
-        x.setEnableApi(e.getEnableApi());
-        x.setEnableFlow(e.getEnableFlow());
-        x.setEnablePackage(e.getEnablePackage());
-        x.setExtendProperty(e.getExtendProperty());
-        x.setCreatedAt(e.getCreatedAt());
-        x.setCreatedBy(e.getCreatedBy());
-        x.setUpdatedAt(e.getUpdatedAt());
-        x.setUpdatedBy(e.getUpdatedBy());
-        return x;
-    }
 }

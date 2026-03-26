@@ -1,26 +1,23 @@
-package com.hongyang.platform.metarepo.service.entity;
+package com.hongyang.platform.metarepo.service.entity.metadata.tenant;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseEntity;
+import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
+import com.hongyang.framework.dao.split.CommonTenantSplit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 自定义字段定义
+ * 字段定义（Common/Tenant 共用）
  * Tenant 表：p_custom_item（有 tenant_id）
  * Common 表：p_common_item（无 tenant_id）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_item")
-public class TenantItem extends BaseEntity {
+@CommonTenantSplit(commonTable = "p_common_item")
+public class TenantItem extends BaseMetaTenantEntity {
 
-    private Long entityId;
-    private String name;
-    private String nameKey;
-    private String apiKey;
-    private String label;
-    private String labelKey;
+    private String entityApiKey;
     private Integer itemType;
     private Integer dataType;
     private String typeProperty;
@@ -28,7 +25,7 @@ public class TenantItem extends BaseEntity {
     private String helpTextKey;
     private String description;
     private String descriptionKey;
-    private Integer customItemseq;
+    private Integer customItemSeq;
     private String defaultValue;
     private Integer requireFlg;
     private Integer customFlg;
@@ -42,8 +39,8 @@ public class TenantItem extends BaseEntity {
     private Integer readonlyStatus;
     private Integer visibleStatus;
     private Integer hiddenFlg;
-    private Long referEntityId;
-    private Long referLinkId;
+    private String referEntityApiKey;
+    private String referLinkApiKey;
     private String dbColumn;
     private Integer itemOrder;
     private Integer sortFlg;

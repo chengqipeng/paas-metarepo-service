@@ -1,29 +1,25 @@
-package com.hongyang.platform.metarepo.service.entity;
+package com.hongyang.platform.metarepo.service.entity.metadata.tenant;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseEntity;
+import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
+import com.hongyang.framework.dao.split.CommonTenantSplit;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 字段选项值
+ * 字段选项值（Common/Tenant 共用）
  * Tenant 表：p_custom_pickoption（有 tenant_id）
- * Common 表：p_common_pickoption（无 tenant_id）
+ * Common 表：p_common_pick_option（无 tenant_id）
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_custom_pickoption")
-public class TenantPickOption extends BaseEntity {
+@CommonTenantSplit(commonTable = "p_common_pick_option")
+public class TenantPickOption extends BaseMetaTenantEntity {
 
-    private Long entityId;
-    private Long itemId;
-    private String apiKey;
-    private Integer optionCode;
-    @TableField("option_label")
-    private String label;
-    @TableField("option_label_key")
-    private String labelKey;
+    private String entityApiKey;
+    private String itemApiKey;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer globalFlg;
