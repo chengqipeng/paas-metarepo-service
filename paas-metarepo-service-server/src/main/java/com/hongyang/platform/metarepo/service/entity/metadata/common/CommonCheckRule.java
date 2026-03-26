@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.entity;
+package com.hongyang.platform.metarepo.service.entity.metadata.common;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;

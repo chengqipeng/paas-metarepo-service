@@ -16,6 +16,7 @@ public class CommonEntity extends BaseEntity {
     private String labelKey;
     private String nameSpace;
     private Integer entityType;
+    private String svgApiKey;
     private String svgColor;
     private String description;
     private String descriptionKey;

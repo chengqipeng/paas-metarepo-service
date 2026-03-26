@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_meta_module_metadata")
-public class MetaModuleMetadata extends BaseEntity {
+public class CommonMetaModuleMetadata extends BaseEntity {
 
     private Long moduleId;
     private Long metadataId;

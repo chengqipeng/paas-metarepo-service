@@ -16,14 +16,11 @@ import lombok.EqualsAndHashCode;
 public class TenantEntity extends BaseEntity {
 
     private String nameSpace;
-    private Long objectId;
-    private String name;
-    private String nameKey;
     private String apiKey;
     private String label;
     private String labelKey;
-    private Integer objectType;
-    private Long svgId;
+    private Integer entityType;
+    private String svgApiKey;
     private String svgColor;
     private String description;
     private String descriptionKey;
