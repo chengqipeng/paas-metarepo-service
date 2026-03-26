@@ -1,0 +1,187 @@
+# 元数据设计规范
+
+本文档定义 aPaaS 平台元数据的存储、命名、关联、唯一性等规范。所有新增元数据必须遵循。
+
+---
+
+## 1. 双库架构
+
+| 数据库 | 用途 | 表前缀 |
+|---|---|---|
+| paas_metarepo_common | 元模型定义 + Common 级元数据 | p_meta_*、p_common_* |
+| paas_metarepo | Tenant 级元数据 + 日志等 | p_tenant_*、p_meta_log 等 |
+
+---
+
+## 2. 表命名规范
+
+| 类型 | 前缀 | tenant_id | 示例 |
+|---|---|---|---|
+| 元模型定义 | p_meta_ | 无 | p_meta_model、p_meta_item |
+| Common 元数据 | p_common_ | 无 | p_common_entity、p_common_item |
+| Tenant 元数据 | p_tenant_ | 有 | p_tenant_entity、p_tenant_item |
+
+---
+
+## 3. namespace 分类
+
+所有元数据必须有 `namespace` 字段（VARCHAR(50) NOT NULL）：
+
+| namespace | 含义 | 存储位置 | 可见性 |
+|---|---|---|---|
+| system | 系统出厂元数据 | p_common_* | 所有租户可见，不受 license 控制 |
+| product | 业务产品出厂元数据 | p_common_* | 受 license 控制，付费可见 |
+| custom | 客户自定义元数据 | p_tenant_* | 所有租户管理员可见 |
+
+---
+
+## 4. 主键与必填字段规范
+
+### 4.1 主键规范（禁止使用自增 ID）
+
+元数据表禁止使用 `id` 列作为主键，统一使用 `api_key` 或联合主键：
+
+| 元数据类型 | 主键（Common 表） | 主键（Tenant 表） |
+|---|---|---|
+| entity | api_key | (tenant_id, api_key) |
+| item | (entity_api_key, api_key) | (tenant_id, entity_api_key, api_key) |
+| pickoption | (entity_api_key, item_api_key, api_key) | (tenant_id, entity_api_key, item_api_key, api_key) |
+| entity_link | api_key | (tenant_id, api_key) |
+| check_rule | (entity_api_key, api_key) | (tenant_id, entity_api_key, api_key) |
+| metadata（大宽表） | (metamodel_api_key, api_key) | (tenant_id, metamodel_api_key, api_key) |
+| meta_model | api_key | - |
+| meta_item | (metamodel_api_key, api_key) | - |
+| meta_option | (metamodel_api_key, item_api_key, option_code) | - |
+
+### 4.2 必填字段
+
+所有元数据表必须包含以下字段：
+
+| 字段 | 类型 | 约束 | 说明 |
+|---|---|---|---|
+| namespace | VARCHAR(50) | NOT NULL | 元数据分类 |
+| api_key | VARCHAR(255) | NOT NULL | 唯一标识（参与主键） |
+| label | VARCHAR(255) | NOT NULL | 显示标签 |
+| label_key | VARCHAR(255) | | 多语言 Key |
+
+所有文本字段必须有对应的 xxxKey 国际化字段：
+- name → name_key
+- label → label_key
+- description → description_key
+- help_text → help_text_key
+
+Tenant 级表额外必须有：
+- tenant_id BIGINT NOT NULL
+
+Common 级表禁止有 tenant_id 字段。
+
+---
+
+## 5. 关联规范（禁止 ID 关联，统一用 api_key）
+
+元数据之间的关联禁止使用 ID（如 entity_id、item_id），统一使用 api_key 关联。
+
+### 5.1 唯一性层级
+
+| 元数据类型 | api_key 唯一范围 | 定位方式 |
+|---|---|---|
+| entity（对象） | 全局唯一 | api_key |
+| item（字段） | 同一对象内唯一 | entity_api_key + api_key |
+| pickoption（选项值） | 同一字段内唯一 | entity_api_key + item_api_key + api_key |
+| entity_link（关联） | 全局唯一 | api_key |
+| check_rule（校验规则） | 同一对象内唯一 | entity_api_key + api_key |
+| metamodel（元模型） | 全局唯一 | api_key |
+
+### 5.2 各表关联字段改造
+
+**p_common_item / p_tenant_item（字段表）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| entity_id | entity_api_key VARCHAR(255) NOT NULL | 所属对象 |
+| refer_entity_id | refer_entity_api_key VARCHAR(255) | LOOKUP 目标对象 |
+| refer_link_id | refer_link_api_key VARCHAR(255) | 关联关系 |
+| 唯一索引 | (entity_api_key, api_key) | |
+
+**p_common_pickoption / p_tenant_pickoption（选项值表）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| entity_id | entity_api_key VARCHAR(255) NOT NULL | 所属对象 |
+| item_id | item_api_key VARCHAR(255) NOT NULL | 所属字段 |
+| 唯一索引 | (entity_api_key, item_api_key, api_key) | 三级级联唯一 |
+
+**p_common_entity_link / p_tenant_entity_link（关联关系表）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| parent_entity_id | parent_entity_api_key VARCHAR(255) NOT NULL | 父对象 |
+| child_entity_id | child_entity_api_key VARCHAR(255) NOT NULL | 子对象 |
+| 唯一索引 | (api_key) | 全局唯一 |
+
+**p_common_check_rule / p_tenant_check_rule（校验规则表）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| entity_id | entity_api_key VARCHAR(255) NOT NULL | 所属对象 |
+| check_error_item_id | check_error_item_api_key VARCHAR(255) | 错误字段（同对象内） |
+| 唯一索引 | (entity_api_key, api_key) | |
+
+**p_common_metadata / p_tenant_metadata（大宽表）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| metamodel_id | metamodel_api_key VARCHAR(255) NOT NULL | 元模型类型 |
+| parent_entity_id | parent_entity_api_key VARCHAR(255) | 父对象 |
+| owner_id | owner_api_key VARCHAR(255) | 所属 Module |
+| 唯一索引 | Common: (metamodel_api_key, api_key) | |
+| | Tenant: (tenant_id, metamodel_api_key, api_key) | |
+
+**p_meta_item（元模型字段项）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| metamodel_id | metamodel_api_key VARCHAR(255) NOT NULL | 所属元模型 |
+| 唯一索引 | (metamodel_api_key, api_key) | |
+
+**p_meta_option（元模型选项值）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| metamodel_id | metamodel_api_key VARCHAR(255) NOT NULL | 所属元模型 |
+| item_id | item_api_key VARCHAR(255) NOT NULL | 所属字段项 |
+| 唯一索引 | (metamodel_api_key, item_api_key, option_code) | |
+
+**p_meta_link（元模型关联）**
+
+| 旧字段 | 新字段 | 说明 |
+|---|---|---|
+| refer_item_id | refer_item_api_key VARCHAR(255) NOT NULL | 关联字段项 |
+| child_metamodel_id | child_metamodel_api_key VARCHAR(255) | 子元模型 |
+| parent_metamodel_id | parent_metamodel_api_key VARCHAR(255) | 父元模型 |
+
+---
+
+## 6. Common/Tenant 合并查询规范
+
+查询时通过 `CommonTenantServiceImpl` 合并两层数据：
+
+1. 查 Common 表（p_common_*，无 tenant_id 条件）
+2. 查 Tenant 表（p_tenant_*，WHERE tenant_id = ?）
+3. 按 api_key 合并：
+   - Common 有、Tenant 无 → 使用 Common
+   - 同 api_key → Tenant 覆盖 Common
+   - Tenant 独有 → 纯租户自定义
+   - Tenant delete_flg=1 → 对此租户隐藏
+4. namespace 过滤：product 类型检查 license
+
+---
+
+## 7. DDL 兼容规范
+
+所有 DDL 必须同时兼容 MySQL 和 PostgreSQL：
+- 主键：BIGINT NOT NULL（雪花算法）
+- 字符串：VARCHAR(N)
+- 布尔/枚举：SMALLINT
+- 时间戳：BIGINT（毫秒）
+- 禁止：AUTO_INCREMENT、ENGINE、COMMENT、BOOLEAN、ENUM

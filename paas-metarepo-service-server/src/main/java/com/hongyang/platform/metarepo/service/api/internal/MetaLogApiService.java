@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 内部 REST 接口（运维/调试用）
+ * 元数据变更日志 API（内部运维接口）
  */
 @Slf4j
 @RestController
 @RequestMapping("/internal")
 @RequiredArgsConstructor
-public class InternalApiController {
+public class MetaLogApiService {
 
     private final IMetaLogService metaLogService;
 
