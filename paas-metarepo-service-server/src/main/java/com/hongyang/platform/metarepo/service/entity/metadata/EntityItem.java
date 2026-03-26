@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_custom_item")
+@TableName("p_tenant_item")
 @CommonTenantSplit(commonTable = "p_common_item")
 public class EntityItem extends BaseMetaTenantEntity {
 

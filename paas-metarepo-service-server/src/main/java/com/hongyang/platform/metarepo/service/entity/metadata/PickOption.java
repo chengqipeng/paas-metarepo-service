@@ -14,17 +14,12 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_custom_pickoption")
+@TableName("p_tenant_pick_option")
 @CommonTenantSplit(commonTable = "p_common_pick_option")
 public class PickOption extends BaseMetaTenantEntity {
 
     private String entityApiKey;
     private String itemApiKey;
-    private Integer optionCode;
-    @TableField("option_label")
-    private String label;
-    @TableField("option_label_key")
-    private String labelKey;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer globalFlg;

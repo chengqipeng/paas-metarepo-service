@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_custom_check_rule")
+@TableName("p_tenant_check_rule")
 @CommonTenantSplit(commonTable = "p_common_check_rule")
 public class CheckRule extends BaseMetaTenantEntity {
 
