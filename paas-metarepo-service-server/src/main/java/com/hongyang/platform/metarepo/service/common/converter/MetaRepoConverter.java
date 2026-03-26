@@ -1,7 +1,16 @@
 package com.hongyang.platform.metarepo.service.common.converter;
 
-import com.hongyang.platform.metarepo.core.model.metamodel.*;
-import com.hongyang.platform.metarepo.service.entity.*;
+import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
+import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
+import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
+import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
+import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
+import com.hongyang.platform.metarepo.service.entity.CustomCheckRule;
+import com.hongyang.platform.metarepo.service.entity.CustomEntity;
+import com.hongyang.platform.metarepo.service.entity.CustomEntityCommon;
+import com.hongyang.platform.metarepo.service.entity.CustomEntityLink;
+import com.hongyang.platform.metarepo.service.entity.CustomItem;
+import com.hongyang.platform.metarepo.service.entity.CustomPickOption;
 
 import java.util.Collections;
 import java.util.List;

@@ -1,7 +1,14 @@
 package com.hongyang.platform.metarepo.core.api;
 
-import com.hongyang.platform.metarepo.core.model.metamodel.*;
-import org.springframework.web.bind.annotation.*;
+import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
+import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
+import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
+import com.hongyang.platform.metarepo.core.model.metamodel.XMetaModel;
+import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 /**
@@ -9,34 +16,34 @@ import java.util.List;
  */
 public interface MetaRepoReadApi {
 
-    @GetMapping("/rpc/metarepo/read/metamodel")
+    @GetMapping("/metarepo/read/metamodel")
     XMetaModel getMetaModel(@RequestParam("tenantId") Long tenantId,
                              @RequestParam("objectApiKey") String objectApiKey);
 
-    @PostMapping("/rpc/metarepo/read/metamodel/batch")
+    @PostMapping("/metarepo/read/metamodel/batch")
     List<XMetaModel> batchGetMetaModel(@RequestParam("tenantId") Long tenantId,
                                         @RequestBody List<String> apiKeys);
 
-    @GetMapping("/rpc/metarepo/read/metamodel/list")
+    @GetMapping("/metarepo/read/metamodel/list")
     List<XMetaModel> listMetaModels(@RequestParam("tenantId") Long tenantId);
 
-    @GetMapping("/rpc/metarepo/read/items")
+    @GetMapping("/metarepo/read/items")
     List<XItem> listItems(@RequestParam("tenantId") Long tenantId,
                            @RequestParam("entityId") Long entityId);
 
-    @GetMapping("/rpc/metarepo/read/field-meta")
+    @GetMapping("/metarepo/read/field-meta")
     List<XItem> getFieldMeta(@RequestParam("tenantId") Long tenantId,
                               @RequestParam("entityId") Long entityId);
 
-    @GetMapping("/rpc/metarepo/read/pick-options")
+    @GetMapping("/metarepo/read/pick-options")
     List<XPickOption> listPickOptions(@RequestParam("tenantId") Long tenantId,
                                        @RequestParam("itemId") Long itemId);
 
-    @GetMapping("/rpc/metarepo/read/check-rules")
+    @GetMapping("/metarepo/read/check-rules")
     List<XCheckRule> listCheckRules(@RequestParam("tenantId") Long tenantId,
                                      @RequestParam("entityId") Long entityId);
 
-    @GetMapping("/rpc/metarepo/read/entity-links")
+    @GetMapping("/metarepo/read/entity-links")
     List<XLink> listEntityLinks(@RequestParam("tenantId") Long tenantId,
                                  @RequestParam("entityId") Long entityId);
 }
