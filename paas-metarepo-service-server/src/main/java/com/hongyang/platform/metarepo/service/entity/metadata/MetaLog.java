@@ -6,14 +6,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 元数据变更日志（p_meta_log）。
+ * 元数据变更日志（p_tenant_meta_log）。
  * <p>
- * 继承 BaseEntity 以复用 AutoMapperRegistrar 自动注册 Mapper，无需手动创建 Mapper。
- * p_meta_log 在 TenantInterceptor.IGNORE_TABLES 中，不自动注入 tenant_id（运维接口需跨租户查询）。
+ * 继承 BaseEntity 以复用 AutoMapperRegistrar 自动注册 Mapper。
+ * TenantInterceptor 自动注入 tenant_id，业务代码无需手动处理租户过滤。
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_meta_log")
+@TableName("p_tenant_meta_log")
 public class MetaLog extends BaseEntity {
 
     private Long tenantId;

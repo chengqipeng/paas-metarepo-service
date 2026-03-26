@@ -13,11 +13,8 @@ import java.util.List;
 /**
  * 元数据变更日志 Service 实现。
  * <p>
- * 对标老系统 EventHibernateRepoListener + ProduceLogEventService 的异步 MQ 日志，
- * 简化为同步写入 p_meta_log 表。
- * <p>
- * p_meta_log 在 TenantInterceptor.IGNORE_TABLES 中，不自动注入 tenant_id，
- * 查询时需手动指定 tenantId（运维接口支持跨租户查询）。
+ * p_tenant_meta_log 由 TenantInterceptor 自动注入 tenant_id，
+ * 业务代码无需手动处理租户过滤。
  */
 @Slf4j
 @Service
@@ -30,7 +27,6 @@ public class MetaLogServiceImpl
                     Object oldValue, Object newValue, int opType) {
         try {
             MetaLog metaLog = new MetaLog();
-            metaLog.setTenantId(resolveTenantId());
             metaLog.setMetadataApiKey(entityApiKey);
             metaLog.setMetamodelApiKey(metamodelApiKey);
             metaLog.setOldValue(oldValue != null ? JSON.toJSONString(oldValue) : null);
@@ -45,24 +41,17 @@ public class MetaLogServiceImpl
     }
 
     @Override
-    public List<MetaLog> listByTenant(Long tenantId) {
+    public List<MetaLog> listAll() {
         return lambdaQuery()
-            .eq(MetaLog::getTenantId, tenantId)
             .orderByDesc(MetaLog::getCreatedAt)
             .list();
     }
 
     @Override
-    public List<MetaLog> listByMetadataApiKey(Long tenantId, String metadataApiKey) {
+    public List<MetaLog> listByMetadataApiKey(String metadataApiKey) {
         return lambdaQuery()
-            .eq(MetaLog::getTenantId, tenantId)
             .eq(MetaLog::getMetadataApiKey, metadataApiKey)
             .orderByDesc(MetaLog::getCreatedAt)
             .list();
-    }
-
-    private Long resolveTenantId() {
-        String s = GlobalContext.getSystemContext().getTenantId();
-        return (s != null && !s.isEmpty()) ? Long.parseLong(s) : null;
     }
 }

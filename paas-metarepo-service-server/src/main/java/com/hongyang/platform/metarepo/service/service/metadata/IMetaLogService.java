@@ -11,8 +11,6 @@ public interface IMetaLogService {
 
     /**
      * 记录元数据变更日志。
-     * 对标老系统 EventHibernateRepoListener 的 sendLogMessage 逻辑，
-     * 改为同步直接写入 p_meta_log 表。
      *
      * @param entityApiKey    变更的元数据 apiKey
      * @param metamodelApiKey 所属元模型 apiKey
@@ -23,7 +21,7 @@ public interface IMetaLogService {
     void log(String entityApiKey, String metamodelApiKey,
              Object oldValue, Object newValue, int opType);
 
-    List<MetaLog> listByTenant(Long tenantId);
+    List<MetaLog> listAll();
 
-    List<MetaLog> listByMetadataApiKey(Long tenantId, String metadataApiKey);
+    List<MetaLog> listByMetadataApiKey(String metadataApiKey);
 }
