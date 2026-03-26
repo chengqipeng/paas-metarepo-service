@@ -2,7 +2,7 @@ package com.hongyang.platform.metarepo.service.common.utils;
 
 import com.hongyang.framework.base.exception.BaseKnownException;
 import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
-import com.hongyang.platform.metarepo.service.service.IMetaOptionService;
+import com.hongyang.platform.metarepo.service.service.metamodel.IMetaOptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
