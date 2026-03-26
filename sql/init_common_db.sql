@@ -44,7 +44,7 @@ CREATE TABLE p_meta_option (
     metamodel_api_key VARCHAR(255) NOT NULL,
     item_api_key VARCHAR(255) NOT NULL,
     option_code INTEGER NOT NULL,
-    option_key VARCHAR(100), option_label VARCHAR(255), option_label_key VARCHAR(255),
+    option_key VARCHAR(100), label VARCHAR(255), label_key VARCHAR(255),
     option_order SMALLINT DEFAULT 0, default_flg SMALLINT DEFAULT 0,
     enable_flg SMALLINT DEFAULT 1,
     description VARCHAR(500), description_key VARCHAR(255),

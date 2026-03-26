@@ -17,7 +17,7 @@ VALUES
 (104, 0, 1, 'db_table', '数据库表名', 'meta.item.db_table', 1, 1, 4, 1, 1, 0, 0, 'dbc_varchar_3', '对象对应的物理表名', 'meta.item.db_table.desc', 0, 1, 1711929600000, 1, 1711929600000);
 
 -- 3. p_meta_option：定义 object_type 的选项值
-INSERT INTO p_meta_option (id, tenant_id, metamodel_id, item_id, option_code, option_key, option_label, option_label_key, option_order, default_flg, enable_flg, description, description_key, delete_flg, created_by, created_at, updated_by, updated_at)
+INSERT INTO p_meta_option (id, tenant_id, metamodel_id, item_id, option_code, option_key, label, label_key, option_order, default_flg, enable_flg, description, description_key, delete_flg, created_by, created_at, updated_by, updated_at)
 VALUES
 (201, 0, 1, 103, 1, 'STANDARD', '标准对象', 'meta.option.standard', 1, 1, 1, '平台预置的标准对象', 'meta.option.standard.desc', 0, 1, 1711929600000, 1, 1711929600000),
 (202, 0, 1, 103, 2, 'CUSTOM', '自定义对象', 'meta.option.custom', 2, 0, 1, '租户创建的自定义对象', 'meta.option.custom.desc', 0, 1, 1711929600000, 1, 1711929600000),
@@ -46,7 +46,7 @@ VALUES
 (2103, 0, 1002, 'ContactAccount', 'item.contact_account.name', 'AccountId__c', '所属客户', 'item.contact_account.label', 19, 5, '联系人所属的客户', 'item.contact_account.desc', 0, 0, 0, 1, 1, 1, 3, 1001, 1711929600000, 1, 1711929600000, 1);
 
 -- 6. p_custom_pickoption：Industry 和 Status 字段的选项值
-INSERT INTO p_custom_pickoption (id, tenant_id, entity_id, item_id, api_key, option_code, option_label, option_label_key, option_order, default_flg, global_flg, custom_flg, delete_flg, enable_flg, description, description_key, created_at, created_by, updated_at, updated_by)
+INSERT INTO p_custom_pickoption (id, tenant_id, entity_id, item_id, api_key, option_code, label, label_key, option_order, default_flg, global_flg, custom_flg, delete_flg, enable_flg, description, description_key, created_at, created_by, updated_at, updated_by)
 VALUES
 (3001, 0, 1001, 2003, 'IT', 1, 'IT/互联网', 'pick.industry.it', 1, 0, 0, 0, 0, 1, 'IT和互联网行业', 'pick.industry.it.desc', 1711929600000, 1, 1711929600000, 1),
 (3002, 0, 1001, 2003, 'FINANCE', 2, '金融', 'pick.industry.finance', 2, 0, 0, 0, 0, 1, '金融行业', 'pick.industry.finance.desc', 1711929600000, 1, 1711929600000, 1),
@@ -62,7 +62,7 @@ VALUES
 (4001, 0, 'ContactToAccount', 'link.contact_to_account.name', 'ContactToAccount__c', '联系人-客户关联', 'link.contact_to_account.label', 1, 1001, 1002, 0, 0, 1, '联系人到客户的LOOKUP关联', 'link.contact_to_account.desc', 0, 1711929600000, 1, 1711929600000, 1);
 
 -- 8. p_custom_check_rule：Account 的校验规则
-INSERT INTO p_custom_check_rule (id, tenant_id, entity_id, name, name_key, api_key, rule_label, rule_label_key, active_flg, description, description_key, check_formula, check_error_msg, check_error_msg_key, check_error_location, check_all_items_flg, created_by, created_at, updated_by, updated_at)
+INSERT INTO p_custom_check_rule (id, tenant_id, entity_id, name, name_key, api_key, label, label_key, active_flg, description, description_key, check_formula, check_error_msg, check_error_msg_key, check_error_location, check_all_items_flg, created_by, created_at, updated_by, updated_at)
 VALUES
 (5001, 0, 1001, 'AccountNameRequired', 'rule.account_name_required.name', 'AccountNameRequired__c', '客户名称必填校验', 'rule.account_name_required.label', 1, '校验客户名称不能为空', 'rule.account_name_required.desc', 'NOT(ISBLANK(Name__c))', '客户名称不能为空', 'rule.account_name_required.error', 1, 0, 1, 1711929600000, 1, 1711929600000);
 

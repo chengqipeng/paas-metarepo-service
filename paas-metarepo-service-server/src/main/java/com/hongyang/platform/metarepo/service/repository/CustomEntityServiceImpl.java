@@ -1,4 +1,4 @@
-package com.hongyang.platform.metarepo.service.service.impl;
+package com.hongyang.platform.metarepo.service.repository;
 
 import com.alibaba.fastjson2.JSON;
 import com.hongyang.framework.dao.split.CommonTenantServiceImpl;

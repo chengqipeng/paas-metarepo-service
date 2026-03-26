@@ -17,8 +17,8 @@ public class MetaOption extends BaseEntity {
     private Long itemId;
     private Integer optionCode;
     private String optionKey;
-    private String optionLabel;
-    private String optionLabelKey;
+    private String label;
+    private String labelKey;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer enableFlg;
