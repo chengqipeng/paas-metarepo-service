@@ -102,12 +102,22 @@ graph TB
 
 ### 3.3 Common 级与 Tenant 级存储结构
 
-元数据分为两个层级，物理上存在不同的表中：
+元数据分为两个层级：
 
 | 层级 | 存储表 | tenant_id | 说明 |
 |---|---|---|---|
-| Common（平台级） | `p_meta_metamodel_data` | 0 | 平台预置的标准元数据，所有租户共享，不可被租户直接修改 |
-| Tenant（租户级） | `p_meta_tenant_metadata` | 实际租户ID | 租户自定义或覆盖的元数据，优先级高于 Common |
+| Common（平台级） | `p_common_metadata` | 无 | 所有 Common 级元数据统一存储在大宽表中，通过 metamodel_api_key 区分类型 |
+| Tenant（租户级） | `p_tenant_*` 快捷表 | 实际租户ID | 租户自定义或覆盖的元数据，使用独立的快捷表（字段语义明确） |
+
+**Common 级元数据的存储方式：**
+- 统一存储在 `p_common_metadata` 大宽表中，不使用独立的 `p_common_entity`、`p_common_item` 等表
+- 通过 `metamodel_api_key` 区分类型（entity、item、pick_option、entity_link、check_rule、refer_filter）
+- 业务字段通过 `p_meta_item.db_column` 映射到 `dbc_xxx_N` 列
+- 查询时由 `CommonMetadataConverter` 将大宽表行转换为业务 Entity 对象
+
+**Tenant 级元数据的存储方式：**
+- 使用独立的快捷表：`p_tenant_entity`、`p_tenant_item`、`p_tenant_pick_option`、`p_tenant_entity_link`、`p_tenant_check_rule`、`p_tenant_refer_filter`
+- 字段语义明确，便于直接操作和查询
 
 **Common 级元数据的来源：**
 - 平台初始化时预置（标准对象如 Account、Contact、Opportunity）

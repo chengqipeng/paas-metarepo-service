@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.service.metadata.impl;
 
-import com.hongyang.framework.dao.split.CommonTenantServiceImpl;
 import com.hongyang.platform.metarepo.service.entity.metadata.EntityItem;
+import com.hongyang.platform.metarepo.service.service.metadata.AbstractMetadataServiceImpl;
 import com.hongyang.platform.metarepo.service.service.metadata.IItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,11 +11,12 @@ import java.util.stream.Collectors;
 
 /**
  * 字段定义 Service 实现（Common/Tenant 分表）
+ * 列映射从 p_meta_item 动态加载。
  */
 @Slf4j
 @Service
 public class ItemServiceImpl
-        extends CommonTenantServiceImpl<EntityItem>
+        extends AbstractMetadataServiceImpl<EntityItem>
         implements IItemService {
 
     @Override
@@ -38,6 +39,7 @@ public class ItemServiceImpl
     public List<EntityItem> listByEntityApiKey(String entityApiKey) {
         return lambdaQuery()
             .eq(EntityItem::getEntityApiKey, entityApiKey)
+            .eq(EntityItem::getDeleteFlg, 0)
             .list();
     }
 }

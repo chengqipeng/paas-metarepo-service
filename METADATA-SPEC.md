@@ -18,8 +18,10 @@
 | 类型 | 前缀 | tenant_id | 示例 |
 |---|---|---|---|
 | 元模型定义 | p_meta_ | 无 | p_meta_model、p_meta_item |
-| Common 元数据 | p_common_ | 无 | p_common_entity、p_common_item |
+| Common 元数据 | p_common_metadata | 无 | 统一大宽表，metamodel_api_key 区分类型 |
 | Tenant 元数据 | p_tenant_ | 有 | p_tenant_entity、p_tenant_item |
+
+Common 级元数据不使用独立表，统一存储在 `p_common_metadata` 大宽表中。
 
 ---
 
@@ -29,8 +31,8 @@
 
 | namespace | 含义 | 存储位置 | 可见性 |
 |---|---|---|---|
-| system | 系统出厂元数据 | p_common_* | 所有租户可见，不受 license 控制 |
-| product | 业务产品出厂元数据 | p_common_* | 受 license 控制，付费可见 |
+| system | 系统出厂元数据 | p_common_metadata | 所有租户可见，不受 license 控制 |
+| product | 业务产品出厂元数据 | p_common_metadata | 受 license 控制，付费可见 |
 | custom | 客户自定义元数据 | p_tenant_* | 所有租户管理员可见 |
 
 ---
@@ -41,14 +43,15 @@
 
 元数据表禁止使用 `id` 列作为主键，统一使用 `api_key` 或联合主键：
 
-| 元数据类型 | 主键（Common 表） | 主键（Tenant 表） |
+| 元数据类型 | 主键（p_common_metadata） | 主键（Tenant 表） |
 |---|---|---|
-| entity | api_key | (tenant_id, api_key) |
-| item | (entity_api_key, api_key) | (tenant_id, entity_api_key, api_key) |
-| pickoption | (entity_api_key, item_api_key, api_key) | (tenant_id, entity_api_key, item_api_key, api_key) |
-| entity_link | api_key | (tenant_id, api_key) |
-| check_rule | (entity_api_key, api_key) | (tenant_id, entity_api_key, api_key) |
-| metadata（大宽表） | (metamodel_api_key, api_key) | (tenant_id, metamodel_api_key, api_key) |
+| entity | (metamodel_api_key='entity', api_key) | (tenant_id, api_key) |
+| item | (metamodel_api_key='item', api_key) | (tenant_id, entity_api_key, api_key) |
+| pickoption | (metamodel_api_key='pick_option', api_key) | (tenant_id, entity_api_key, item_api_key, api_key) |
+| entity_link | (metamodel_api_key='entity_link', api_key) | (tenant_id, api_key) |
+| check_rule | (metamodel_api_key='check_rule', api_key) | (tenant_id, entity_api_key, api_key) |
+| refer_filter | (metamodel_api_key='refer_filter', api_key) | (tenant_id, entity_api_key, item_api_key, api_key) |
+| metadata（通用） | (metamodel_api_key, api_key) | (tenant_id, metamodel_api_key, api_key) |
 | meta_model | api_key | - |
 | meta_item | (metamodel_api_key, api_key) | - |
 | meta_option | (metamodel_api_key, item_api_key, option_code) | - |
@@ -164,16 +167,18 @@ Common 级表禁止有 tenant_id 字段。
 
 ## 6. Common/Tenant 合并查询规范
 
+Common 级元数据统一存储在 `p_common_metadata` 大宽表中，通过 `metamodel_api_key` 区分类型。
 查询时通过 `CommonTenantServiceImpl` 合并两层数据：
 
-1. 查 Common 表（p_common_*，无 tenant_id 条件）
-2. 查 Tenant 表（p_tenant_*，WHERE tenant_id = ?）
-3. 按 api_key 合并：
+1. 查 p_common_metadata（WHERE metamodel_api_key = ? AND delete_flg = 0）
+2. 通过 p_meta_item.db_column 映射，将 dbc_xxx_N 列还原为业务 Entity 字段
+3. 查 Tenant 快捷表（p_tenant_*，WHERE tenant_id = ?）
+4. 按 api_key 合并：
    - Common 有、Tenant 无 → 使用 Common
    - 同 api_key → Tenant 覆盖 Common
    - Tenant 独有 → 纯租户自定义
    - Tenant delete_flg=1 → 对此租户隐藏
-4. namespace 过滤：product 类型检查 license
+5. namespace 过滤：product 类型检查 license
 
 ---
 

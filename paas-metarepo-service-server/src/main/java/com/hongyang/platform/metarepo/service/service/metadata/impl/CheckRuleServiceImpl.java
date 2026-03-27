@@ -1,7 +1,7 @@
 package com.hongyang.platform.metarepo.service.service.metadata.impl;
 
-import com.hongyang.framework.dao.split.CommonTenantServiceImpl;
 import com.hongyang.platform.metarepo.service.entity.metadata.CheckRule;
+import com.hongyang.platform.metarepo.service.service.metadata.AbstractMetadataServiceImpl;
 import com.hongyang.platform.metarepo.service.service.metadata.ICheckRuleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,11 +11,12 @@ import java.util.stream.Collectors;
 
 /**
  * 校验规则 Service 实现（Common/Tenant 分表）
+ * 列映射从 p_meta_item 动态加载。
  */
 @Slf4j
 @Service
 public class CheckRuleServiceImpl
-        extends CommonTenantServiceImpl<CheckRule>
+        extends AbstractMetadataServiceImpl<CheckRule>
         implements ICheckRuleService {
 
     @Override
@@ -33,6 +34,7 @@ public class CheckRuleServiceImpl
     public List<CheckRule> listByEntityApiKey(String entityApiKey) {
         return lambdaQuery()
             .eq(CheckRule::getEntityApiKey, entityApiKey)
+            .eq(CheckRule::getDeleteFlg, 0)
             .list();
     }
 }
