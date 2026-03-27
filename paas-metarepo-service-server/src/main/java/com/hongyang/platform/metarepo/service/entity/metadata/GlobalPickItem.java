@@ -23,6 +23,7 @@ public class GlobalPickItem implements Serializable {
     private String labelKey;
     private Integer customFlg;
     private String description;
+    private String descriptionKey;
     private Long createdBy;
     private Long createdAt;
     private Long updatedBy;

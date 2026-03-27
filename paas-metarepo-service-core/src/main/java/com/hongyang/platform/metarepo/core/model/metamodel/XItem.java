@@ -13,8 +13,6 @@ public class XItem implements Serializable {
     private String label;
     private String labelKey;
     private String namespace;
-    private String name;
-    private String nameKey;
     private Integer itemType;
     private Integer dataType;
     private String typeProperty;

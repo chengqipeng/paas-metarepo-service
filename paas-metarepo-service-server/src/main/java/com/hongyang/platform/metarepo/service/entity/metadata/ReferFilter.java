@@ -23,4 +23,5 @@ public class ReferFilter extends BaseMetaTenantEntity {
     private String filterValue;
     private Integer filterOrder;
     private String description;
+    private String descriptionKey;
 }

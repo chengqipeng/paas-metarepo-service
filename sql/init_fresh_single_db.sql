@@ -126,7 +126,6 @@ CREATE TABLE p_meta_link (
 CREATE TABLE p_common_entity (
     api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'system',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     entity_type SMALLINT, svg_api_key VARCHAR(255), svg_color VARCHAR(20),
     description VARCHAR(500), description_key VARCHAR(255), custom_entity_seq INTEGER,
     delete_flg SMALLINT DEFAULT 0, enable_flg SMALLINT DEFAULT 1, custom_flg SMALLINT DEFAULT 0,
@@ -145,7 +144,6 @@ CREATE TABLE p_common_item (
     entity_api_key VARCHAR(255) NOT NULL, api_key VARCHAR(255) NOT NULL,
     namespace VARCHAR(50) NOT NULL DEFAULT 'system',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     item_type SMALLINT, data_type SMALLINT, type_property VARCHAR(4000),
     help_text VARCHAR(500), help_text_key VARCHAR(255),
     description VARCHAR(500), description_key VARCHAR(255),
@@ -178,7 +176,6 @@ CREATE TABLE p_common_pick_option (
 CREATE TABLE p_common_entity_link (
     api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'system',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     type_property VARCHAR(500), link_type SMALLINT DEFAULT 0,
     parent_entity_api_key VARCHAR(255) NOT NULL, child_entity_api_key VARCHAR(255) NOT NULL,
     detail_link SMALLINT, cascade_delete SMALLINT DEFAULT 0, access_control SMALLINT DEFAULT 0,
@@ -193,7 +190,6 @@ CREATE TABLE p_common_check_rule (
     entity_api_key VARCHAR(255) NOT NULL, api_key VARCHAR(255) NOT NULL,
     namespace VARCHAR(50) NOT NULL DEFAULT 'system',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     active_flg SMALLINT DEFAULT 1, description VARCHAR(500), description_key VARCHAR(255),
     check_formula VARCHAR(5000), check_error_msg VARCHAR(5000), check_error_msg_key VARCHAR(200),
     check_error_location SMALLINT, check_error_item_api_key VARCHAR(255),
@@ -210,7 +206,7 @@ CREATE TABLE p_common_refer_filter (
     label VARCHAR(255), label_key VARCHAR(255),
     link_api_key VARCHAR(255), filter_field VARCHAR(255), filter_operator VARCHAR(50),
     filter_value VARCHAR(500), filter_order SMALLINT, description VARCHAR(500),
-    delete_flg SMALLINT DEFAULT 0,
+    description_key VARCHAR(255), delete_flg SMALLINT DEFAULT 0,
     created_at BIGINT, created_by BIGINT, updated_at BIGINT, updated_by BIGINT,
     PRIMARY KEY (entity_api_key, item_api_key, api_key)
 );
@@ -264,7 +260,6 @@ CREATE TABLE p_tenant_entity (
     tenant_id BIGINT NOT NULL, api_key VARCHAR(255) NOT NULL,
     namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     entity_type SMALLINT, svg_api_key VARCHAR(255), svg_color VARCHAR(20),
     description VARCHAR(500), description_key VARCHAR(255), custom_entity_seq INTEGER,
     delete_flg SMALLINT DEFAULT 0, enable_flg SMALLINT DEFAULT 1, custom_flg SMALLINT DEFAULT 1,
@@ -283,7 +278,6 @@ CREATE TABLE p_tenant_item (
     tenant_id BIGINT NOT NULL, entity_api_key VARCHAR(255) NOT NULL,
     api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     item_type SMALLINT, data_type SMALLINT, type_property VARCHAR(4000),
     help_text VARCHAR(500), help_text_key VARCHAR(255),
     description VARCHAR(500), description_key VARCHAR(255),
@@ -318,7 +312,6 @@ CREATE TABLE p_tenant_entity_link (
     tenant_id BIGINT NOT NULL, api_key VARCHAR(255) NOT NULL,
     namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     type_property VARCHAR(500), link_type SMALLINT DEFAULT 0,
     parent_entity_api_key VARCHAR(255) NOT NULL, child_entity_api_key VARCHAR(255) NOT NULL,
     detail_link SMALLINT, cascade_delete SMALLINT DEFAULT 0, access_control SMALLINT DEFAULT 0,
@@ -333,7 +326,6 @@ CREATE TABLE p_tenant_check_rule (
     tenant_id BIGINT NOT NULL, entity_api_key VARCHAR(255) NOT NULL,
     api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
-    name VARCHAR(255), name_key VARCHAR(255),
     active_flg SMALLINT DEFAULT 1, description VARCHAR(500), description_key VARCHAR(255),
     check_formula VARCHAR(5000), check_error_msg VARCHAR(5000), check_error_msg_key VARCHAR(200),
     check_error_location SMALLINT, check_error_item_api_key VARCHAR(255),
@@ -351,7 +343,7 @@ CREATE TABLE p_tenant_refer_filter (
     label VARCHAR(255), label_key VARCHAR(255),
     link_api_key VARCHAR(255), filter_field VARCHAR(255), filter_operator VARCHAR(50),
     filter_value VARCHAR(500), filter_order SMALLINT, description VARCHAR(500),
-    delete_flg SMALLINT DEFAULT 0,
+    description_key VARCHAR(255), delete_flg SMALLINT DEFAULT 0,
     created_at BIGINT, created_by BIGINT, updated_at BIGINT, updated_by BIGINT,
     PRIMARY KEY (tenant_id, entity_api_key, item_api_key, api_key)
 );

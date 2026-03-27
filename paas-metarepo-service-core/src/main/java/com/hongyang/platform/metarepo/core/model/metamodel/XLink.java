@@ -12,8 +12,6 @@ public class XLink implements Serializable {
     private String label;
     private String labelKey;
     private String namespace;
-    private String name;
-    private String nameKey;
     private String typeProperty;
     private Integer linkType;
     private String parentEntityApiKey;

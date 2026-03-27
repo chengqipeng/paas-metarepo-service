@@ -14,7 +14,6 @@ public class XPickOption implements Serializable {
     private String label;
     private String labelKey;
     private String namespace;
-    private Integer optionCode;
     private Integer optionOrder;
     private Integer defaultFlg;
     private Integer globalFlg;

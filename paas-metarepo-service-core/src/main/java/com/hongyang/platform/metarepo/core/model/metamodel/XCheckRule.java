@@ -13,8 +13,6 @@ public class XCheckRule implements Serializable {
     private String label;
     private String labelKey;
     private String namespace;
-    private String name;
-    private String nameKey;
     private Integer activeFlg;
     private String description;
     private String descriptionKey;
