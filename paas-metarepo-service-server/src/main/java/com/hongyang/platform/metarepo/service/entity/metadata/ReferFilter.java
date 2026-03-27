@@ -3,6 +3,7 @@ package com.hongyang.platform.metarepo.service.entity.metadata;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 import com.hongyang.platform.metarepo.service.common.annotation.CommonTenantSplit;
+import com.hongyang.platform.metarepo.service.common.constants.MetamodelApiKeyEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_tenant_refer_filter")
-@CommonTenantSplit(metamodelApiKey = "refer_filter")
+@CommonTenantSplit(metamodelApiKey = MetamodelApiKeyEnum.K_REFER_FILTER)
 public class ReferFilter extends BaseMetaTenantEntity {
 
     private String entityApiKey;

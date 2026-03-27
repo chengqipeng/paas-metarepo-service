@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 import com.hongyang.platform.metarepo.service.common.annotation.CommonTenantSplit;
+import com.hongyang.platform.metarepo.service.common.constants.MetamodelApiKeyEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_tenant_check_rule")
-@CommonTenantSplit(metamodelApiKey = "check_rule")
+@CommonTenantSplit(metamodelApiKey = MetamodelApiKeyEnum.K_CHECK_RULE)
 public class CheckRule extends BaseMetaTenantEntity {
 
     private String entityApiKey;

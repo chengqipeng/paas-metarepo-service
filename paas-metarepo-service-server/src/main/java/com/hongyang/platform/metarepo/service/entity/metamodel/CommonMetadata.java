@@ -33,7 +33,7 @@ public class CommonMetadata extends BaseMetaCommonEntity {
     /** 元数据实例 ID（大宽表 p_meta_metamodel_data 中的记录 ID） */
     private String metadataApiKey;
     /** 所属对象 api_key（关联业务对象，子表如 item/checkRule 通过此字段关联父对象） */
-    private String objectApiKey;
+    private String entityApiKey;
     /** 父元数据 ID（层级关系：选项值→字段、布局组件→布局） */
     private String parentMetadataApiKey;
     /** 自定义标记：0=标准（平台预置），1=自定义 */

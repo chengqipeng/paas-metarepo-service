@@ -3,6 +3,7 @@ package com.hongyang.platform.metarepo.service.entity.metadata;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 import com.hongyang.platform.metarepo.service.common.annotation.CommonTenantSplit;
+import com.hongyang.platform.metarepo.service.common.constants.MetamodelApiKeyEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_tenant_entity")
-@CommonTenantSplit(metamodelApiKey = "entity")
+@CommonTenantSplit(metamodelApiKey = MetamodelApiKeyEnum.K_ENTITY)
 public class Entity extends BaseMetaTenantEntity {
 
     private Integer entityType;
@@ -44,4 +45,11 @@ public class Entity extends BaseMetaTenantEntity {
     private Long enableFlow;
     private Long enablePackage;
     private String extendProperty;
+    private Integer enableDynamicFeed;
+    private Integer enableGroupMember;
+    private Integer isArchived;
+    private Integer enableScriptExecutor;
+    private Integer enableDuplicaterule;
+    private Integer enableCheckrule;
+    private Integer enableBusitype;
 }

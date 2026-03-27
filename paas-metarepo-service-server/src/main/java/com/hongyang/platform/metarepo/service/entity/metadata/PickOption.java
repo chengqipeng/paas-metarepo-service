@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 import com.hongyang.platform.metarepo.service.common.annotation.CommonTenantSplit;
+import com.hongyang.platform.metarepo.service.common.constants.MetamodelApiKeyEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("p_tenant_pick_option")
-@CommonTenantSplit(metamodelApiKey = "pick_option")
+@CommonTenantSplit(metamodelApiKey = MetamodelApiKeyEnum.K_PICK_OPTION)
 public class PickOption extends BaseMetaTenantEntity {
 
     private String entityApiKey;
