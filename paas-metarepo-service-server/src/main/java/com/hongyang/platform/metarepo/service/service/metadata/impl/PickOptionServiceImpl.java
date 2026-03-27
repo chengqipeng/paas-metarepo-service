@@ -6,14 +6,9 @@ import com.hongyang.platform.metarepo.service.service.metadata.IPickOptionServic
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 字段选项值 Service 实现（Common/Tenant 分表）
- * 列映射从 p_meta_item 动态加载。
- */
 @Slf4j
 @Service
 public class PickOptionServiceImpl
@@ -22,18 +17,13 @@ public class PickOptionServiceImpl
 
     @Override
     public List<PickOption> listMerged(String itemApiKey) {
-        return merge(
-            listCommon().stream()
+        return super.listMerged().stream()
                 .filter(e -> itemApiKey.equals(e.getItemApiKey()))
-                .collect(Collectors.toList()),
-            listByItemApiKey(itemApiKey),
-            PickOption::getApiKey
-        );
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<PickOption> listByItemApiKey(String itemApiKey) {
-        // TODO: 待改造为大宽表查询 + 列映射转换
-        return Collections.emptyList();
+        return listMerged(itemApiKey);
     }
 }

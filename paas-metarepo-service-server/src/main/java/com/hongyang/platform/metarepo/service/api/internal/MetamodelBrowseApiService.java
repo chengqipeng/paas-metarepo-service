@@ -1,5 +1,6 @@
 package com.hongyang.platform.metarepo.service.api.internal;
 
+import com.hongyang.platform.metarepo.service.common.converter.CommonMetadataConverter;
 import com.hongyang.platform.metarepo.service.entity.metamodel.CommonMetadata;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaItem;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaModel;
@@ -21,11 +22,13 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
- * 元模型浏览内部接口（供前端管理界面使用）。
+ * 元模型浏览接口（供前端管理界面使用）。
  * <p>
- * 提供元模型列表、字段映射、Common/Tenant 原始数据查看能力。
+ * 对外只提供 merge 后的数据接口，不区分 Common/Tenant。
  */
 @Slf4j
 @RestController
@@ -55,35 +58,32 @@ public class MetamodelBrowseApiService {
     }
 
     /**
-     * 查询指定元模型的 Common 级原始数据（p_common_metadata 大宽表）。
-     * 返回结构化数据：固定列 + dbc 列按字段映射展开为 fieldName→value。
-     */
-    @GetMapping("/common-metadata")
-    public List<Map<String, Object>> listCommonMetadata(
-            @RequestParam("metamodelApiKey") String metamodelApiKey) {
-        List<CommonMetadata> rows = commonMetadataService.listByMetamodelApiKey(metamodelApiKey);
-        Map<String, String> columnMapping = buildColumnMapping(metamodelApiKey);
-        return toReadableRows(rows, columnMapping);
-    }
-
-    /**
-     * 查询指定元模型的 Tenant 级原始数据（p_tenant_metadata 大宽表）。
-     */
-    @GetMapping("/tenant-metadata")
-    public List<Map<String, Object>> listTenantMetadata(
-            @RequestParam("metamodelApiKey") String metamodelApiKey) {
-        List<TenantMetadata> rows = tenantMetadataService.listByMetamodelApiKey(metamodelApiKey);
-        Map<String, String> columnMapping = buildColumnMapping(metamodelApiKey);
-        return toReadableRows(rows, columnMapping);
-    }
-
-    /**
      * 查询指定元模型的列映射摘要（dbColumn → fieldName）
      */
     @GetMapping("/column-mapping")
     public Map<String, String> getColumnMapping(
             @RequestParam("metamodelApiKey") String metamodelApiKey) {
         return buildColumnMapping(metamodelApiKey);
+    }
+
+    /**
+     * 查询指定元模型的合并后元数据（Common + Tenant merge）。
+     * 返回结构化数据：固定列 + dbc 列按字段映射展开为 fieldName→value。
+     * 合并规则：Common 有 Tenant 无 → Common；同 apiKey → Tenant 覆盖；delete_flg=1 → 隐藏。
+     */
+    @GetMapping("/metadata")
+    public List<Map<String, Object>> listMergedMetadata(
+            @RequestParam("metamodelApiKey") String metamodelApiKey) {
+        List<CommonMetadata> commonRows = commonMetadataService.listByMetamodelApiKey(metamodelApiKey);
+        List<TenantMetadata> tenantRows = tenantMetadataService.listByMetamodelApiKey(metamodelApiKey);
+        Map<String, String> columnMapping = buildColumnMapping(metamodelApiKey);
+
+        // 转为统一的 Map 格式
+        List<Map<String, Object>> commonMaps = toReadableRows(commonRows, columnMapping);
+        List<Map<String, Object>> tenantMaps = toReadableRows(tenantRows, columnMapping);
+
+        // 合并：按 apiKey
+        return merge(commonMaps, tenantMaps);
     }
 
     // ==================== 内部方法 ====================
@@ -100,16 +100,46 @@ public class MetamodelBrowseApiService {
     }
 
     /**
-     * 将大宽表行转换为可读的 Map 列表。
-     * 固定列直接输出，dbc_xxx_N 列通过 columnMapping 转换为业务字段名。
+     * 合并 Common 和 Tenant 数据。
+     * 按 apiKey 合并：Common 有 Tenant 无 → Common；同 apiKey → Tenant 覆盖；delete_flg=1 → 隐藏。
      */
+    private List<Map<String, Object>> merge(List<Map<String, Object>> commonList,
+                                             List<Map<String, Object>> tenantList) {
+        Map<String, Map<String, Object>> tenantMap = tenantList.stream()
+                .filter(m -> m.get("apiKey") != null)
+                .collect(Collectors.toMap(
+                        m -> (String) m.get("apiKey"), m -> m, (a, b) -> b, LinkedHashMap::new));
+
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map<String, Object> common : commonList) {
+            String apiKey = (String) common.get("apiKey");
+            Map<String, Object> tenant = tenantMap.remove(apiKey);
+            if (tenant != null) {
+                Object deleteFlg = tenant.get("deleteFlg");
+                if (deleteFlg != null && (deleteFlg.equals(1) || deleteFlg.equals("1"))) continue;
+                tenant.put("_source", "tenant");
+                result.add(tenant);
+            } else {
+                common.put("_source", "common");
+                result.add(common);
+            }
+        }
+        for (Map<String, Object> tenant : tenantMap.values()) {
+            Object deleteFlg = tenant.get("deleteFlg");
+            if (deleteFlg == null || (!deleteFlg.equals(1) && !deleteFlg.equals("1"))) {
+                tenant.put("_source", "tenant");
+                result.add(tenant);
+            }
+        }
+        return result;
+    }
+
     private <R extends Serializable> List<Map<String, Object>> toReadableRows(
             List<R> rows, Map<String, String> columnMapping) {
         List<Map<String, Object>> result = new ArrayList<>();
         for (R row : rows) {
             Map<String, Object> map = new LinkedHashMap<>();
             try {
-                // 通过反射读取所有字段
                 Map<String, Object> allFields = new HashMap<>();
                 for (Class<?> c = row.getClass(); c != null && c != Object.class; c = c.getSuperclass()) {
                     for (java.lang.reflect.Field f : c.getDeclaredFields()) {
@@ -131,24 +161,17 @@ public class MetamodelBrowseApiService {
                 putIfPresent(map, "entityApiKey", allFields.get("entityApiKey"));
                 putIfPresent(map, "parentMetadataApiKey", allFields.get("parentMetadataApiKey"));
                 putIfPresent(map, "customFlg", allFields.get("customFlg"));
-                putIfPresent(map, "metadataOrder", allFields.get("metadataOrder"));
                 putIfPresent(map, "description", allFields.get("description"));
                 putIfPresent(map, "deleteFlg", allFields.get("deleteFlg"));
-                putIfPresent(map, "tenantId", allFields.get("tenantId"));
 
                 // dbc 列 → 业务字段名
-                Map<String, Object> mappedFields = new LinkedHashMap<>();
                 for (Map.Entry<String, String> entry : columnMapping.entrySet()) {
-                    String dbColumn = entry.getKey();
-                    String fieldName = entry.getValue();
-                    String camelColumn = snakeToCamel(dbColumn);
+                    String camelColumn = snakeToCamel(entry.getKey());
                     Object val = allFields.get(camelColumn);
                     if (val != null) {
-                        mappedFields.put(fieldName + " (" + dbColumn + ")", val);
+                        map.put(entry.getValue(), val);
                     }
                 }
-                map.put("_mappedFields", mappedFields);
-
             } catch (Exception e) {
                 log.warn("转换行数据失败: {}", e.getMessage());
             }

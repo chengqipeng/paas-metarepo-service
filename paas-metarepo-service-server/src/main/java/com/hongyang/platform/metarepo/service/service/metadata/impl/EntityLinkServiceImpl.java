@@ -6,14 +6,9 @@ import com.hongyang.platform.metarepo.service.service.metadata.IEntityLinkServic
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 对象关联关系 Service 实现（Common/Tenant 分表）
- * 列映射从 p_meta_item 动态加载。
- */
 @Slf4j
 @Service
 public class EntityLinkServiceImpl
@@ -22,18 +17,13 @@ public class EntityLinkServiceImpl
 
     @Override
     public List<EntityLink> listMerged(String parentEntityApiKey) {
-        return merge(
-            listCommon().stream()
+        return super.listMerged().stream()
                 .filter(e -> parentEntityApiKey.equals(e.getParentEntityApiKey()))
-                .collect(Collectors.toList()),
-            listByParentEntityApiKey(parentEntityApiKey),
-            EntityLink::getApiKey
-        );
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<EntityLink> listByParentEntityApiKey(String parentEntityApiKey) {
-        // TODO: 待改造为大宽表查询 + 列映射转换
-        return Collections.emptyList();
+        return listMerged(parentEntityApiKey);
     }
 }

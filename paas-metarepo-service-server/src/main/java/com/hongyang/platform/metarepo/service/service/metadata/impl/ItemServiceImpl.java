@@ -6,14 +6,9 @@ import com.hongyang.platform.metarepo.service.service.metadata.IItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 字段定义 Service 实现（Common/Tenant 分表）
- * 列映射从 p_meta_item 动态加载。
- */
 @Slf4j
 @Service
 public class ItemServiceImpl
@@ -22,23 +17,18 @@ public class ItemServiceImpl
 
     @Override
     public List<EntityItem> listMerged(String entityApiKey) {
-        return merge(
-            listCommon().stream()
+        return super.listMerged().stream()
                 .filter(e -> entityApiKey.equals(e.getEntityApiKey()))
-                .collect(Collectors.toList()),
-            Collections.emptyList(), // TODO: 待改造为大宽表查询 + 列映射转换
-            EntityItem::getApiKey
-        );
+                .collect(Collectors.toList());
     }
 
     @Override
     public EntityItem getByApiKeyMerged(String apiKey) {
-        return getByApiKeyMerged(apiKey, EntityItem::getApiKey);
+        return super.getByApiKeyMerged(apiKey);
     }
 
     @Override
     public List<EntityItem> listByEntityApiKey(String entityApiKey) {
-        // TODO: 待改造为大宽表查询 + 列映射转换
-        return Collections.emptyList();
+        return listMerged(entityApiKey);
     }
 }
