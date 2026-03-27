@@ -10,7 +10,7 @@ import java.util.List;
  * 元数据合并查询 Service 接口。
  * 统一处理 Common（p_common_metadata）+ Tenant（p_tenant_metadata）的合并逻辑。
  */
-public interface IMetadataMergeService {
+public interface IMetadataMergeReadService {
 
     /**
      * 查询指定元模型的合并后元数据，转换为指定的 Entity 类。

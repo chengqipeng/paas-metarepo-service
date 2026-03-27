@@ -1,17 +1,21 @@
 package com.hongyang.platform.metarepo.service.api.internal;
 
-import com.hongyang.platform.metarepo.service.service.metadata.IEntityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hongyang.framework.common.constants.paas.MetamodelApiKey;
+import com.hongyang.platform.metarepo.service.entity.metadata.Entity;
+import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeReadService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
 @RestController
+@RequestMapping("/metarepo/internal")
+@RequiredArgsConstructor
 public class HealthCheckApi {
 
-    @Autowired
-    private IEntityService entityService;
+    private final IMetadataMergeReadService metadataMergeReadService;
 
     @GetMapping("/health")
     public Map<String, String> health() {
@@ -21,10 +25,12 @@ public class HealthCheckApi {
     @GetMapping("/debug/entities")
     public Map<String, Object> debugEntities() {
         try {
-            var list = entityService.listMerged();
+            var list = metadataMergeReadService.listMerged(MetamodelApiKey.ENTITY, Entity.class);
             return Map.of("success", true, "count", list.size());
         } catch (Exception e) {
-            return Map.of("success", false, "error", e.getClass().getName(), "message", e.getMessage() != null ? e.getMessage() : "null", "cause", e.getCause() != null ? e.getCause().getClass().getName() + ": " + e.getCause().getMessage() : "none");
+            return Map.of("success", false, "error", e.getClass().getName(),
+                    "message", e.getMessage() != null ? e.getMessage() : "null",
+                    "cause", e.getCause() != null ? e.getCause().getClass().getName() + ": " + e.getCause().getMessage() : "none");
         }
     }
 }

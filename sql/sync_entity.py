@@ -127,10 +127,10 @@ sql = f"INSERT IGNORE INTO p_common_metadata ({','.join(ALL_COLS)}) VALUES ({ph}
 mc.executemany(sql, batch)
 my.commit()
 
-mc.execute("SELECT COUNT(*) FROM p_common_metadata WHERE metamodel_api_key='xobject'")
+mc.execute("SELECT COUNT(*) FROM p_common_metadata WHERE metamodel_api_key='entity'")
 print(f'写入: {len(batch)}, DB: {mc.fetchone()[0]}')
 
-mc.execute("SELECT api_key, label, dbc_varchar_2, dbc_int_1, dbc_smallint_1 FROM p_common_metadata WHERE metamodel_api_key='xobject' LIMIT 5")
+mc.execute("SELECT api_key, label, dbc_varchar_2, dbc_int_1, dbc_smallint_1 FROM p_common_metadata WHERE metamodel_api_key='entity' LIMIT 5")
 print('\n抽样 (api_key, label, dbTable, objectType, enableFlg):')
 for r in mc.fetchall(): print(f'  {r}')
 

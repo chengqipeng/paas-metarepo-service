@@ -1,5 +1,7 @@
 package com.hongyang.platform.metarepo.service.service.metadata.impl;
 
+import com.hongyang.framework.base.exception.BaseKnownException;
+import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
 import com.hongyang.framework.dao.entity.BaseMetaCommonEntity;
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 import com.hongyang.framework.dao.query.PageResult;
@@ -10,7 +12,7 @@ import com.hongyang.platform.metarepo.service.entity.metamodel.CommonMetadata;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaItem;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaModel;
 import com.hongyang.platform.metarepo.service.entity.metamodel.TenantMetadata;
-import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeService;
+import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeReadService;
 import com.hongyang.platform.metarepo.service.service.metamodel.ICommonMetadataService;
 import com.hongyang.platform.metarepo.service.service.metamodel.IMetaItemService;
 import com.hongyang.platform.metarepo.service.service.metamodel.IMetaModelService;
@@ -24,7 +26,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -40,15 +41,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MetadataMergeServiceImpl implements IMetadataMergeService {
+public class MetadataMergeReadServiceImpl implements IMetadataMergeReadService {
 
     private final ICommonMetadataService commonMetadataService;
     private final ITenantMetadataService tenantMetadataService;
     private final IMetaItemService metaItemService;
     private final IMetaModelService metaModelService;
-
-    /** 列映射缓存：metamodelApiKey → {db_column → entityFieldName} */
-    private final ConcurrentHashMap<String, Map<String, String>> columnMappingCache = new ConcurrentHashMap<>();
 
     @Override
     public <T extends BaseMetaTenantEntity> List<T> listMerged(String metamodelApiKey, Class<T> entityClass) {
@@ -132,23 +130,21 @@ public class MetadataMergeServiceImpl implements IMetadataMergeService {
     }
 
     private Map<String, String> getColumnMapping(String metamodelApiKey) {
-        return columnMappingCache.computeIfAbsent(metamodelApiKey, key -> {
-            List<MetaItem> items = metaItemService.listByMetamodelApiKey(key);
-            Map<String, String> map = new HashMap<>();
-            for (MetaItem item : items) {
-                if (item.getDbColumn() != null && item.getApiKey() != null) {
-                    map.put(item.getDbColumn(), snakeToCamel(item.getApiKey()));
-                }
+        List<MetaItem> items = metaItemService.listByMetamodelApiKey(metamodelApiKey);
+        Map<String, String> map = new HashMap<>();
+        for (MetaItem item : items) {
+            if (item.getDbColumn() != null && item.getApiKey() != null) {
+                map.put(item.getDbColumn(), snakeToCamel(item.getApiKey()));
             }
-            return Collections.unmodifiableMap(map);
-        });
+        }
+        return map;
     }
 
     /** 获取元模型定义（走缓存），不存在则抛异常 */
     private MetaModel getMetaModel(String metamodelApiKey) {
         MetaModel metaModel = metaModelService.getByApiKey(metamodelApiKey);
         if (metaModel == null) {
-            throw new IllegalArgumentException("元模型不存在: " + metamodelApiKey);
+            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, metamodelApiKey);
         }
         return metaModel;
     }
