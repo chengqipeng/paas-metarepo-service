@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
  * 元数据 Service 基类（metarepo 层）。
  * <p>
  * 提供 Common/Tenant 合并查询能力：
- * - Common 数据：通过 ICommonMetadataService（走 MetaServiceImpl 两阶段缓存）查询
- * - 列映射：通过 IMetaItemService（走缓存）加载
+ * - Common 数据：通过 ICommonMetadataService（走 MetaServiceImpl 两阶段缓存）查询，
+ *   CommonMetadata 的固定列和 dbc_xxx_N 列映射到 Entity 字段
  * - Tenant 数据：查各自的快捷表（@TableName 指定）
  * - 合并算法：Common 有 Tenant 无 → Common；同 apiKey → Tenant 覆盖；delete_flg=1 → 隐藏
  */
@@ -35,10 +35,10 @@ public abstract class AbstractMetadataServiceImpl<T extends BaseMetaTenantEntity
         extends DataBaseServiceImpl<T> {
 
     @Autowired
-    private IMetaItemService metaItemService;
+    private ICommonMetadataService commonMetadataService;
 
     @Autowired
-    private ICommonMetadataService commonMetadataService;
+    private IMetaItemService metaItemService;
 
     private String metamodelApiKey;
     private volatile Map<String, String> columnMappingCache;
@@ -67,28 +67,19 @@ public abstract class AbstractMetadataServiceImpl<T extends BaseMetaTenantEntity
         if (columnMappingCache == null) {
             synchronized (this) {
                 if (columnMappingCache == null) {
-                    columnMappingCache = loadColumnMapping();
+                    String key = getMetamodelApiKey();
+                    List<MetaItem> items = metaItemService.listByMetamodelApiKey(key);
+                    Map<String, String> map = new HashMap<>();
+                    for (MetaItem item : items) {
+                        if (item.getDbColumn() != null && item.getApiKey() != null) {
+                            map.put(item.getDbColumn(), snakeToCamel(item.getApiKey()));
+                        }
+                    }
+                    columnMappingCache = Collections.unmodifiableMap(map);
                 }
             }
         }
         return columnMappingCache;
-    }
-
-    public void reloadColumnMapping() {
-        synchronized (this) { columnMappingCache = null; }
-    }
-
-    private Map<String, String> loadColumnMapping() {
-        String key = getMetamodelApiKey();
-        List<MetaItem> items = metaItemService.listByMetamodelApiKey(key);
-        Map<String, String> map = new HashMap<>();
-        for (MetaItem item : items) {
-            if (item.getDbColumn() != null && item.getApiKey() != null) {
-                map.put(item.getDbColumn(), snakeToCamel(item.getApiKey()));
-            }
-        }
-        log.info("加载 {} 列映射: {} 个字段", key, map.size());
-        return Collections.unmodifiableMap(map);
     }
 
     // ==================== Common 数据查询（走 ICommonMetadataService 缓存） ====================
