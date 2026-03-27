@@ -8,25 +8,27 @@ MY = dict(host='106.14.194.144', port=3306, user='root', password='MySql@888888'
           database='paas_metarepo_common')
 
 # xobject JSON key → 新 dbc 列
+# key = 老库 JSON 中的字段名
+# value = (新 dbc 列, 是否需要 ID→str 转换, 新 p_meta_item.api_key)
 FIELD_MAP = {
-    'objectType':          ('dbc_int_1',      False),
-    'iconId':              ('dbc_varchar_1',   True),   # ID→字符串
-    'businessCategory':    ('dbc_int_2',      False),
-    'customEntitySeq':     ('dbc_bigint_1',   False),
-    'isActive':            ('dbc_smallint_1',  False),
-    'isDetail':            ('dbc_smallint_2',  False),
-    'enableHistoryLog':    ('dbc_smallint_3',  False),
-    'dbTable':             ('dbc_varchar_2',   False),
-    'enableDynamicFeed':   ('dbc_smallint_4',  False),
-    'enableGroupMember':   ('dbc_smallint_5',  False),
-    'isArchived':          ('dbc_smallint_6',  False),
-    'enableScriptExecutor':('dbc_smallint_7',  False),
-    'enableDuplicaterule': ('dbc_smallint_8',  False),
-    'enableCheckrule':     ('dbc_smallint_9',  False),
-    'enableBusitype':      ('dbc_smallint_10', False),
+    'objectType':          ('dbc_int_1',       False, 'entityType'),
+    'iconId':              ('dbc_varchar_1',    True,  'svgApiKey'),
+    'businessCategory':    ('dbc_int_2',       False, 'businessCategory'),
+    'customEntitySeq':     ('dbc_bigint_1',    False, 'customEntitySeq'),
+    'isActive':            ('dbc_smallint_1',   False, 'enableFlg'),
+    'isDetail':            ('dbc_smallint_2',   False, 'detailFlg'),
+    'enableHistoryLog':    ('dbc_smallint_3',   False, 'enableHistoryLog'),
+    'dbTable':             ('dbc_varchar_2',    False, 'dbTable'),
+    'enableDynamicFeed':   ('dbc_smallint_4',   False, 'enableDynamicFeed'),
+    'enableGroupMember':   ('dbc_smallint_5',   False, 'enableGroupMember'),
+    'isArchived':          ('dbc_smallint_6',   False, 'isArchived'),
+    'enableScriptExecutor':('dbc_smallint_7',   False, 'enableScriptExecutor'),
+    'enableDuplicaterule': ('dbc_smallint_8',   False, 'enableDuplicaterule'),
+    'enableCheckrule':     ('dbc_smallint_9',   False, 'enableCheckrule'),
+    'enableBusitype':      ('dbc_smallint_10',  False, 'enableBusitype'),
 }
 
-DBC_COLS = sorted(set(col for col, _ in FIELD_MAP.values()))
+DBC_COLS = sorted(set(col for col, _, _ in FIELD_MAP.values()))
 
 # namespace 转换规则（老值 → 新枚举值）
 # 合法值：system, product, custom
@@ -61,6 +63,11 @@ mc = my.cursor()
 pc.execute("SELECT id FROM p_meta_model WHERE api_key='xobject' AND tenant_id<=0 LIMIT 1")
 mm_id = pc.fetchone()[0]
 print(f'xobject metamodel_id: {mm_id}')
+
+# 构建 svg id → svg_class 映射
+pc.execute("SELECT id, svg_class FROM p_custom_svg WHERE (delete_flg IS NULL OR delete_flg=0)")
+svg_map = {r[0]: r[1] for r in pc.fetchall()}
+print(f'svg 映射: {len(svg_map)} 条')
 
 # 查数据
 pc.execute("""SELECT api_key, label, label_key, namespace, metadata_id,
@@ -104,10 +111,15 @@ for ak, lb, lk, ns, mid, oid, pmid, mj, mv, desc, cb, ca, ub, ua in rows:
     rd['delete_flg'] = 0
     rd['created_at'] = ca; rd['created_by'] = cb
     rd['updated_at'] = ua; rd['updated_by'] = ub
-    for jk, (dc, id_conv) in FIELD_MAP.items():
+    for jk, (dc, id_conv, new_ak) in FIELD_MAP.items():
         v = jd.get(jk)
         if v is not None:
-            rd[dc] = str(int(v)) if id_conv and isinstance(v,(int,float)) else v
+            if jk == 'iconId' and isinstance(v, (int, float)):
+                rd[dc] = svg_map.get(int(v), str(int(v)))
+            elif id_conv and isinstance(v, (int, float)):
+                rd[dc] = str(int(v))
+            else:
+                rd[dc] = v
     batch.append(tuple(rd[c] for c in ALL_COLS))
 
 ph = ','.join(['%s']*len(ALL_COLS))

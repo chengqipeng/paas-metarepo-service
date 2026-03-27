@@ -30,7 +30,7 @@ public class TenantMetadataServiceImpl
     public TenantMetadata getByMetamodelApiKeyAndApiKey(String metamodelApiKey, String apiKey) {
         return lambdaQuery()
                 .eq(TenantMetadata::getMetamodelApiKey, metamodelApiKey)
-                .eq(BaseMetaCommonEntity::getApiKey, apiKey)
+                .eq(TenantMetadata::getApiKey, apiKey)
                 .one();
     }
 }
