@@ -258,7 +258,7 @@ CREATE TABLE p_common_metadata (
 -- C1. p_tenant_entity
 CREATE TABLE p_tenant_entity (
     tenant_id BIGINT NOT NULL, api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     entity_type SMALLINT, svg_api_key VARCHAR(255), svg_color VARCHAR(20),
     description VARCHAR(500), description_key VARCHAR(255), custom_entity_seq INTEGER,
@@ -276,7 +276,7 @@ CREATE TABLE p_tenant_entity (
 -- C2. p_tenant_item
 CREATE TABLE p_tenant_item (
     tenant_id BIGINT NOT NULL, entity_api_key VARCHAR(255) NOT NULL,
-    api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     item_type SMALLINT, data_type SMALLINT, type_property VARCHAR(4000),
     help_text VARCHAR(500), help_text_key VARCHAR(255),
@@ -298,7 +298,7 @@ CREATE TABLE p_tenant_item (
 CREATE TABLE p_tenant_pick_option (
     tenant_id BIGINT NOT NULL, entity_api_key VARCHAR(255) NOT NULL,
     item_api_key VARCHAR(255) NOT NULL, api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     option_order SMALLINT, default_flg SMALLINT, global_flg SMALLINT,
     custom_flg SMALLINT DEFAULT 1, enable_flg SMALLINT DEFAULT 1,
@@ -310,7 +310,7 @@ CREATE TABLE p_tenant_pick_option (
 -- C4. p_tenant_entity_link
 CREATE TABLE p_tenant_entity_link (
     tenant_id BIGINT NOT NULL, api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     type_property VARCHAR(500), link_type SMALLINT DEFAULT 0,
     parent_entity_api_key VARCHAR(255) NOT NULL, child_entity_api_key VARCHAR(255) NOT NULL,
@@ -324,7 +324,7 @@ CREATE TABLE p_tenant_entity_link (
 -- C5. p_tenant_check_rule
 CREATE TABLE p_tenant_check_rule (
     tenant_id BIGINT NOT NULL, entity_api_key VARCHAR(255) NOT NULL,
-    api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     active_flg SMALLINT DEFAULT 1, description VARCHAR(500), description_key VARCHAR(255),
     check_formula VARCHAR(5000), check_error_msg VARCHAR(5000), check_error_msg_key VARCHAR(200),
@@ -339,7 +339,7 @@ CREATE TABLE p_tenant_check_rule (
 CREATE TABLE p_tenant_refer_filter (
     tenant_id BIGINT NOT NULL, entity_api_key VARCHAR(255) NOT NULL,
     item_api_key VARCHAR(255) NOT NULL, api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255), label_key VARCHAR(255),
     link_api_key VARCHAR(255), filter_field VARCHAR(255), filter_operator VARCHAR(50),
     filter_value VARCHAR(500), filter_order SMALLINT, description VARCHAR(500),
@@ -351,7 +351,7 @@ CREATE TABLE p_tenant_refer_filter (
 -- C7. p_tenant_metadata（Tenant 级大宽表元数据）
 CREATE TABLE p_tenant_metadata (
     tenant_id BIGINT NOT NULL, metamodel_api_key VARCHAR(255) NOT NULL,
-    api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    api_key VARCHAR(255) NOT NULL, namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     parent_entity_api_key VARCHAR(255), label VARCHAR(255), label_key VARCHAR(255),
     custom_flg SMALLINT, metadata_order SMALLINT, owner_api_key VARCHAR(255),
     description VARCHAR(500), delete_flg SMALLINT,
@@ -608,8 +608,8 @@ INSERT INTO p_common_check_rule (entity_api_key, api_key, namespace, label, labe
 
 -- E8. 租户测试数据（tenant_id=1001）
 INSERT INTO p_tenant_item (tenant_id, entity_api_key, api_key, namespace, label, label_key, item_type, data_type, description, description_key, require_flg, delete_flg, custom_flg, enable_flg, creatable, updatable, item_order, created_at, created_by, updated_at, updated_by) VALUES
-(1001, 'Account__c', 'Region__c',        'custom', '区域',   'item.custom_region.label',   6, 3, '客户所在区域', 'item.custom_region.desc',   0, 0, 1, 1, 1, 1, 10, 1711929600000, 100, 1711929600000, 100),
-(1001, 'Account__c', 'AnnualRevenue__c', 'custom', '年营收', 'item.custom_revenue.label',  9, 4, '客户年营收',   'item.custom_revenue.desc',  0, 0, 1, 1, 1, 1, 11, 1711929600000, 100, 1711929600000, 100),
+(1001, 'Account__c', 'Region__c',        'tenant', '区域',   'item.custom_region.label',   6, 3, '客户所在区域', 'item.custom_region.desc',   0, 0, 1, 1, 1, 1, 10, 1711929600000, 100, 1711929600000, 100),
+(1001, 'Account__c', 'AnnualRevenue__c', 'tenant', '年营收', 'item.custom_revenue.label',  9, 4, '客户年营收',   'item.custom_revenue.desc',  0, 0, 1, 1, 1, 1, 11, 1711929600000, 100, 1711929600000, 100),
 (1001, 'Account__c', 'Employees__c',     'custom', '员工数', 'item.custom_employee.label', 8, 3, '客户员工数量', 'item.custom_employee.desc', 0, 0, 1, 1, 1, 1, 12, 1711929600000, 100, 1711929600000, 100);
 
 -- ============================================================

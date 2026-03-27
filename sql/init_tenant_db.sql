@@ -3,7 +3,7 @@ USE paas_metarepo;
 -- 1. p_tenant_entity（PK=tenant_id+api_key）
 CREATE TABLE p_tenant_entity (
     tenant_id BIGINT NOT NULL, api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     name VARCHAR(255), name_key VARCHAR(255),
     object_type SMALLINT, svg_id BIGINT, svg_color VARCHAR(20),
@@ -27,7 +27,7 @@ CREATE TABLE p_tenant_item (
     tenant_id BIGINT NOT NULL,
     entity_api_key VARCHAR(255) NOT NULL,
     api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     name VARCHAR(255), name_key VARCHAR(255),
     item_type SMALLINT, data_type SMALLINT, type_property VARCHAR(4000),
@@ -52,7 +52,7 @@ CREATE TABLE p_tenant_pickoption (
     entity_api_key VARCHAR(255) NOT NULL,
     item_api_key VARCHAR(255) NOT NULL,
     api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     option_code SMALLINT, option_order SMALLINT,
     default_flg SMALLINT, global_flg SMALLINT,
@@ -65,7 +65,7 @@ CREATE TABLE p_tenant_pickoption (
 -- 4. p_tenant_entity_link（PK=tenant_id+api_key）
 CREATE TABLE p_tenant_entity_link (
     tenant_id BIGINT NOT NULL, api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     name VARCHAR(255), name_key VARCHAR(255),
     type_property VARCHAR(500), link_type SMALLINT DEFAULT 0,
@@ -82,7 +82,7 @@ CREATE TABLE p_tenant_check_rule (
     tenant_id BIGINT NOT NULL,
     entity_api_key VARCHAR(255) NOT NULL,
     api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     label VARCHAR(255) NOT NULL, label_key VARCHAR(255),
     name VARCHAR(255), name_key VARCHAR(255),
     active_flg SMALLINT DEFAULT 1,
@@ -99,7 +99,7 @@ CREATE TABLE p_tenant_metadata (
     tenant_id BIGINT NOT NULL,
     metamodel_api_key VARCHAR(255) NOT NULL,
     api_key VARCHAR(255) NOT NULL,
-    namespace VARCHAR(50) NOT NULL DEFAULT 'custom',
+    namespace VARCHAR(50) NOT NULL DEFAULT 'tenant',
     parent_entity_api_key VARCHAR(255),
     label VARCHAR(255), label_key VARCHAR(255),
     custom_flg SMALLINT, metadata_order SMALLINT, owner_api_key VARCHAR(255),

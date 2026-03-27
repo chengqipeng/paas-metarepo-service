@@ -1,16 +1,16 @@
 package com.hongyang.platform.metarepo.service.entity.metamodel;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.hongyang.framework.dao.entity.BaseMetaCommonEntity;
+import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 
 /**
- * Common 级通用元数据大宽表（p_meta_common_metadata）。
+ * Tenant 级通用元数据大宽表（p_tenant_metadata）。
  * <p>
- * 所有 Common 级业务元数据统一存储在此表中，通过 metamodelApiKey 区分类型。
+ * 所有 Tenant 级业务元数据统一存储在此表中，通过 metamodelApiKey 区分类型。
  * dbc_xxx_N 列的语义由 p_meta_item.db_column 定义。
  * <p>
  * 列类型设计（按底层数据库类型合并）：
@@ -25,8 +25,8 @@ import java.math.BigDecimal;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_common_metadata")
-public class CommonMetadata extends BaseMetaCommonEntity {
+@TableName("p_tenant_metadata")
+public class TenantMetadata extends BaseMetaTenantEntity {
 
     /** 所属元模型 api_key（关联 p_meta_model.api_key） */
     private String metamodelApiKey;

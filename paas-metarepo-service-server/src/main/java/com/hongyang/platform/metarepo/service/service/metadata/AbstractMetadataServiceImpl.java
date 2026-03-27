@@ -7,8 +7,10 @@ import com.hongyang.platform.metarepo.service.common.annotation.CommonTenantSpli
 import com.hongyang.platform.metarepo.service.common.converter.CommonMetadataConverter;
 import com.hongyang.platform.metarepo.service.entity.metamodel.CommonMetadata;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaItem;
+import com.hongyang.platform.metarepo.service.entity.metamodel.TenantMetadata;
 import com.hongyang.platform.metarepo.service.service.metamodel.ICommonMetadataService;
 import com.hongyang.platform.metarepo.service.service.metamodel.IMetaItemService;
+import com.hongyang.platform.metarepo.service.service.metamodel.ITenantMetadataService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,9 +27,9 @@ import java.util.stream.Collectors;
  * 元数据 Service 基类（metarepo 层）。
  * <p>
  * 提供 Common/Tenant 合并查询能力：
- * - Common 数据：通过 ICommonMetadataService（走 MetaServiceImpl 两阶段缓存）查询，
- *   CommonMetadata 的固定列和 dbc_xxx_N 列映射到 Entity 字段
- * - Tenant 数据：查各自的快捷表（@TableName 指定）
+ * - Common 数据：通过 ICommonMetadataService 查询 p_common_metadata 大宽表
+ * - Tenant 数据：通过 ITenantMetadataService 查询 p_tenant_metadata 大宽表
+ * - 两表结构一致，通过 CommonMetadataConverter + p_meta_item 列映射转换为业务 Entity
  * - 合并算法：Common 有 Tenant 无 → Common；同 apiKey → Tenant 覆盖；delete_flg=1 → 隐藏
  */
 @Slf4j
@@ -36,6 +38,9 @@ public abstract class AbstractMetadataServiceImpl<T extends BaseMetaTenantEntity
 
     @Autowired
     private ICommonMetadataService commonMetadataService;
+
+    @Autowired
+    private ITenantMetadataService tenantMetadataService;
 
     @Autowired
     private IMetaItemService metaItemService;
@@ -96,10 +101,12 @@ public abstract class AbstractMetadataServiceImpl<T extends BaseMetaTenantEntity
         return CommonMetadataConverter.convertOne(row, getEntityClass(), getColumnMapping());
     }
 
-    // ==================== Tenant 数据查询 ====================
+    // ==================== Tenant 数据查询（走 ITenantMetadataService） ====================
 
-    public List<T> listTenant() {
-        return lambdaQuery().list();
+    protected List<T> listTenant() {
+        List<TenantMetadata> rows = tenantMetadataService
+                .listByMetamodelApiKey(getMetamodelApiKey());
+        return CommonMetadataConverter.convertFromTenant(rows, getEntityClass(), getColumnMapping());
     }
 
     // ==================== 合并查询 ====================

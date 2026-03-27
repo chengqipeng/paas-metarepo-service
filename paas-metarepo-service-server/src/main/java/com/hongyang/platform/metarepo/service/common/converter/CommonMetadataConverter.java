@@ -1,6 +1,7 @@
 package com.hongyang.platform.metarepo.service.common.converter;
 
 import com.hongyang.platform.metarepo.service.entity.metamodel.CommonMetadata;
+import com.hongyang.platform.metarepo.service.entity.metamodel.TenantMetadata;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -13,12 +14,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 将 CommonMetadata（p_meta_common_metadata 大宽表行）转换为业务 Entity 对象。
+ * 将 CommonMetadata/TenantMetadata（大宽表行）转换为业务 Entity 对象。
  * <p>
- * 转换分三步：
- * 1. 自动映射：CommonMetadata 的固定列与目标 Entity 同名字段自动赋值
- * 2. 特殊映射：objectApiKey → entityApiKey（子表需要）
- * 3. 列映射：dbc_xxx_N 列通过 columnMapping（来自 p_meta_item）映射到业务字段
+ * 支持 p_common_metadata 和 p_tenant_metadata 两张结构一致的大宽表。
  */
 @Slf4j
 public final class CommonMetadataConverter {
@@ -58,7 +56,21 @@ public final class CommonMetadataConverter {
                 buildFieldCache(entityClass), buildFieldCache(CommonMetadata.class));
     }
 
-    private static <T> T convertRow(CommonMetadata row, Class<T> entityClass,
+    /** 从 TenantMetadata 批量转换（结构与 CommonMetadata 一致） */
+    public static <T> List<T> convertFromTenant(List<TenantMetadata> rows, Class<T> entityClass,
+                                                 Map<String, String> columnMapping) {
+        if (rows == null || rows.isEmpty()) return Collections.emptyList();
+        Map<String, Field> entityFields = buildFieldCache(entityClass);
+        Map<String, Field> sourceFields = buildFieldCache(TenantMetadata.class);
+        List<T> result = new ArrayList<>(rows.size());
+        for (TenantMetadata row : rows) {
+            T entity = convertRow(row, entityClass, columnMapping, entityFields, sourceFields);
+            if (entity != null) result.add(entity);
+        }
+        return result;
+    }
+
+    private static <T> T convertRow(Object row, Class<T> entityClass,
                                      Map<String, String> columnMapping,
                                      Map<String, Field> entityFields,
                                      Map<String, Field> sourceFields) {
@@ -111,8 +123,7 @@ public final class CommonMetadataConverter {
 
             return entity;
         } catch (Exception e) {
-            log.error("转换 CommonMetadata → {} 失败: api_key={}, error={}",
-                    entityClass.getSimpleName(), row.getApiKey(), e.getMessage());
+            log.error("转换 Metadata → {} 失败: {}", entityClass.getSimpleName(), e.getMessage());
             return null;
         }
     }
