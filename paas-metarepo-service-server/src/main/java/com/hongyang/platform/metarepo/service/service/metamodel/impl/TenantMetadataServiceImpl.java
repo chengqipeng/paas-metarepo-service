@@ -39,4 +39,24 @@ public class TenantMetadataServiceImpl
     public List<TenantMetadata> listByTable(String tableName) {
         return DynamicTableNameHolder.executeWith(tableName, () -> list());
     }
+
+    @Override
+    public TenantMetadata createMetadata(TenantMetadata row) {
+        save(row);
+        return row;
+    }
+
+    @Override
+    public TenantMetadata updateMetadata(TenantMetadata row) {
+        updateById(row);
+        return row;
+    }
+
+    @Override
+    public void softDeleteMetadata(TenantMetadata row, Long operatorId) {
+        row.setDeleteFlg(1);
+        row.setUpdatedAt(System.currentTimeMillis());
+        row.setUpdatedBy(operatorId);
+        updateById(row);
+    }
 }

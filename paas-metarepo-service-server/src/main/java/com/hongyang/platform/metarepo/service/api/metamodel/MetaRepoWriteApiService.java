@@ -15,10 +15,12 @@ import com.hongyang.platform.metarepo.core.model.request.UpdateCheckRuleRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateEntityRequest;
 import com.hongyang.platform.metarepo.core.model.request.UpdateItemRequest;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
+import com.hongyang.platform.metarepo.service.entity.metadata.CheckRule;
 import com.hongyang.platform.metarepo.service.entity.metadata.Entity;
-import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeReadService;
-import com.hongyang.framework.base.exception.BaseKnownException;
-import com.hongyang.framework.common.enums.paas.MetaRepoErrorCodeEnum;
+import com.hongyang.platform.metarepo.service.entity.metadata.EntityItem;
+import com.hongyang.platform.metarepo.service.entity.metadata.EntityLink;
+import com.hongyang.platform.metarepo.service.entity.metadata.PickOption;
+import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,80 +37,96 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
-    private final IMetadataMergeReadService metadataMergeReadService;
+    private final IMetadataMergeWriteService metadataMergeWriteService;
 
     @Override
     @PostMapping("/write/entity")
     public XEntity createEntity(@RequestBody CreateEntityRequest request) {
-        Entity existing = metadataMergeReadService.getByApiKeyMerged(
-                MetamodelApiKey.ENTITY, request.getApiKey(), Entity.class);
-        if (existing != null) {
-            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, request.getApiKey());
-        }
-        // TODO: 写入 p_tenant_metadata
-        throw new UnsupportedOperationException("createEntity 写入逻辑待实现");
+        Entity entity = MetaRepoConverter.toEntity(request);
+        Entity created = metadataMergeWriteService.create(
+                MetamodelApiKey.ENTITY, entity, request.getOperatorId());
+        return MetaRepoConverter.toXEntity(created);
     }
 
     @Override
     @PutMapping("/write/entity")
     public XEntity updateEntity(@RequestBody UpdateEntityRequest request) {
-        // TODO: 实现更新
-        throw new UnsupportedOperationException("updateEntity 待实现");
+        Entity entity = MetaRepoConverter.toEntity(request);
+        Entity updated = metadataMergeWriteService.update(
+                MetamodelApiKey.ENTITY, entity, request.getOperatorId());
+        return MetaRepoConverter.toXEntity(updated);
     }
 
     @Override
     @DeleteMapping("/write/entity")
     public void deleteEntity(@RequestParam("apiKey") String apiKey) {
-        // TODO: 实现删除
-        throw new UnsupportedOperationException("deleteEntity 待实现");
+        metadataMergeWriteService.delete(
+                MetamodelApiKey.ENTITY, apiKey, Entity.class, null);
     }
 
     @Override
     @PostMapping("/write/item")
     public XEntityItem createItem(@RequestBody CreateItemRequest request) {
-        // TODO: 实现创建
-        throw new UnsupportedOperationException("createItem 待实现");
+        EntityItem entity = MetaRepoConverter.toEntityItem(request);
+        EntityItem created = metadataMergeWriteService.create(
+                MetamodelApiKey.ITEM, entity, request.getOperatorId());
+        return MetaRepoConverter.toXEntityItem(created);
     }
 
     @Override
     @PutMapping("/write/item")
     public XEntityItem updateItem(@RequestBody UpdateItemRequest request) {
-        throw new UnsupportedOperationException("updateItem 待实现");
+        EntityItem entity = MetaRepoConverter.toEntityItem(request);
+        EntityItem updated = metadataMergeWriteService.update(
+                MetamodelApiKey.ITEM, entity, request.getOperatorId());
+        return MetaRepoConverter.toXEntityItem(updated);
     }
 
     @Override
     @DeleteMapping("/write/item")
     public void deleteItem(@RequestParam("apiKey") String apiKey) {
-        throw new UnsupportedOperationException("deleteItem 待实现");
+        metadataMergeWriteService.delete(
+                MetamodelApiKey.ITEM, apiKey, EntityItem.class, null);
     }
 
     @Override
     @PostMapping("/write/pick-options")
     public void savePickOptions(@RequestBody SavePickOptionRequest request) {
+        // TODO: 批量保存选项值逻辑
         throw new UnsupportedOperationException("savePickOptions 待实现");
     }
 
     @Override
     @PostMapping("/write/entity-link")
     public XLink createEntityLink(@RequestBody CreateLinkRequest request) {
-        throw new UnsupportedOperationException("createEntityLink 待实现");
+        EntityLink entity = MetaRepoConverter.toEntityLink(request);
+        EntityLink created = metadataMergeWriteService.create(
+                MetamodelApiKey.ENTITY_LINK, entity, request.getOperatorId());
+        return MetaRepoConverter.toXLink(created);
     }
 
     @Override
     @DeleteMapping("/write/entity-link")
     public void deleteEntityLink(@RequestParam("apiKey") String apiKey) {
-        throw new UnsupportedOperationException("deleteEntityLink 待实现");
+        metadataMergeWriteService.delete(
+                MetamodelApiKey.ENTITY_LINK, apiKey, EntityLink.class, null);
     }
 
     @Override
     @PostMapping("/write/check-rule")
     public XCheckRule createCheckRule(@RequestBody CreateCheckRuleRequest request) {
-        throw new UnsupportedOperationException("createCheckRule 待实现");
+        CheckRule entity = MetaRepoConverter.toCheckRule(request);
+        CheckRule created = metadataMergeWriteService.create(
+                MetamodelApiKey.CHECK_RULE, entity, request.getOperatorId());
+        return MetaRepoConverter.toXCheckRule(created);
     }
 
     @Override
     @PutMapping("/write/check-rule")
     public XCheckRule updateCheckRule(@RequestBody UpdateCheckRuleRequest request) {
-        throw new UnsupportedOperationException("updateCheckRule 待实现");
+        CheckRule entity = MetaRepoConverter.toCheckRule(request);
+        CheckRule updated = metadataMergeWriteService.update(
+                MetamodelApiKey.CHECK_RULE, entity, request.getOperatorId());
+        return MetaRepoConverter.toXCheckRule(updated);
     }
 }

@@ -209,4 +209,126 @@ public final class MetaRepoConverter {
         if (list == null) return Collections.emptyList();
         return list.stream().map(MetaRepoConverter::toXCheckRule).collect(Collectors.toList());
     }
+
+    // ==================== X → Entity 反向转换 ====================
+
+    public static Entity toEntity(XEntity x) {
+        if (x == null) return null;
+        Entity e = new Entity();
+        e.setApiKey(x.getApiKey());
+        e.setLabel(x.getLabel());
+        e.setLabelKey(x.getLabelKey());
+        e.setNamespace(x.getNamespace());
+        e.setEntityType(x.getEntityType());
+        e.setSvgApiKey(x.getSvgApiKey());
+        e.setSvgColor(x.getSvgColor());
+        e.setDescription(x.getDescription());
+        e.setDescriptionKey(x.getDescriptionKey());
+        e.setCustomEntitySeq(x.getCustomEntitySeq());
+        e.setEnableFlg(x.getEnableFlg());
+        e.setCustomFlg(x.getCustomFlg());
+        e.setBusinessCategory(x.getBusinessCategory());
+        e.setTypeProperty(x.getTypeProperty());
+        e.setDbTable(x.getDbTable());
+        e.setDetailFlg(x.getDetailFlg());
+        e.setEnableTeam(x.getEnableTeam());
+        e.setEnableSocial(x.getEnableSocial());
+        e.setEnableConfig(x.getEnableConfig());
+        e.setHiddenFlg(x.getHiddenFlg());
+        e.setSearchable(x.getSearchable());
+        e.setEnableSharing(x.getEnableSharing());
+        e.setEnableScriptTrigger(x.getEnableScriptTrigger());
+        e.setEnableActivity(x.getEnableActivity());
+        e.setEnableHistoryLog(x.getEnableHistoryLog());
+        e.setEnableReport(x.getEnableReport());
+        e.setEnableRefer(x.getEnableRefer());
+        e.setEnableApi(x.getEnableApi());
+        e.setEnableFlow(x.getEnableFlow());
+        e.setEnablePackage(x.getEnablePackage());
+        e.setExtendProperty(x.getExtendProperty());
+        e.setDeleteFlg(x.getDeleteFlg());
+        return e;
+    }
+
+    public static EntityItem toEntityItem(XEntityItem x) {
+        if (x == null) return null;
+        EntityItem e = new EntityItem();
+        e.setEntityApiKey(x.getEntityApiKey());
+        e.setApiKey(x.getApiKey());
+        e.setLabel(x.getLabel());
+        e.setLabelKey(x.getLabelKey());
+        e.setNamespace(x.getNamespace());
+        e.setItemType(x.getItemType());
+        e.setDataType(x.getDataType());
+        e.setTypeProperty(x.getTypeProperty());
+        e.setHelpText(x.getHelpText());
+        e.setHelpTextKey(x.getHelpTextKey());
+        e.setDescription(x.getDescription());
+        e.setDescriptionKey(x.getDescriptionKey());
+        e.setCustomItemSeq(x.getCustomItemSeq());
+        e.setDefaultValue(x.getDefaultValue());
+        e.setRequireFlg(x.getRequireFlg());
+        e.setCustomFlg(x.getCustomFlg());
+        e.setEnableFlg(x.getEnableFlg());
+        e.setCreatable(x.getCreatable());
+        e.setUpdatable(x.getUpdatable());
+        e.setUniqueKeyFlg(x.getUniqueKeyFlg());
+        e.setEnableHistoryLog(x.getEnableHistoryLog());
+        e.setEnableConfig(x.getEnableConfig());
+        e.setEnablePackage(x.getEnablePackage());
+        e.setReadonlyStatus(x.getReadonlyStatus());
+        e.setVisibleStatus(x.getVisibleStatus());
+        e.setHiddenFlg(x.getHiddenFlg());
+        e.setReferEntityApiKey(x.getReferEntityApiKey());
+        e.setReferLinkApiKey(x.getReferLinkApiKey());
+        e.setDbColumn(x.getDbColumn());
+        e.setItemOrder(x.getItemOrder());
+        e.setSortFlg(x.getSortFlg());
+        e.setColumnName(x.getColumnName());
+        e.setDeleteFlg(x.getDeleteFlg());
+        return e;
+    }
+
+    public static EntityLink toEntityLink(XLink x) {
+        if (x == null) return null;
+        EntityLink e = new EntityLink();
+        e.setApiKey(x.getApiKey());
+        e.setLabel(x.getLabel());
+        e.setLabelKey(x.getLabelKey());
+        e.setNamespace(x.getNamespace());
+        e.setTypeProperty(x.getTypeProperty());
+        e.setLinkType(x.getLinkType());
+        e.setParentEntityApiKey(x.getParentEntityApiKey());
+        e.setChildEntityApiKey(x.getChildEntityApiKey());
+        e.setDetailLink(x.getDetailLink());
+        e.setCascadeDelete(x.getCascadeDelete());
+        e.setAccessControl(x.getAccessControl());
+        e.setEnableFlg(x.getEnableFlg());
+        e.setDescription(x.getDescription());
+        e.setDescriptionKey(x.getDescriptionKey());
+        e.setDeleteFlg(x.getDeleteFlg());
+        return e;
+    }
+
+    public static CheckRule toCheckRule(XCheckRule x) {
+        if (x == null) return null;
+        CheckRule e = new CheckRule();
+        e.setEntityApiKey(x.getEntityApiKey());
+        e.setApiKey(x.getApiKey());
+        e.setLabel(x.getLabel());
+        e.setLabelKey(x.getLabelKey());
+        e.setNamespace(x.getNamespace());
+        e.setActiveFlg(x.getActiveFlg());
+        e.setDescription(x.getDescription());
+        e.setDescriptionKey(x.getDescriptionKey());
+        e.setCheckFormula(x.getCheckFormula());
+        e.setCheckErrorMsg(x.getCheckErrorMsg());
+        e.setCheckErrorMsgKey(x.getCheckErrorMsgKey());
+        e.setCheckErrorLocation(x.getCheckErrorLocation());
+        e.setCheckErrorItemApiKey(x.getCheckErrorItemApiKey());
+        e.setCheckAllItemsFlg(x.getCheckAllItemsFlg());
+        e.setCheckErrorWay(x.getCheckErrorWay());
+        e.setDeleteFlg(x.getDeleteFlg());
+        return e;
+    }
 }

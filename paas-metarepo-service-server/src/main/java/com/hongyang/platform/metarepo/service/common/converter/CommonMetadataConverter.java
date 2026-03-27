@@ -56,6 +56,75 @@ public final class CommonMetadataConverter {
                 buildFieldCache(entityClass), buildFieldCache(CommonMetadata.class));
     }
 
+    /**
+     * 将业务 Entity 对象反向转换为 TenantMetadata（大宽表行）。
+     * 用于写入 p_tenant_metadata。
+     *
+     * @param entity          业务 Entity 对象
+     * @param metamodelApiKey 元模型 api_key
+     * @param columnMapping   db_column → entityFieldName（camelCase）
+     * @return TenantMetadata 行
+     */
+    public static <T> TenantMetadata toTenantMetadata(T entity, String metamodelApiKey,
+                                                       Map<String, String> columnMapping) {
+        if (entity == null) return null;
+        try {
+            TenantMetadata row = new TenantMetadata();
+            row.setMetamodelApiKey(metamodelApiKey);
+
+            Map<String, Field> entityFields = buildFieldCache(entity.getClass());
+            Map<String, Field> targetFields = buildFieldCache(TenantMetadata.class);
+
+            // Step 1: 固定列同名映射（Entity → TenantMetadata）
+            for (Map.Entry<String, Field> entry : targetFields.entrySet()) {
+                String tgtName = entry.getKey();
+                if (tgtName.startsWith(DBC_PREFIX)) continue;
+                if (tgtName.equals("metamodelApiKey")) continue;
+
+                Field srcField = entityFields.get(tgtName);
+                if (srcField == null) continue;
+                Object value = srcField.get(entity);
+                if (value != null) {
+                    entry.getValue().set(row, convertType(value, entry.getValue().getType()));
+                }
+            }
+
+            // Step 2: 特殊反向映射（entityApiKey → objectApiKey）
+            for (Map.Entry<String, String> sp : SPECIAL_MAPPING.entrySet()) {
+                Field tgtField = targetFields.get(sp.getKey());
+                Field srcField = entityFields.get(sp.getValue());
+                if (tgtField != null && srcField != null) {
+                    Object value = srcField.get(entity);
+                    if (value != null) {
+                        tgtField.set(row, convertType(value, tgtField.getType()));
+                    }
+                }
+            }
+
+            // Step 3: 业务字段 → dbc_xxx_N（通过列映射反转）
+            for (Map.Entry<String, String> m : columnMapping.entrySet()) {
+                String dbColumn = m.getKey();
+                String entityFieldName = m.getValue();
+
+                Field srcField = entityFields.get(entityFieldName);
+                if (srcField == null) continue;
+                Object value = srcField.get(entity);
+                if (value == null) continue;
+
+                String targetFieldName = snakeToCamel(dbColumn);
+                Field tgtField = targetFields.get(targetFieldName);
+                if (tgtField != null) {
+                    tgtField.set(row, convertType(value, tgtField.getType()));
+                }
+            }
+
+            return row;
+        } catch (Exception e) {
+            log.error("转换 {} → TenantMetadata 失败: {}", entity.getClass().getSimpleName(), e.getMessage());
+            return null;
+        }
+    }
+
     /** 从 TenantMetadata 批量转换（结构与 CommonMetadata 一致） */
     public static <T> List<T> convertFromTenant(List<TenantMetadata> rows, Class<T> entityClass,
                                                  Map<String, String> columnMapping) {

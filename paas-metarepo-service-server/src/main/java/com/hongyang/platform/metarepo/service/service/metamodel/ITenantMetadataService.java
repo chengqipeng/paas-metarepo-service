@@ -21,4 +21,19 @@ public interface ITenantMetadataService extends IBaseService<TenantMetadata> {
      * 通过 DynamicTableNameHolder 切换物理表名，查出的行仍为 TenantMetadata 结构。
      */
     List<TenantMetadata> listByTable(String tableName);
+
+    /**
+     * 创建租户级元数据。走 dao 层 save() 保证缓存一致性。
+     */
+    TenantMetadata createMetadata(TenantMetadata row);
+
+    /**
+     * 更新租户级元数据。走 dao 层 updateById() 保证缓存一致性。
+     */
+    TenantMetadata updateMetadata(TenantMetadata row);
+
+    /**
+     * 软删除租户级元数据。设置 delete_flg=1 后走 dao 层 updateById()。
+     */
+    void softDeleteMetadata(TenantMetadata row, Long operatorId);
 }
