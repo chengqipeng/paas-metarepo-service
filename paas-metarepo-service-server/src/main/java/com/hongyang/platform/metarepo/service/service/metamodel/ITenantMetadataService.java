@@ -17,12 +17,6 @@ public interface ITenantMetadataService extends IBaseService<TenantMetadata> {
     TenantMetadata getByMetamodelApiKeyAndApiKey(String metamodelApiKey, String apiKey);
 
     /**
-     * 从指定的 Tenant 快捷表查询所有数据。
-     * 通过 DynamicTableNameHolder 切换物理表名，查出的行仍为 TenantMetadata 结构。
-     */
-    List<TenantMetadata> listByTable(String tableName);
-
-    /**
      * 创建租户级元数据。走 dao 层 save() 保证缓存一致性。
      */
     TenantMetadata createMetadata(TenantMetadata row);

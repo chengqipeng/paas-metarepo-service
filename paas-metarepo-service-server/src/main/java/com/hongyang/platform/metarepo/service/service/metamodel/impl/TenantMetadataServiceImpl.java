@@ -1,6 +1,5 @@
 package com.hongyang.platform.metarepo.service.service.metamodel.impl;
 
-import com.hongyang.framework.dao.dynamic.DynamicTableNameHolder;
 import com.hongyang.framework.dao.entity.BaseMetaCommonEntity;
 import com.hongyang.framework.dao.service.DataBaseServiceImpl;
 import com.hongyang.platform.metarepo.service.entity.metamodel.TenantMetadata;
@@ -33,11 +32,6 @@ public class TenantMetadataServiceImpl
                 .eq(TenantMetadata::getMetamodelApiKey, metamodelApiKey)
                 .eq(BaseMetaCommonEntity::getApiKey, apiKey)
                 .one();
-    }
-
-    @Override
-    public List<TenantMetadata> listByTable(String tableName) {
-        return DynamicTableNameHolder.executeWith(tableName, () -> list());
     }
 
     @Override
