@@ -3,7 +3,7 @@ package com.hongyang.platform.metarepo.service.api.metamodel;
 import com.hongyang.platform.metarepo.core.api.MetaRepoWriteApi;
 import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
-import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
+import com.hongyang.platform.metarepo.core.model.metamodel.XEntityItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.request.CreateCheckRuleRequest;
 import com.hongyang.platform.metarepo.core.model.request.CreateEntityRequest;
@@ -96,7 +96,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
 
     @Override
     @PostMapping("/write/item")
-    public XItem createItem(@RequestBody CreateItemRequest request) {
+    public XEntityItem createItem(@RequestBody CreateItemRequest request) {
         EntityItem item = new EntityItem();
         item.setEntityApiKey(request.getEntityApiKey());
         item.setApiKey(request.getApiKey());
@@ -114,12 +114,12 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         item.setDbColumn(request.getDbColumn());
         item.setItemOrder(request.getItemOrder() != null ? request.getItemOrder() : 0);
         customItemService.save(item);
-        return MetaRepoConverter.toXItem(item);
+        return MetaRepoConverter.toXEntityItem(item);
     }
 
     @Override
     @PutMapping("/write/item")
-    public XItem updateItem(@RequestBody UpdateItemRequest request) {
+    public XEntityItem updateItem(@RequestBody UpdateItemRequest request) {
         // TODO: 实现字段更新
         throw new UnsupportedOperationException("updateItem 待实现");
     }

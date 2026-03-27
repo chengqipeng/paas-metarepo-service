@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_meta_module")
+@TableName("paas_metarepo_common.p_meta_module")
 public class MetaModule extends BaseEntity {
 
     private String name;

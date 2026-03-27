@@ -2,7 +2,7 @@ package com.hongyang.platform.metarepo.core.api;
 
 import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
-import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
+import com.hongyang.platform.metarepo.core.model.metamodel.XEntityItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +25,7 @@ public interface MetaRepoReadApi {
     XEntity getEntity(@RequestParam("apiKey") String apiKey);
 
     @GetMapping("/read/items")
-    List<XItem> listItems(@RequestParam("entityApiKey") String entityApiKey);
+    List<XEntityItem> listItems(@RequestParam("entityApiKey") String entityApiKey);
 
     @GetMapping("/read/pick-options")
     List<XPickOption> listPickOptions(@RequestParam("itemApiKey") String itemApiKey);

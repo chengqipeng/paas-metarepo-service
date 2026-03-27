@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_meta_i18n_resource")
+@TableName("paas_metarepo_common.p_meta_i18n_resource")
 public class MetaI18nResource extends BaseEntity {
 
     private Long metamodelApiKey;

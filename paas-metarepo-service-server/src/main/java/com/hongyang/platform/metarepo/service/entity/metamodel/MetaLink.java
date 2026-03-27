@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("p_meta_link")
+@TableName("paas_metarepo_common.p_meta_link")
 public class MetaLink extends BaseMetaCommonEntity {
 
     private Integer linkType;

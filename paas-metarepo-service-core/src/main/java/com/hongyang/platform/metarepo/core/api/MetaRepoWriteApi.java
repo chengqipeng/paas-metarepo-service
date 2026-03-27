@@ -2,7 +2,7 @@ package com.hongyang.platform.metarepo.core.api;
 
 import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
-import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
+import com.hongyang.platform.metarepo.core.model.metamodel.XEntityItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.request.CreateCheckRuleRequest;
 import com.hongyang.platform.metarepo.core.model.request.CreateEntityRequest;
@@ -36,10 +36,10 @@ public interface MetaRepoWriteApi {
     void deleteEntity(@RequestParam("apiKey") String apiKey);
 
     @PostMapping("/write/item")
-    XItem createItem(@RequestBody CreateItemRequest request);
+    XEntityItem createItem(@RequestBody CreateItemRequest request);
 
     @PutMapping("/write/item")
-    XItem updateItem(@RequestBody UpdateItemRequest request);
+    XEntityItem updateItem(@RequestBody UpdateItemRequest request);
 
     @DeleteMapping("/write/item")
     void deleteItem(@RequestParam("apiKey") String apiKey);

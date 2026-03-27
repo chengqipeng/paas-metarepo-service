@@ -3,7 +3,7 @@ package com.hongyang.platform.metarepo.service.api.metamodel;
 import com.hongyang.platform.metarepo.core.api.MetaRepoReadApi;
 import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
-import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
+import com.hongyang.platform.metarepo.core.model.metamodel.XEntityItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
 import com.hongyang.platform.metarepo.service.common.converter.MetaRepoConverter;
@@ -47,8 +47,8 @@ public class MetaRepoReadApiService implements MetaRepoReadApi {
 
     @Override
     @GetMapping("/read/items")
-    public List<XItem> listItems(@RequestParam("entityApiKey") String entityApiKey) {
-        return MetaRepoConverter.toXItemList(customItemService.listMerged(entityApiKey));
+    public List<XEntityItem> listItems(@RequestParam("entityApiKey") String entityApiKey) {
+        return MetaRepoConverter.toXEntityItemList(customItemService.listMerged(entityApiKey));
     }
 
     @Override

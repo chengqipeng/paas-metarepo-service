@@ -22,7 +22,7 @@ public class XMetaModel implements Serializable {
     private String typeProperty;
     private String description;
     private String descriptionKey;
-    private List<XItem> items;
+    private List<XEntityItem> items;
     private List<XLink> links;
     private List<XCheckRule> checkRules;
     private Map<Long, List<XPickOption>> pickOptionsMap;

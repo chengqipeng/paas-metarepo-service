@@ -7,7 +7,7 @@ import java.io.Serializable;
  * 自定义字段元模型
  */
 @Data
-public class XItem implements Serializable {
+public class XEntityItem implements Serializable {
     private String entityApiKey;
     private String apiKey;
     private String label;
@@ -41,6 +41,19 @@ public class XItem implements Serializable {
     private Integer itemOrder;
     private Integer sortFlg;
     private String columnName;
+    private Integer enableDeactive;
+    private Integer compound;
+    private Integer maskPrefix;
+    private Integer maskSuffix;
+    private Integer encrypt;
+    private Integer indexOrder;
+    private Integer indexType;
+    private Integer markdown;
+    private Integer maskSymbolType;
+    private Integer incrementStrategy;
+    private Integer referItemFilterEnable;
+    private String isComputeMultiCurrencyUnit;
+    private String format;
     private Long createdAt;
     private Long createdBy;
     private Long updatedAt;

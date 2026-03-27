@@ -2,7 +2,7 @@ package com.hongyang.platform.metarepo.service.common.converter;
 
 import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
-import com.hongyang.platform.metarepo.core.model.metamodel.XItem;
+import com.hongyang.platform.metarepo.core.model.metamodel.XEntityItem;
 import com.hongyang.platform.metarepo.core.model.metamodel.XLink;
 import com.hongyang.platform.metarepo.core.model.metamodel.XPickOption;
 import com.hongyang.platform.metarepo.service.entity.metadata.CheckRule;
@@ -73,9 +73,9 @@ public final class MetaRepoConverter {
 
     // ==================== Item ====================
 
-    public static XItem toXItem(EntityItem e) {
+    public static XEntityItem toXEntityItem(EntityItem e) {
         if (e == null) return null;
-        XItem x = new XItem();
+        XEntityItem x = new XEntityItem();
         x.setEntityApiKey(e.getEntityApiKey());
         x.setApiKey(e.getApiKey());
         x.setLabel(e.getLabel());
@@ -116,9 +116,9 @@ public final class MetaRepoConverter {
         return x;
     }
 
-    public static List<XItem> toXItemList(List<EntityItem> list) {
+    public static List<XEntityItem> toXEntityItemList(List<EntityItem> list) {
         if (list == null) return Collections.emptyList();
-        return list.stream().map(MetaRepoConverter::toXItem).collect(Collectors.toList());
+        return list.stream().map(MetaRepoConverter::toXEntityItem).collect(Collectors.toList());
     }
 
     // ==================== Link ====================
