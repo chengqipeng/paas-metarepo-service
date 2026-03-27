@@ -16,6 +16,9 @@ public interface ITenantMetadataService extends IMetaService<TenantMetadata> {
     /** 按 metamodelApiKey + apiKey 查询单条 */
     TenantMetadata getByMetamodelApiKeyAndApiKey(String metamodelApiKey, String apiKey);
 
+    /** 按 metamodelApiKey + entityApiKey 查询（用于 item/pickOption 等子表） */
+    List<TenantMetadata> listByMetamodelApiKeyAndEntityApiKey(String metamodelApiKey, String entityApiKey);
+
     /**
      * 创建租户级元数据。走 dao 层 create() 保证缓存一致性。
      */

@@ -55,7 +55,7 @@ public class MetadataMergeWriteServiceImpl implements IMetadataMergeWriteService
         if (apiKey == null || apiKey.isEmpty()) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, "apiKey 不能为空");
         }
-        Object existing = metadataMergeReadService.getByApiKeyMerged(metamodelApiKey, apiKey, entity.getClass());
+        Object existing = metadataMergeReadService.getByApiKeyMerged(metamodelApiKey, apiKey);
         if (existing != null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_APIKEY_DUPLICATE, apiKey);
         }
@@ -94,7 +94,7 @@ public class MetadataMergeWriteServiceImpl implements IMetadataMergeWriteService
         }
 
         // 查询旧值（用于日志）
-        T oldEntity = metadataMergeReadService.getByApiKeyMerged(metamodelApiKey, apiKey, (Class<T>) entity.getClass());
+        T oldEntity = metadataMergeReadService.getByApiKeyMerged(metamodelApiKey, apiKey);
         if (oldEntity == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, apiKey);
         }
@@ -135,12 +135,11 @@ public class MetadataMergeWriteServiceImpl implements IMetadataMergeWriteService
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <T extends BaseMetaTenantEntity> void delete(String metamodelApiKey, String apiKey,
-                                                         Class<T> entityClass, Long operatorId) {
+    public void delete(String metamodelApiKey, String apiKey, Long operatorId) {
         validateMetaModel(metamodelApiKey);
 
         // 查询旧值（用于日志）
-        T oldEntity = metadataMergeReadService.getByApiKeyMerged(metamodelApiKey, apiKey, entityClass);
+        BaseMetaTenantEntity oldEntity = metadataMergeReadService.getByApiKeyMerged(metamodelApiKey, apiKey);
         if (oldEntity == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, apiKey);
         }

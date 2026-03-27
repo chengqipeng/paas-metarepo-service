@@ -19,7 +19,6 @@ import com.hongyang.platform.metarepo.service.entity.metadata.CheckRule;
 import com.hongyang.platform.metarepo.service.entity.metadata.Entity;
 import com.hongyang.platform.metarepo.service.entity.metadata.EntityItem;
 import com.hongyang.platform.metarepo.service.entity.metadata.EntityLink;
-import com.hongyang.platform.metarepo.service.entity.metadata.PickOption;
 import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeWriteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +60,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     @DeleteMapping("/write/entity")
     public void deleteEntity(@RequestParam("apiKey") String apiKey) {
         metadataMergeWriteService.delete(
-                MetamodelApiKey.ENTITY, apiKey, Entity.class, null);
+                MetamodelApiKey.ENTITY, apiKey, null);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     @DeleteMapping("/write/item")
     public void deleteItem(@RequestParam("apiKey") String apiKey) {
         metadataMergeWriteService.delete(
-                MetamodelApiKey.ITEM, apiKey, EntityItem.class, null);
+                MetamodelApiKey.ITEM, apiKey, null);
     }
 
     @Override
@@ -109,7 +108,7 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     @DeleteMapping("/write/entity-link")
     public void deleteEntityLink(@RequestParam("apiKey") String apiKey) {
         metadataMergeWriteService.delete(
-                MetamodelApiKey.ENTITY_LINK, apiKey, EntityLink.class, null);
+                MetamodelApiKey.ENTITY_LINK, apiKey, null);
     }
 
     @Override

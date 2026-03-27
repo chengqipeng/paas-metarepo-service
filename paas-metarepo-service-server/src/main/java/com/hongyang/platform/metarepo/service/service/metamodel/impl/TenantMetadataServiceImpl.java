@@ -37,6 +37,14 @@ public class TenantMetadataServiceImpl
     }
 
     @Override
+    public List<TenantMetadata> listByMetamodelApiKeyAndEntityApiKey(String metamodelApiKey, String entityApiKey) {
+        MetaQueryCondition<TenantMetadata> condition = MetaQueryCondition.<TenantMetadata>create()
+                .eq(TenantMetadata::getMetamodelApiKey, metamodelApiKey)
+                .eq(TenantMetadata::getEntityApiKey, entityApiKey);
+        return listByCondition(condition);
+    }
+
+    @Override
     public TenantMetadata createMetadata(TenantMetadata row) {
         return create(row);
     }

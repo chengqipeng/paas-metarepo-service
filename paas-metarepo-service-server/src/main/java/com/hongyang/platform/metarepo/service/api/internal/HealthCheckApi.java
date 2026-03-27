@@ -1,7 +1,6 @@
 package com.hongyang.platform.metarepo.service.api.internal;
 
 import com.hongyang.framework.common.constants.paas.MetamodelApiKey;
-import com.hongyang.platform.metarepo.service.entity.metadata.Entity;
 import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ public class HealthCheckApi {
     @GetMapping("/debug/entities")
     public Map<String, Object> debugEntities() {
         try {
-            var list = metadataMergeReadService.listMerged(MetamodelApiKey.ENTITY, Entity.class);
+            var list = metadataMergeReadService.listMerged(MetamodelApiKey.ENTITY);
             return Map.of("success", true, "count", list.size());
         } catch (Exception e) {
             return Map.of("success", false, "error", e.getClass().getName(),

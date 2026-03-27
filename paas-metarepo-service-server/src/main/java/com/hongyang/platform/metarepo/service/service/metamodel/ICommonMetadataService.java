@@ -13,4 +13,7 @@ public interface ICommonMetadataService extends IMetaService<CommonMetadata> {
     List<CommonMetadata> listByMetamodelApiKey(String metamodelApiKey);
 
     CommonMetadata getByMetamodelApiKeyAndApiKey(String metamodelApiKey, String apiKey);
+
+    /** 按 metamodelApiKey + entityApiKey 查询（用于 item/pickOption 等子表） */
+    List<CommonMetadata> listByMetamodelApiKeyAndEntityApiKey(String metamodelApiKey, String entityApiKey);
 }

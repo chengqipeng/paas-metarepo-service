@@ -49,7 +49,9 @@ public class MetadataMergeReadServiceImpl implements IMetadataMergeReadService {
     private final IMetaModelService metaModelService;
 
     @Override
-    public <T extends BaseMetaTenantEntity> List<T> listMerged(String metamodelApiKey, Class<T> entityClass) {
+    @SuppressWarnings("unchecked")
+    public <T extends BaseMetaTenantEntity> List<T> listMerged(String metamodelApiKey) {
+        Class<T> entityClass = (Class<T>) resolveEntityClass(metamodelApiKey);
         MetaModel metaModel = getMetaModel(metamodelApiKey);
         boolean queryCommon = isEnabled(metaModel, true);
         boolean queryTenant = isEnabled(metaModel, false);
@@ -64,7 +66,9 @@ public class MetadataMergeReadServiceImpl implements IMetadataMergeReadService {
     }
 
     @Override
-    public <T extends BaseMetaTenantEntity> T getByApiKeyMerged(String metamodelApiKey, String apiKey, Class<T> entityClass) {
+    @SuppressWarnings("unchecked")
+    public <T extends BaseMetaTenantEntity> T getByApiKeyMerged(String metamodelApiKey, String apiKey) {
+        Class<T> entityClass = (Class<T>) resolveEntityClass(metamodelApiKey);
         MetaModel metaModel = getMetaModel(metamodelApiKey);
         boolean queryCommon = isEnabled(metaModel, true);
         boolean queryTenant = isEnabled(metaModel, false);
@@ -89,8 +93,8 @@ public class MetadataMergeReadServiceImpl implements IMetadataMergeReadService {
     }
 
     @Override
-    public <T extends BaseMetaTenantEntity> PageResult<T> pageMerged(String metamodelApiKey, Class<T> entityClass, int page, int size) {
-        List<T> all = listMerged(metamodelApiKey, entityClass);
+    public <T extends BaseMetaTenantEntity> PageResult<T> pageMerged(String metamodelApiKey, int page, int size) {
+        List<T> all = listMerged(metamodelApiKey);
         int total = all.size();
         int from = Math.min((page - 1) * size, total);
         int to = Math.min(from + size, total);
@@ -102,11 +106,10 @@ public class MetadataMergeReadServiceImpl implements IMetadataMergeReadService {
         return result;
     }
 
-    // ==================== 内部方法 ====================
-
     @Override
     public List<GenericMetadata> listMergedGeneric(String metamodelApiKey) {
-        return listMerged(metamodelApiKey, GenericMetadata.class);
+        // GenericMetadata 不走枚举映射，直接指定 class
+        return listMergedWithClass(metamodelApiKey, GenericMetadata.class);
     }
 
     @Override
@@ -114,9 +117,55 @@ public class MetadataMergeReadServiceImpl implements IMetadataMergeReadService {
     public List<?> listMergedAuto(String metamodelApiKey) {
         Class<? extends BaseMetaTenantEntity> entityClass = MetamodelApiKeyEnum.getEntityClassByKey(metamodelApiKey);
         if (entityClass != null) {
-            return listMerged(metamodelApiKey, entityClass);
+            return listMergedWithClass(metamodelApiKey, entityClass);
         }
         return listMergedGeneric(metamodelApiKey);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends BaseMetaTenantEntity> List<T> listMergedByEntityApiKey(
+            String metamodelApiKey, String entityApiKey) {
+        Class<T> entityClass = (Class<T>) resolveEntityClass(metamodelApiKey);
+        MetaModel metaModel = getMetaModel(metamodelApiKey);
+        boolean queryCommon = isEnabled(metaModel, true);
+        boolean queryTenant = isEnabled(metaModel, false);
+
+        List<T> commonList = queryCommon ? listCommonByEntityApiKey(metamodelApiKey, entityApiKey, entityClass) : Collections.emptyList();
+        List<T> tenantList = queryTenant ? listTenantByEntityApiKey(metamodelApiKey, entityApiKey, entityClass) : Collections.emptyList();
+
+        if (queryCommon && queryTenant) {
+            return merge(commonList, tenantList);
+        }
+        return queryCommon ? commonList : tenantList;
+    }
+
+    // ==================== 内部方法 ====================
+
+    /**
+     * 通过 MetamodelApiKeyEnum 解析 entityClass，未注册则回退到 GenericMetadata。
+     */
+    private Class<? extends BaseMetaTenantEntity> resolveEntityClass(String metamodelApiKey) {
+        Class<? extends BaseMetaTenantEntity> clazz = MetamodelApiKeyEnum.getEntityClassByKey(metamodelApiKey);
+        if (clazz == null) {
+            return GenericMetadata.class;
+        }
+        return clazz;
+    }
+
+    /** 内部带 entityClass 参数的 listMerged，供 listMergedGeneric/listMergedAuto 使用 */
+    private <T extends BaseMetaTenantEntity> List<T> listMergedWithClass(String metamodelApiKey, Class<T> entityClass) {
+        MetaModel metaModel = getMetaModel(metamodelApiKey);
+        boolean queryCommon = isEnabled(metaModel, true);
+        boolean queryTenant = isEnabled(metaModel, false);
+
+        List<T> commonList = queryCommon ? listCommon(metamodelApiKey, entityClass) : Collections.emptyList();
+        List<T> tenantList = queryTenant ? listTenant(metamodelApiKey, entityClass) : Collections.emptyList();
+
+        if (queryCommon && queryTenant) {
+            return merge(commonList, tenantList);
+        }
+        return queryCommon ? commonList : tenantList;
     }
 
     private <T extends BaseMetaTenantEntity> List<T> listCommon(String metamodelApiKey, Class<T> entityClass) {
@@ -126,6 +175,16 @@ public class MetadataMergeReadServiceImpl implements IMetadataMergeReadService {
 
     private <T extends BaseMetaTenantEntity> List<T> listTenant(String metamodelApiKey, Class<T> entityClass) {
         List<TenantMetadata> rows = tenantMetadataService.listByMetamodelApiKey(metamodelApiKey);
+        return CommonMetadataConverter.convertFromTenant(rows, entityClass, getColumnMapping(metamodelApiKey));
+    }
+
+    private <T extends BaseMetaTenantEntity> List<T> listCommonByEntityApiKey(String metamodelApiKey, String entityApiKey, Class<T> entityClass) {
+        List<CommonMetadata> rows = commonMetadataService.listByMetamodelApiKeyAndEntityApiKey(metamodelApiKey, entityApiKey);
+        return CommonMetadataConverter.convert(rows, entityClass, getColumnMapping(metamodelApiKey));
+    }
+
+    private <T extends BaseMetaTenantEntity> List<T> listTenantByEntityApiKey(String metamodelApiKey, String entityApiKey, Class<T> entityClass) {
+        List<TenantMetadata> rows = tenantMetadataService.listByMetamodelApiKeyAndEntityApiKey(metamodelApiKey, entityApiKey);
         return CommonMetadataConverter.convertFromTenant(rows, entityClass, getColumnMapping(metamodelApiKey));
     }
 

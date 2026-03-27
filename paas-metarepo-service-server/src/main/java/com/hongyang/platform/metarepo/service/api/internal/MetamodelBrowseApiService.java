@@ -66,40 +66,35 @@ public class MetamodelBrowseApiService {
 
     @GetMapping("/metadata/entities")
     public List<XEntity> listEntities() {
-        return MetaRepoConverter.toXEntityList(
-                metadataMergeReadService.listMerged(MetamodelApiKey.ENTITY, Entity.class));
+        List<Entity> entities = metadataMergeReadService.listMerged(MetamodelApiKey.ENTITY);
+        return MetaRepoConverter.toXEntityList(entities);
     }
 
     @GetMapping("/metadata/items")
     public List<XEntityItem> listItems(@RequestParam("entityApiKey") String entityApiKey) {
-        return MetaRepoConverter.toXEntityItemList(
-                metadataMergeReadService.listMerged(MetamodelApiKey.ITEM, EntityItem.class).stream()
-                        .filter(e -> entityApiKey.equals(e.getEntityApiKey()))
-                        .collect(Collectors.toList()));
+        List<EntityItem> items = metadataMergeReadService.listMergedByEntityApiKey(MetamodelApiKey.ITEM, entityApiKey);
+        return MetaRepoConverter.toXEntityItemList(items);
     }
 
     @GetMapping("/metadata/pick-options")
     public List<XPickOption> listPickOptions(@RequestParam("itemApiKey") String itemApiKey) {
+        List<PickOption> allOptions = metadataMergeReadService.listMerged(MetamodelApiKey.PICK_OPTION);
         return MetaRepoConverter.toXPickOptionList(
-                metadataMergeReadService.listMerged(MetamodelApiKey.PICK_OPTION, PickOption.class).stream()
+                allOptions.stream()
                         .filter(e -> itemApiKey.equals(e.getItemApiKey()))
                         .collect(Collectors.toList()));
     }
 
     @GetMapping("/metadata/entity-links")
     public List<XLink> listEntityLinks(@RequestParam("entityApiKey") String entityApiKey) {
-        return MetaRepoConverter.toXLinkList(
-                metadataMergeReadService.listMerged(MetamodelApiKey.ENTITY_LINK, EntityLink.class).stream()
-                        .filter(e -> entityApiKey.equals(e.getParentEntityApiKey()))
-                        .collect(Collectors.toList()));
+        List<EntityLink> links = metadataMergeReadService.listMergedByEntityApiKey(MetamodelApiKey.ENTITY_LINK, entityApiKey);
+        return MetaRepoConverter.toXLinkList(links);
     }
 
     @GetMapping("/metadata/check-rules")
     public List<XCheckRule> listCheckRules(@RequestParam("entityApiKey") String entityApiKey) {
-        return MetaRepoConverter.toXCheckRuleList(
-                metadataMergeReadService.listMerged(MetamodelApiKey.CHECK_RULE, CheckRule.class).stream()
-                        .filter(e -> entityApiKey.equals(e.getEntityApiKey()))
-                        .collect(Collectors.toList()));
+        List<CheckRule> rules = metadataMergeReadService.listMergedByEntityApiKey(MetamodelApiKey.CHECK_RULE, entityApiKey);
+        return MetaRepoConverter.toXCheckRuleList(rules);
     }
 
     /** 通用查询：按 metamodelApiKey 自动判断模型类型 */

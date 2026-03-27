@@ -33,4 +33,12 @@ public class CommonMetadataServiceImpl
                 .eq(BaseMetaCommonEntity::getApiKey, apiKey);
         return getOneByCondition(condition);
     }
+
+    @Override
+    public List<CommonMetadata> listByMetamodelApiKeyAndEntityApiKey(String metamodelApiKey, String entityApiKey) {
+        MetaQueryCondition<CommonMetadata> condition = MetaQueryCondition.<CommonMetadata>create()
+                .eq(CommonMetadata::getMetamodelApiKey, metamodelApiKey)
+                .eq(CommonMetadata::getEntityApiKey, entityApiKey);
+        return listByCondition(condition);
+    }
 }

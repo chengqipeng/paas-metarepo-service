@@ -5,6 +5,7 @@ import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 /**
  * 租户级元数据写入 Service 接口。
  * 所有写操作（create/update/delete）均写入 p_tenant_metadata。
+ * entityClass 通过 MetamodelApiKeyEnum 自动解析，调用方无需传入。
  */
 public interface IMetadataMergeWriteService {
 
@@ -34,12 +35,11 @@ public interface IMetadataMergeWriteService {
      * 软删除租户级元数据。
      * 按 apiKey 定位记录，设置 delete_flg=1，并记录变更日志。
      * 如果是 Common 级数据的遮蔽删除，会在 Tenant 表中插入一条 delete_flg=1 的记录。
+     * entityClass 通过 MetamodelApiKeyEnum 自动解析。
      *
      * @param metamodelApiKey 元模型 api_key
      * @param apiKey          元数据 api_key
-     * @param entityClass     业务 Entity 类（用于日志快照转换）
      * @param operatorId      操作人 ID
      */
-    <T extends BaseMetaTenantEntity> void delete(String metamodelApiKey, String apiKey,
-                                                  Class<T> entityClass, Long operatorId);
+    void delete(String metamodelApiKey, String apiKey, Long operatorId);
 }

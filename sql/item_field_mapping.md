@@ -46,37 +46,42 @@ metamodel: item
 | 35 | enableConfig | Long | — | — | dbc_bigint_2 | dbc 列 | **新增** |
 | 36 | enablePackage | Long | — | — | dbc_bigint_3 | dbc 列 | **新增** |
 | 37 | columnName | String | — | — | dbc_varchar_7 | dbc 列 | **新增** |
+| 38 | enableDeactive | Integer | enableDeactive | enable_deactive | dbc_smallint_8 | dbc 列 | 更新 db_column |
+| 39 | compound | Integer | compound | NULL | dbc_smallint_9 | dbc 列 | 分配 db_column |
+| 40 | maskPrefix | Integer | maskPrefix | NULL | dbc_int_7 | dbc 列 | 分配 db_column |
+| 41 | maskSuffix | Integer | maskSuffix | NULL | dbc_int_8 | dbc 列 | 分配 db_column |
+| 42 | encrypt | Integer | encrypt | NULL | dbc_smallint_10 | dbc 列 | 分配 db_column |
+| 43 | indexOrder | Integer | indexOrder | NULL | dbc_int_9 | dbc 列 | 分配 db_column |
+| 44 | indexType | Integer | indexType | NULL | dbc_int_10 | dbc 列 | 分配 db_column |
+| 45 | markdown | Integer | markdown | NULL | dbc_smallint_11 | dbc 列 | 分配 db_column |
+| 46 | maskSymbolType | Integer | maskSymbolType | NULL | dbc_int_11 | dbc 列 | 分配 db_column |
+| 47 | incrementStrategy | Integer | incrementStrategy | NULL | dbc_int_12 | dbc 列 | 分配 db_column |
+| 48 | referItemFilterEnable | Integer | referItemFilterEnable | NULL | dbc_smallint_12 | dbc 列 | 分配 db_column |
+| 49 | isComputeMultiCurrencyUnit | String | isComputeMultiCurrencyUnit | NULL | dbc_varchar_8 | dbc 列 | 分配 db_column |
+| 50 | format | String | format | NULL | dbc_varchar_9 | dbc 列 | 分配 db_column |
 | — | — | — | name | name | — | — | **丢弃** |
 | — | — | — | objectId | entity_id | — | — | **→ 固定列 entity_api_key** |
-| — | — | — | enableDeactive | enable_deactive | — | — | **丢弃**（Entity 无此字段） |
-| — | — | — | compound | NULL | — | — | **丢弃**（JSON only） |
 | — | — | — | isExternalId | NULL | — | — | **丢弃** |
-| — | — | — | maskSuffix | NULL | — | — | **丢弃** |
-| — | — | — | maskPrefix | NULL | — | — | **丢弃** |
-| — | — | — | encrypt | NULL | — | — | **丢弃** |
-| — | — | — | indexOrder | NULL | — | — | **丢弃** |
-| — | — | — | indexType | NULL | — | — | **丢弃** |
-| — | — | — | markdown | NULL | — | — | **丢弃** |
-| — | — | — | maskSymbolType | NULL | — | — | **丢弃** |
-| — | — | — | incrementStrategy | NULL | — | — | **丢弃** |
-| — | — | — | referItemFilterEnable | NULL | — | — | **丢弃** |
-| — | — | — | isComputeMultiCurrencyUnit | NULL | — | — | **丢弃** |
-| — | — | — | format | NULL | — | — | **丢弃** |
 
-## 需要新增到 EntityItem.java 的字段
+## JSON-only 字段 dbc 列分配
 
-老库 item 模型中有但当前 EntityItem.java 没有的有意义字段：
+以下 13 个字段在老库中无 db_column（仅存在于 metadata_json），现已分配 dbc 列：
 
-| 老 api_key | 老 db_column | 说明 | 是否需要新增 |
-|---|---|---|---|
-| enableDeactive | enable_deactive | 是否支持停用 | **是，建议新增** |
-| compound | NULL | 复合字段标记 | 按需 |
-| isExternalId | NULL | 外部 ID 标记 | 按需 |
-| format | NULL | 格式化规则 | 按需 |
-| encrypt | NULL | 加密标记 | 按需 |
-| referItemFilterEnable | NULL | 关联字段过滤开关 | 按需 |
-
-建议至少新增 `enableDeactive`（有 db_column，是正式字段）。其余 JSON-only 字段按业务需要决定。
+| 字段 | dbc 列 | 类型 |
+|---|---|---|
+| enableDeactive | dbc_smallint_8 | SMALLINT |
+| compound | dbc_smallint_9 | SMALLINT |
+| maskPrefix | dbc_int_7 | INTEGER |
+| maskSuffix | dbc_int_8 | INTEGER |
+| encrypt | dbc_smallint_10 | SMALLINT |
+| indexOrder | dbc_int_9 | INTEGER |
+| indexType | dbc_int_10 | INTEGER |
+| markdown | dbc_smallint_11 | SMALLINT |
+| maskSymbolType | dbc_int_11 | INTEGER |
+| incrementStrategy | dbc_int_12 | INTEGER |
+| referItemFilterEnable | dbc_smallint_12 | SMALLINT |
+| isComputeMultiCurrencyUnit | dbc_varchar_8 | VARCHAR(255) |
+| format | dbc_varchar_9 | VARCHAR(255) |
 
 ## 汇总
 
@@ -85,18 +90,19 @@ metamodel: item
 | 固定列 | 12 |
 | 更新 db_column | 10 |
 | 重命名 api_key + 更新 db_column | 6 |
+| 分配 db_column（老记录有但 db_column 为 NULL） | 13 |
 | 新增 p_meta_item 记录 | 7 |
-| 丢弃 | 15 |
-| **EntityItem.java 业务字段总计** | **37** |
+| 丢弃 | 2 |
+| **EntityItem.java 业务字段总计** | **50** |
 
 ## dbc 列使用汇总
 
 | 列类型 | 使用编号 | 总数 |
 |---|---|---|
-| dbc_varchar_ | 1~7 | 7 |
+| dbc_varchar_ | 1~9 | 9 |
 | dbc_textarea_ | 1~2 | 2 |
-| dbc_int_ | 1~6 | 6 |
+| dbc_int_ | 1~12 | 12 |
 | dbc_bigint_ | 1~3 | 3 |
-| dbc_smallint_ | 1~7 | 7 |
+| dbc_smallint_ | 1~12 | 12 |
 | dbc_decimal_ | — | 0 |
-| **合计** | | **25** |
+| **合计** | | **38** |
