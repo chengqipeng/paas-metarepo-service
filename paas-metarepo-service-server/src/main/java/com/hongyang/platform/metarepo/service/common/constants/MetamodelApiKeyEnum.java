@@ -10,8 +10,8 @@ import com.hongyang.platform.metarepo.service.entity.metadata.PickOption;
 import com.hongyang.platform.metarepo.service.entity.metadata.ReferFilter;
 
 /**
- * 元模型 api_key 枚举，管理 metamodelApiKey 与对应 Entity 类的映射。
- * api_key 常量定义在 framework-common 的 {@link MetamodelApiKey} 中，供所有业务服务引用。
+ * 元模型枚举，管理 metamodelApiKey 与对应 Entity 类的映射。
+ * api_key 常量定义在 {@link MetamodelApiKey} 中。
  */
 public enum MetamodelApiKeyEnum {
 
@@ -52,16 +52,12 @@ public enum MetamodelApiKeyEnum {
         return e != null ? e.entityClass : null;
     }
 
-    /** @deprecated 使用 {@link MetamodelApiKey#ENTITY} 替代 */
-    public static final String K_ENTITY = MetamodelApiKey.ENTITY;
-    /** @deprecated 使用 {@link MetamodelApiKey#ITEM} 替代 */
-    public static final String K_ITEM = MetamodelApiKey.ITEM;
-    /** @deprecated 使用 {@link MetamodelApiKey#PICK_OPTION} 替代 */
-    public static final String K_PICK_OPTION = MetamodelApiKey.PICK_OPTION;
-    /** @deprecated 使用 {@link MetamodelApiKey#ENTITY_LINK} 替代 */
-    public static final String K_ENTITY_LINK = MetamodelApiKey.ENTITY_LINK;
-    /** @deprecated 使用 {@link MetamodelApiKey#CHECK_RULE} 替代 */
-    public static final String K_CHECK_RULE = MetamodelApiKey.CHECK_RULE;
-    /** @deprecated 使用 {@link MetamodelApiKey#REFER_FILTER} 替代 */
-    public static final String K_REFER_FILTER = MetamodelApiKey.REFER_FILTER;
+    /** 根据 Entity Class 反查 metamodelApiKey */
+    public static String getKeyByEntityClass(Class<?> entityClass) {
+        if (entityClass == null) return null;
+        for (MetamodelApiKeyEnum e : values()) {
+            if (e.entityClass.equals(entityClass)) return e.value;
+        }
+        return null;
+    }
 }

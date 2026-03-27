@@ -2,7 +2,7 @@ package com.hongyang.platform.metarepo.service.service.metadata;
 
 import com.hongyang.framework.dao.entity.BaseMetaTenantEntity;
 import com.hongyang.framework.dao.query.PageResult;
-import com.hongyang.platform.metarepo.service.common.annotation.CommonTenantSplit;
+import com.hongyang.platform.metarepo.service.common.constants.MetamodelApiKeyEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 元数据 Service 基类。
+ * 通过 MetamodelApiKeyEnum 从 Entity Class 反查 metamodelApiKey，
  * 委托 IMetadataMergeService 执行 Common + Tenant 合并查询。
  */
 @Slf4j
@@ -23,12 +24,11 @@ public abstract class AbstractMetadataServiceImpl<T extends BaseMetaTenantEntity
 
     protected String getMetamodelApiKey() {
         if (metamodelApiKey == null) {
-            CommonTenantSplit split = getEntityClass().getAnnotation(CommonTenantSplit.class);
-            if (split == null) {
+            metamodelApiKey = MetamodelApiKeyEnum.getKeyByEntityClass(getEntityClass());
+            if (metamodelApiKey == null) {
                 throw new IllegalStateException(
-                    getEntityClass().getSimpleName() + " 未标注 @CommonTenantSplit");
+                    getEntityClass().getSimpleName() + " 未在 MetamodelApiKeyEnum 中注册");
             }
-            metamodelApiKey = split.metamodelApiKey();
         }
         return metamodelApiKey;
     }
