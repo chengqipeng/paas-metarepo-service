@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 校验规则 Service 接口（Common/Tenant 分表）
  */
-public interface ICheckRuleService extends IBaseService<CheckRule> {
+public interface ICheckRuleService {
 
     List<CheckRule> listMerged(String entityApiKey);
 

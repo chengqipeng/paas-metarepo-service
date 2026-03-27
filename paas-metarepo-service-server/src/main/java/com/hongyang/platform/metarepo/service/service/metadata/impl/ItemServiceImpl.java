@@ -6,6 +6,7 @@ import com.hongyang.platform.metarepo.service.service.metadata.IItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public class ItemServiceImpl
             listCommon().stream()
                 .filter(e -> entityApiKey.equals(e.getEntityApiKey()))
                 .collect(Collectors.toList()),
-            lambdaQuery().eq(EntityItem::getEntityApiKey, entityApiKey).list(),
+            Collections.emptyList(), // TODO: 待改造为大宽表查询 + 列映射转换
             EntityItem::getApiKey
         );
     }
@@ -37,9 +38,7 @@ public class ItemServiceImpl
 
     @Override
     public List<EntityItem> listByEntityApiKey(String entityApiKey) {
-        return lambdaQuery()
-            .eq(EntityItem::getEntityApiKey, entityApiKey)
-            .eq(EntityItem::getDeleteFlg, 0)
-            .list();
+        // TODO: 待改造为大宽表查询 + 列映射转换
+        return Collections.emptyList();
     }
 }

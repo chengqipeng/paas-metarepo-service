@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 字段选项值 Service 接口（Common/Tenant 分表）
  */
-public interface IPickOptionService extends IBaseService<PickOption> {
+public interface IPickOptionService {
 
     List<PickOption> listMerged(String itemApiKey);
 

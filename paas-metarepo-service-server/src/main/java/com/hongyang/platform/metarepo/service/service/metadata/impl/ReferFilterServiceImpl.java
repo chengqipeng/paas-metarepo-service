@@ -6,6 +6,7 @@ import com.hongyang.platform.metarepo.service.service.metadata.IReferFilterServi
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,9 +21,7 @@ public class ReferFilterServiceImpl
 
     @Override
     public List<ReferFilter> listByItemApiKey(String itemApiKey) {
-        return lambdaQuery()
-            .eq(ReferFilter::getItemApiKey, itemApiKey)
-            .eq(ReferFilter::getDeleteFlg, 0)
-            .list();
+        // TODO: 待改造为大宽表查询 + 列映射转换
+        return Collections.emptyList();
     }
 }

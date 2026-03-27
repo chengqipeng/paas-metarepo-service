@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 关联过滤条件 Service 接口
  */
-public interface IReferFilterService extends IBaseService<ReferFilter> {
+public interface IReferFilterService {
 
     List<ReferFilter> listByItemApiKey(String itemApiKey);
 }

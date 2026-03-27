@@ -65,8 +65,8 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         entity.setTypeProperty(request.getTypeProperty());
         entity.setDbTable(request.getDbTable());
         entity.setEnableFlg(1);
-        customEntityService.save(entity);
-        return MetaRepoConverter.toXEntity(entity);
+        // TODO: 写操作需要改造为写入 Tenant 快捷表（大宽表结构）
+        throw new UnsupportedOperationException("createEntity 待改造为大宽表写入");
     }
 
     @Override
@@ -80,8 +80,8 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         if (request.getDescription() != null) entity.setDescription(request.getDescription());
         if (request.getSvgApiKey() != null) entity.setSvgApiKey(request.getSvgApiKey());
         if (request.getSvgColor() != null) entity.setSvgColor(request.getSvgColor());
-        customEntityService.updateById(entity);
-        return MetaRepoConverter.toXEntity(entity);
+        // TODO: 写操作需要改造为写入 Tenant 快捷表（大宽表结构）
+        throw new UnsupportedOperationException("updateEntity 待改造为大宽表写入");
     }
 
     @Override
@@ -91,7 +91,8 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         if (entity == null) {
             throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, apiKey);
         }
-        customEntityService.removeById(entity.getId());
+        // TODO: 写操作需要改造为写入 Tenant 快捷表（大宽表结构）
+        throw new UnsupportedOperationException("deleteEntity 待改造");
     }
 
     @Override
@@ -113,8 +114,8 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         item.setEnableFlg(1);
         item.setDbColumn(request.getDbColumn());
         item.setItemOrder(request.getItemOrder() != null ? request.getItemOrder() : 0);
-        customItemService.save(item);
-        return MetaRepoConverter.toXEntityItem(item);
+        // TODO: 写操作需要改造为写入 Tenant 快捷表（大宽表结构）
+        throw new UnsupportedOperationException("createItem 待改造为大宽表写入");
     }
 
     @Override
@@ -127,11 +128,8 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
     @Override
     @DeleteMapping("/write/item")
     public void deleteItem(@RequestParam("apiKey") String apiKey) {
-        EntityItem item = customItemService.getByApiKeyMerged(apiKey);
-        if (item == null) {
-            throw new BaseKnownException(MetaRepoErrorCodeEnum.META_NOT_FOUND, apiKey);
-        }
-        customItemService.removeById(item.getId());
+        // TODO: 写操作需要改造
+        throw new UnsupportedOperationException("deleteItem 待改造");
     }
 
     @Override
@@ -153,8 +151,8 @@ public class MetaRepoWriteApiService implements MetaRepoWriteApi {
         link.setCascadeDelete(request.getCascadeDelete() != null ? request.getCascadeDelete() : 0);
         link.setAccessControl(request.getAccessControl() != null ? request.getAccessControl() : 0);
         link.setEnableFlg(1);
-        customEntityLinkService.save(link);
-        return MetaRepoConverter.toXLink(link);
+        // TODO: 写操作需要改造
+        throw new UnsupportedOperationException("createEntityLink 待改造");
     }
 
     @Override

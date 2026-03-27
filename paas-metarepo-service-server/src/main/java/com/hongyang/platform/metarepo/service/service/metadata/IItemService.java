@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 字段定义 Service 接口（Common/Tenant 分表）
  */
-public interface IItemService extends IBaseService<EntityItem> {
+public interface IItemService {
 
     List<EntityItem> listMerged(String entityApiKey);
 

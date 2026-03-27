@@ -15,4 +15,10 @@ public interface ITenantMetadataService extends IBaseService<TenantMetadata> {
 
     /** 按 metamodelApiKey + apiKey 查询单条 */
     TenantMetadata getByMetamodelApiKeyAndApiKey(String metamodelApiKey, String apiKey);
+
+    /**
+     * 从指定的 Tenant 快捷表查询所有数据。
+     * 通过 DynamicTableNameHolder 切换物理表名，查出的行仍为 TenantMetadata 结构。
+     */
+    List<TenantMetadata> listByTable(String tableName);
 }

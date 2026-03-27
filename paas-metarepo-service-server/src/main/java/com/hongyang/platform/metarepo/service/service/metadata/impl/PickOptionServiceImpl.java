@@ -6,6 +6,7 @@ import com.hongyang.platform.metarepo.service.service.metadata.IPickOptionServic
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,7 @@ public class PickOptionServiceImpl
 
     @Override
     public List<PickOption> listByItemApiKey(String itemApiKey) {
-        return lambdaQuery()
-            .eq(PickOption::getItemApiKey, itemApiKey)
-            .eq(PickOption::getDeleteFlg, 0)
-            .list();
+        // TODO: 待改造为大宽表查询 + 列映射转换
+        return Collections.emptyList();
     }
 }

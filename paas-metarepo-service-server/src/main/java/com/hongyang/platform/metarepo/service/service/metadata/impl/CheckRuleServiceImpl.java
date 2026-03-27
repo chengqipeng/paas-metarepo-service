@@ -6,6 +6,7 @@ import com.hongyang.platform.metarepo.service.service.metadata.ICheckRuleService
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,9 +33,7 @@ public class CheckRuleServiceImpl
 
     @Override
     public List<CheckRule> listByEntityApiKey(String entityApiKey) {
-        return lambdaQuery()
-            .eq(CheckRule::getEntityApiKey, entityApiKey)
-            .eq(CheckRule::getDeleteFlg, 0)
-            .list();
+        // TODO: 待改造为大宽表查询 + 列映射转换
+        return Collections.emptyList();
     }
 }
