@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * Common 级通用元数据 Service 实现（p_common_metadata）。
- * 继承 MetaServiceImpl，走两阶段缓存（Caffeine L1 + Redis L2）。
  */
 @Slf4j
 @Service

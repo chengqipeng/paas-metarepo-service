@@ -45,3 +45,7 @@ logging:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# Common 级数据库（p_meta_* / p_common_* 表所在的数据库）
+metarepo:
+  common-database: paas_metarepo_common

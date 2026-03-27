@@ -25,7 +25,7 @@ import java.math.BigDecimal;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("paas_metarepo_common.p_common_metadata")
+@TableName("p_common_metadata")
 public class CommonMetadata extends BaseMetaCommonEntity {
 
     /** 所属元模型 api_key（关联 p_meta_model.api_key） */

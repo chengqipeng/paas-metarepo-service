@@ -11,13 +11,6 @@ import java.util.List;
 
 /**
  * 元模型定义 Service 实现（p_meta_model）
- * <p>
- * 对标老系统 MetaModelServiceImpl，使用 framework-dao 的 MetaServiceImpl 替代 sns-dal Dao。
- * 所有查询走 MetaServiceImpl 的两阶段缓存路径（listByCondition），
- * 不直接使用 baseMapper 以避免绕过缓存层。
- * <p>
- * IMetaService 已提供：getByApiKey / listAll / existsByApiKey / create / updateByApiKey / deleteByApiKey
- * 本类仅扩展老系统特有的过滤查询。
  */
 @Slf4j
 @Service

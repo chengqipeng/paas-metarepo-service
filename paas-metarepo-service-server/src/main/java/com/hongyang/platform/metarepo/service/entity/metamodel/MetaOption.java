@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("paas_metarepo_common.p_meta_option")
+@TableName("p_meta_option")
 public class MetaOption extends BaseMetaCommonEntity {
 
     private String metamodelApiKey;

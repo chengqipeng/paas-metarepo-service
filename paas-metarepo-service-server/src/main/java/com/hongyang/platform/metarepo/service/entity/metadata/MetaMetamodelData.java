@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @DynamicTableNameEntity
-@TableName("paas_metarepo_common.p_meta_metamodel_data")
+@TableName("p_meta_metamodel_data")
 public class MetaMetamodelData extends BaseEntity {
 
     private String namespace;
