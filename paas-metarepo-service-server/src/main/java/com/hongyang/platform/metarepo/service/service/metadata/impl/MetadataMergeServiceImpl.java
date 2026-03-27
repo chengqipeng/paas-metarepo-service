@@ -8,10 +8,12 @@ import com.hongyang.platform.metarepo.service.common.converter.CommonMetadataCon
 import com.hongyang.platform.metarepo.service.entity.metadata.GenericMetadata;
 import com.hongyang.platform.metarepo.service.entity.metamodel.CommonMetadata;
 import com.hongyang.platform.metarepo.service.entity.metamodel.MetaItem;
+import com.hongyang.platform.metarepo.service.entity.metamodel.MetaModel;
 import com.hongyang.platform.metarepo.service.entity.metamodel.TenantMetadata;
 import com.hongyang.platform.metarepo.service.service.metadata.IMetadataMergeService;
 import com.hongyang.platform.metarepo.service.service.metamodel.ICommonMetadataService;
 import com.hongyang.platform.metarepo.service.service.metamodel.IMetaItemService;
+import com.hongyang.platform.metarepo.service.service.metamodel.IMetaModelService;
 import com.hongyang.platform.metarepo.service.service.metamodel.ITenantMetadataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,31 +45,49 @@ public class MetadataMergeServiceImpl implements IMetadataMergeService {
     private final ICommonMetadataService commonMetadataService;
     private final ITenantMetadataService tenantMetadataService;
     private final IMetaItemService metaItemService;
+    private final IMetaModelService metaModelService;
 
     /** 列映射缓存：metamodelApiKey → {db_column → entityFieldName} */
     private final ConcurrentHashMap<String, Map<String, String>> columnMappingCache = new ConcurrentHashMap<>();
 
     @Override
     public <T extends BaseMetaTenantEntity> List<T> listMerged(String metamodelApiKey, Class<T> entityClass) {
-        List<T> commonList = listCommon(metamodelApiKey, entityClass);
-        List<T> tenantList = listTenant(metamodelApiKey, entityClass);
-        return merge(commonList, tenantList);
+        MetaModel metaModel = getMetaModel(metamodelApiKey);
+        boolean queryCommon = isEnabled(metaModel, true);
+        boolean queryTenant = isEnabled(metaModel, false);
+
+        List<T> commonList = queryCommon ? listCommon(metamodelApiKey, entityClass) : Collections.emptyList();
+        List<T> tenantList = queryTenant ? listTenant(metamodelApiKey, entityClass) : Collections.emptyList();
+
+        if (queryCommon && queryTenant) {
+            return merge(commonList, tenantList);
+        }
+        return queryCommon ? commonList : tenantList;
     }
 
     @Override
     public <T extends BaseMetaTenantEntity> T getByApiKeyMerged(String metamodelApiKey, String apiKey, Class<T> entityClass) {
+        MetaModel metaModel = getMetaModel(metamodelApiKey);
+        boolean queryCommon = isEnabled(metaModel, true);
+        boolean queryTenant = isEnabled(metaModel, false);
+
         // 先查 Tenant
-        List<T> tenantList = listTenant(metamodelApiKey, entityClass);
-        T tenant = tenantList.stream()
-                .filter(e -> apiKey.equals(e.getApiKey()))
-                .findFirst().orElse(null);
-        if (tenant != null) {
-            if (tenant.getDeleteFlg() != null && tenant.getDeleteFlg() == 1) return null;
-            return tenant;
+        if (queryTenant) {
+            List<T> tenantList = listTenant(metamodelApiKey, entityClass);
+            T tenant = tenantList.stream()
+                    .filter(e -> apiKey.equals(e.getApiKey()))
+                    .findFirst().orElse(null);
+            if (tenant != null) {
+                if (tenant.getDeleteFlg() != null && tenant.getDeleteFlg() == 1) return null;
+                return tenant;
+            }
         }
         // 再查 Common
-        CommonMetadata row = commonMetadataService.getByMetamodelApiKeyAndApiKey(metamodelApiKey, apiKey);
-        return CommonMetadataConverter.convertOne(row, entityClass, getColumnMapping(metamodelApiKey));
+        if (queryCommon) {
+            CommonMetadata row = commonMetadataService.getByMetamodelApiKeyAndApiKey(metamodelApiKey, apiKey);
+            return CommonMetadataConverter.convertOne(row, entityClass, getColumnMapping(metamodelApiKey));
+        }
+        return null;
     }
 
     @Override
@@ -122,6 +142,25 @@ public class MetadataMergeServiceImpl implements IMetadataMergeService {
             }
             return Collections.unmodifiableMap(map);
         });
+    }
+
+    /** 获取元模型定义（走缓存），不存在则抛异常 */
+    private MetaModel getMetaModel(String metamodelApiKey) {
+        MetaModel metaModel = metaModelService.getByApiKey(metamodelApiKey);
+        if (metaModel == null) {
+            throw new IllegalArgumentException("元模型不存在: " + metamodelApiKey);
+        }
+        return metaModel;
+    }
+
+    /**
+     * 判断是否启用 Common 或 Tenant 查询。
+     * @param isCommon true=检查 enableCommon，false=检查 enableTenant
+     * @return 字段为 null 时默认启用
+     */
+    private boolean isEnabled(MetaModel metaModel, boolean isCommon) {
+        Integer flag = isCommon ? metaModel.getEnableCommon() : metaModel.getEnableTenant();
+        return flag == null || flag != 0;
     }
 
     /**
