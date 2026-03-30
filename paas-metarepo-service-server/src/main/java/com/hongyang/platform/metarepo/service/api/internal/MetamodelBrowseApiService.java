@@ -1,6 +1,7 @@
 package com.hongyang.platform.metarepo.service.api.internal;
 
 import com.hongyang.framework.common.constants.paas.MetamodelApiKey;
+import com.hongyang.framework.common.enums.paas.ItemTypeEnum;
 import com.hongyang.platform.metarepo.core.model.metamodel.XCheckRule;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntity;
 import com.hongyang.platform.metarepo.core.model.metamodel.XEntityItem;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
@@ -101,5 +103,23 @@ public class MetamodelBrowseApiService {
     @GetMapping("/metadata")
     public List<?> listMergedAuto(@RequestParam("metamodelApiKey") String metamodelApiKey) {
         return metadataMergeReadService.listMergedAuto(metamodelApiKey);
+    }
+
+    /** 返回 ItemTypeEnum 完整映射（供前端展示字段类型信息） */
+    @GetMapping("/item-type-mapping")
+    public List<Map<String, Object>> getItemTypeMapping() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (ItemTypeEnum e : ItemTypeEnum.values()) {
+            Map<String, Object> item = new LinkedHashMap<>();
+            item.put("code", e.getCode());
+            item.put("name", e.name());
+            item.put("description", e.getDescription());
+            item.put("dbColumnPrefix", e.getDbColumnPrefix());
+            item.put("minIndex", e.getMinIndex());
+            item.put("maxIndex", e.getMaxIndex());
+            item.put("columnCapacity", e.getColumnCapacity());
+            result.add(item);
+        }
+        return result;
     }
 }

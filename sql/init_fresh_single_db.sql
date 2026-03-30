@@ -676,24 +676,26 @@ INSERT INTO p_common_entity (api_key, namespace, label, label_key, entity_type, 
 ('Product__c',     'system', '产品',     'entity.product.label',     1, '产品管理对象',     'entity.product.desc',     5, 0, 1, 0, 1, 'x_product',     1, 1, 1, 1, 1711929600000, 1, 1711929600000, 1);
 
 -- E4. 标准字段（Common 级）
-INSERT INTO p_common_item (entity_api_key, api_key, namespace, label, label_key, item_type, data_type, description, description_key, require_flg, delete_flg, custom_flg, enable_flg, creatable, updatable, item_order, refer_entity_api_key, created_at, created_by, updated_at, updated_by) VALUES
-('Account__c', 'Name__c',     'system', '客户名称', 'item.account.name.label',     1, 1, '客户名称', 'item.account.name.desc',     1, 0, 0, 1, 1, 1, 1, NULL, 1711929600000, 1, 1711929600000, 1),
-('Account__c', 'Phone__c',    'system', '电话',     'item.account.phone.label',    5, 1, '客户电话', 'item.account.phone.desc',    0, 0, 0, 1, 1, 1, 2, NULL, 1711929600000, 1, 1711929600000, 1),
-('Account__c', 'Industry__c', 'system', '行业',     'item.account.industry.label', 6, 3, '客户行业', 'item.account.industry.desc', 0, 0, 0, 1, 1, 1, 3, NULL, 1711929600000, 1, 1711929600000, 1),
-('Account__c', 'Status__c',   'system', '状态',     'item.account.status.label',   6, 3, '客户状态', 'item.account.status.desc',   1, 0, 0, 1, 1, 1, 4, NULL, 1711929600000, 1, 1711929600000, 1),
-('Account__c', 'Website__c',  'system', '网站',     'item.account.website.label',  3, 1, '客户网站', 'item.account.website.desc',  0, 0, 0, 1, 1, 1, 5, NULL, 1711929600000, 1, 1711929600000, 1),
-('Account__c', 'Email__c',    'system', '邮箱',     'item.account.email.label',    4, 1, '客户邮箱', 'item.account.email.desc',    0, 0, 0, 1, 1, 1, 6, NULL, 1711929600000, 1, 1711929600000, 1),
-('Account__c', 'Address__c',  'system', '地址',     'item.account.address.label',  2, 1, '客户地址', 'item.account.address.desc',  0, 0, 0, 1, 1, 1, 7, NULL, 1711929600000, 1, 1711929600000, 1),
-('Contact__c', 'Name__c',      'system', '姓名',     'item.contact.name.label',    1,  1, '联系人姓名',   'item.contact.name.desc',    1, 0, 0, 1, 1, 1, 1, NULL,          1711929600000, 1, 1711929600000, 1),
-('Contact__c', 'Email__c',     'system', '邮箱',     'item.contact.email.label',   4,  1, '联系人邮箱',   'item.contact.email.desc',   0, 0, 0, 1, 1, 1, 2, NULL,          1711929600000, 1, 1711929600000, 1),
-('Contact__c', 'Phone__c',     'system', '电话',     'item.contact.phone.label',   5,  1, '联系人电话',   'item.contact.phone.desc',   0, 0, 0, 1, 1, 1, 3, NULL,          1711929600000, 1, 1711929600000, 1),
-('Contact__c', 'AccountId__c', 'system', '所属客户', 'item.contact.account.label', 19, 5, '所属客户关联', 'item.contact.account.desc', 0, 0, 0, 1, 1, 1, 4, 'Account__c',  1711929600000, 1, 1711929600000, 1),
-('Contact__c', 'Title__c',     'system', '职位',     'item.contact.title.label',   1,  1, '联系人职位',   'item.contact.title.desc',   0, 0, 0, 1, 1, 1, 5, NULL,          1711929600000, 1, 1711929600000, 1),
-('Opportunity__c', 'Name__c',      'system', '商机名称', 'item.opp.name.label',    1,  1, '商机名称',     'item.opp.name.desc',    1, 0, 0, 1, 1, 1, 1, NULL,         1711929600000, 1, 1711929600000, 1),
-('Opportunity__c', 'Amount__c',    'system', '金额',     'item.opp.amount.label',  9,  4, '商机金额',     'item.opp.amount.desc',  0, 0, 0, 1, 1, 1, 2, NULL,         1711929600000, 1, 1711929600000, 1),
-('Opportunity__c', 'Stage__c',     'system', '阶段',     'item.opp.stage.label',   6,  3, '商机阶段',     'item.opp.stage.desc',   1, 0, 0, 1, 1, 1, 3, NULL,         1711929600000, 1, 1711929600000, 1),
-('Opportunity__c', 'CloseDate__c', 'system', '预计成交', 'item.opp.close.label',   11, 7, '预计成交日期', 'item.opp.close.desc',   1, 0, 0, 1, 1, 1, 4, NULL,         1711929600000, 1, 1711929600000, 1),
-('Opportunity__c', 'AccountId__c', 'system', '关联客户', 'item.opp.account.label', 19, 5, '关联客户',     'item.opp.account.desc', 0, 0, 0, 1, 1, 1, 5, 'Account__c', 1711929600000, 1, 1711929600000, 1);
+-- item_type 使用新 ItemTypeEnum 编码：1=TEXT,2=NUMBER,3=DATE,4=PICKLIST,5=LOOKUP,6=FORMULA,7=ROLLUP,8=TEXTAREA,9=BOOLEAN,10=CURRENCY,11=PERCENT,12=EMAIL,13=PHONE,14=URL,15=DATETIME,16=MULTIPICKLIST,17=MASTER_DETAIL,18=GEOLOCATION,19=IMAGE,20=AUTONUMBER,21=JOIN,22=AUDIO
+-- data_type：1=VARCHAR,2=INTEGER,3=BIGINT,4=DOUBLE,5=TEXT,6=SMALLINT
+INSERT INTO p_common_item (entity_api_key, api_key, namespace, label, label_key, item_type, data_type, description, description_key, require_flg, delete_flg, custom_flg, enable_flg, creatable, updatable, item_order, refer_entity_api_key, db_column, created_at, created_by, updated_at, updated_by) VALUES
+('Account__c', 'Name__c',     'system', '客户名称', 'item.account.name.label',     1,  1, '客户名称', 'item.account.name.desc',     1, 0, 0, 1, 1, 1, 1, NULL, 'dbc_varchar_1',  1711929600000, 1, 1711929600000, 1),
+('Account__c', 'Phone__c',    'system', '电话',     'item.account.phone.label',    13, 1, '客户电话', 'item.account.phone.desc',    0, 0, 0, 1, 1, 1, 2, NULL, 'dbc_varchar_2',  1711929600000, 1, 1711929600000, 1),
+('Account__c', 'Industry__c', 'system', '行业',     'item.account.industry.label', 4,  2, '客户行业', 'item.account.industry.desc', 0, 0, 0, 1, 1, 1, 3, NULL, 'dbc_int_1',      1711929600000, 1, 1711929600000, 1),
+('Account__c', 'Status__c',   'system', '状态',     'item.account.status.label',   4,  2, '客户状态', 'item.account.status.desc',   1, 0, 0, 1, 1, 1, 4, NULL, 'dbc_int_2',      1711929600000, 1, 1711929600000, 1),
+('Account__c', 'Website__c',  'system', '网站',     'item.account.website.label',  14, 1, '客户网站', 'item.account.website.desc',  0, 0, 0, 1, 1, 1, 5, NULL, 'dbc_varchar_3',  1711929600000, 1, 1711929600000, 1),
+('Account__c', 'Email__c',    'system', '邮箱',     'item.account.email.label',    12, 1, '客户邮箱', 'item.account.email.desc',    0, 0, 0, 1, 1, 1, 6, NULL, 'dbc_varchar_4',  1711929600000, 1, 1711929600000, 1),
+('Account__c', 'Address__c',  'system', '地址',     'item.account.address.label',  8,  5, '客户地址', 'item.account.address.desc',  0, 0, 0, 1, 1, 1, 7, NULL, 'dbc_textarea_1', 1711929600000, 1, 1711929600000, 1),
+('Contact__c', 'Name__c',      'system', '姓名',     'item.contact.name.label',    1,  1, '联系人姓名',   'item.contact.name.desc',    1, 0, 0, 1, 1, 1, 1, NULL,          'dbc_varchar_1',  1711929600000, 1, 1711929600000, 1),
+('Contact__c', 'Email__c',     'system', '邮箱',     'item.contact.email.label',   12, 1, '联系人邮箱',   'item.contact.email.desc',   0, 0, 0, 1, 1, 1, 2, NULL,          'dbc_varchar_2',  1711929600000, 1, 1711929600000, 1),
+('Contact__c', 'Phone__c',     'system', '电话',     'item.contact.phone.label',   13, 1, '联系人电话',   'item.contact.phone.desc',   0, 0, 0, 1, 1, 1, 3, NULL,          'dbc_varchar_3',  1711929600000, 1, 1711929600000, 1),
+('Contact__c', 'AccountId__c', 'system', '所属客户', 'item.contact.account.label', 5,  3, '所属客户关联', 'item.contact.account.desc', 0, 0, 0, 1, 1, 1, 4, 'Account__c',  'dbc_bigint_1',   1711929600000, 1, 1711929600000, 1),
+('Contact__c', 'Title__c',     'system', '职位',     'item.contact.title.label',   1,  1, '联系人职位',   'item.contact.title.desc',   0, 0, 0, 1, 1, 1, 5, NULL,          'dbc_varchar_4',  1711929600000, 1, 1711929600000, 1),
+('Opportunity__c', 'Name__c',      'system', '商机名称', 'item.opp.name.label',    1,  1, '商机名称',     'item.opp.name.desc',    1, 0, 0, 1, 1, 1, 1, NULL,         'dbc_varchar_1',  1711929600000, 1, 1711929600000, 1),
+('Opportunity__c', 'Amount__c',    'system', '金额',     'item.opp.amount.label',  10, 4, '商机金额',     'item.opp.amount.desc',  0, 0, 0, 1, 1, 1, 2, NULL,         'dbc_decimal_1',  1711929600000, 1, 1711929600000, 1),
+('Opportunity__c', 'Stage__c',     'system', '阶段',     'item.opp.stage.label',   4,  2, '商机阶段',     'item.opp.stage.desc',   1, 0, 0, 1, 1, 1, 3, NULL,         'dbc_int_1',      1711929600000, 1, 1711929600000, 1),
+('Opportunity__c', 'CloseDate__c', 'system', '预计成交', 'item.opp.close.label',   3,  3, '预计成交日期', 'item.opp.close.desc',   1, 0, 0, 1, 1, 1, 4, NULL,         'dbc_bigint_1',   1711929600000, 1, 1711929600000, 1),
+('Opportunity__c', 'AccountId__c', 'system', '关联客户', 'item.opp.account.label', 5,  3, '关联客户',     'item.opp.account.desc', 0, 0, 0, 1, 1, 1, 5, 'Account__c', 'dbc_bigint_2',   1711929600000, 1, 1711929600000, 1);
 
 -- E5. 选项值（Common 级）
 INSERT INTO p_common_pick_option (entity_api_key, item_api_key, api_key, namespace, label, label_key, option_order, default_flg, global_flg, custom_flg, enable_flg, description, description_key, delete_flg, created_at, created_by, updated_at, updated_by) VALUES

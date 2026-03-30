@@ -128,7 +128,7 @@ public class CommonMetadata extends BaseMetaCommonEntity {
     private Integer dbcInt14;
     private Integer dbcInt15;
 
-    // ==================== dbc_smallint_1~15 SMALLINT（原 tinyint） ====================
+    // ==================== dbc_smallint_1~50 SMALLINT（原 tinyint） ====================
     private Integer dbcSmallint1;
     private Integer dbcSmallint2;
     private Integer dbcSmallint3;
@@ -144,6 +144,41 @@ public class CommonMetadata extends BaseMetaCommonEntity {
     private Integer dbcSmallint13;
     private Integer dbcSmallint14;
     private Integer dbcSmallint15;
+    private Integer dbcSmallint16;
+    private Integer dbcSmallint17;
+    private Integer dbcSmallint18;
+    private Integer dbcSmallint19;
+    private Integer dbcSmallint20;
+    private Integer dbcSmallint21;
+    private Integer dbcSmallint22;
+    private Integer dbcSmallint23;
+    private Integer dbcSmallint24;
+    private Integer dbcSmallint25;
+    private Integer dbcSmallint26;
+    private Integer dbcSmallint27;
+    private Integer dbcSmallint28;
+    private Integer dbcSmallint29;
+    private Integer dbcSmallint30;
+    private Integer dbcSmallint31;
+    private Integer dbcSmallint32;
+    private Integer dbcSmallint33;
+    private Integer dbcSmallint34;
+    private Integer dbcSmallint35;
+    private Integer dbcSmallint36;
+    private Integer dbcSmallint37;
+    private Integer dbcSmallint38;
+    private Integer dbcSmallint39;
+    private Integer dbcSmallint40;
+    private Integer dbcSmallint41;
+    private Integer dbcSmallint42;
+    private Integer dbcSmallint43;
+    private Integer dbcSmallint44;
+    private Integer dbcSmallint45;
+    private Integer dbcSmallint46;
+    private Integer dbcSmallint47;
+    private Integer dbcSmallint48;
+    private Integer dbcSmallint49;
+    private Integer dbcSmallint50;
 
     // ==================== dbc_decimal_1~5 DECIMAL(20,4)（原 real → decimal） ====================
     private BigDecimal dbcDecimal1;

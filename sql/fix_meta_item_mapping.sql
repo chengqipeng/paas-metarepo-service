@@ -108,7 +108,6 @@ INSERT INTO p_meta_item (metamodel_api_key, api_key, label, label_key, item_type
 ('item', 'mask_symbol_type',             '掩码符号类型',     'meta.item.mask_symbol_type',             6, 3, 11, 0, 1, 1, 0, 'dbc_int_11',      '掩码符号类型',             'meta.item.mask_symbol_type.desc',             0, 1, 1711929600000, 1, 1711929600000),
 ('item', 'increment_strategy',           '自动编号递增策略', 'meta.item.increment_strategy',           6, 3, 12, 0, 1, 1, 0, 'dbc_int_12',      '自动编号递增策略',         'meta.item.increment_strategy.desc',           0, 1, 1711929600000, 1, 1711929600000),
 -- String 短文本类 → dbc_varchar_*
-('item', 'type_property',                '类型属性',         'meta.item.type_property',                1, 1, 13, 0, 1, 1, 0, 'dbc_varchar_1',   '字段类型扩展属性',         'meta.item.type_property.desc',                0, 1, 1711929600000, 1, 1711929600000),
 ('item', 'help_text',                    '帮助文本',         'meta.item.help_text',                    1, 1, 14, 0, 1, 1, 0, 'dbc_varchar_2',   '字段帮助提示文本',         'meta.item.help_text.desc',                    0, 1, 1711929600000, 1, 1711929600000),
 ('item', 'help_text_key',                '帮助文本Key',      'meta.item.help_text_key',                1, 1, 15, 0, 1, 1, 0, 'dbc_varchar_3',   '帮助文本多语言Key',        'meta.item.help_text_key.desc',                0, 1, 1711929600000, 1, 1711929600000),
 ('item', 'description_key',              '描述Key',          'meta.item.description_key',              1, 1, 16, 0, 1, 1, 0, 'dbc_varchar_4',   '描述多语言Key',            'meta.item.description_key.desc',              0, 1, 1711929600000, 1, 1711929600000),
@@ -136,7 +135,63 @@ INSERT INTO p_meta_item (metamodel_api_key, api_key, label, label_key, item_type
 ('item', 'refer_item_filter_enable',     '关联字段过滤',     'meta.item.refer_item_filter_enable',     6, 3, 37, 0, 1, 1, 0, 'dbc_smallint_14', '关联字段过滤开关',         'meta.item.refer_item_filter_enable.desc',     0, 1, 1711929600000, 1, 1711929600000),
 -- Long 位掩码类 → dbc_bigint_*
 ('item', 'enable_config',                '启用配置位',       'meta.item.enable_config',                8, 2, 38, 0, 1, 1, 0, 'dbc_bigint_1',    '功能配置位掩码',           'meta.item.enable_config.desc',                0, 1, 1711929600000, 1, 1711929600000),
-('item', 'enable_package',               '启用包位',         'meta.item.enable_package',               8, 2, 39, 0, 1, 1, 0, 'dbc_bigint_2',    '包配置位掩码',             'meta.item.enable_package.desc',               0, 1, 1711929600000, 1, 1711929600000);
+('item', 'enable_package',               '启用包位',         'meta.item.enable_package',               8, 2, 39, 0, 1, 1, 0, 'dbc_bigint_2',    '包配置位掩码',             'meta.item.enable_package.desc',               0, 1, 1711929600000, 1, 1711929600000),
+-- ============================================================
+-- 原 typeProperty JSON 中的字段（独立化为 p_meta_item 行）
+-- ============================================================
+-- 通用长度/精度
+('item', 'max_length',                   '最大长度',         'meta.item.max_length',                   8, 3, 40, 0, 1, 1, 0, 'dbc_int_13',      'TEXT/REAL等字段最大长度',   'meta.item.max_length.desc',                   0, 1, 1711929600000, 1, 1711929600000),
+('item', 'min_length',                   '最小长度',         'meta.item.min_length',                   8, 3, 41, 0, 1, 1, 0, 'dbc_int_14',      'TEXT/TEXTAREA字段最小长度', 'meta.item.min_length.desc',                   0, 1, 1711929600000, 1, 1711929600000),
+('item', 'decimal',                      '小数位数',         'meta.item.decimal',                      8, 3, 42, 0, 1, 1, 0, 'dbc_int_15',      'REAL/PERCENTAGE小数位数',   'meta.item.decimal.desc',                      0, 1, 1711929600000, 1, 1711929600000),
+-- 货币相关
+('item', 'is_currency',                  '是否货币',         'meta.item.is_currency',                  6, 3, 43, 0, 1, 1, 0, 'dbc_smallint_15', '0=否 1=是',                'meta.item.is_currency.desc',                  0, 1, 1711929600000, 1, 1711929600000),
+('item', 'currency_part',                '货币部分',         'meta.item.currency_part',                6, 3, 44, 0, 1, 1, 0, 'dbc_smallint_16', '1=本币 2=原币',            'meta.item.currency_part.desc',                0, 1, 1711929600000, 1, 1711929600000),
+('item', 'is_multi_currency',            '是否多币种',       'meta.item.is_multi_currency',            6, 3, 45, 0, 1, 1, 0, 'dbc_smallint_17', '0=单币种 1=多币种',        'meta.item.is_multi_currency.desc',            0, 1, 1711929600000, 1, 1711929600000),
+('item', 'currency_flg',                 '货币标记',         'meta.item.currency_flg',                 6, 3, 46, 0, 1, 1, 0, 'dbc_smallint_18', '货币冗余标记',             'meta.item.currency_flg.desc',                 0, 1, 1711929600000, 1, 1711929600000),
+-- 公式相关
+('item', 'compute_type',                 '计算结果类型',     'meta.item.compute_type',                 6, 3, 47, 0, 1, 1, 0, 'dbc_smallint_19', '公式计算结果itemType',     'meta.item.compute_type.desc',                 0, 1, 1711929600000, 1, 1711929600000),
+('item', 'real_time_compute',            '实时计算',         'meta.item.real_time_compute',            6, 3, 48, 0, 1, 1, 0, 'dbc_smallint_20', '0=保存时 1=实时',          'meta.item.real_time_compute.desc',            0, 1, 1711929600000, 1, 1711929600000),
+-- 选项集相关
+('item', 'refer_global',                 '引用全局选项集',   'meta.item.refer_global',                 6, 3, 49, 0, 1, 1, 0, 'dbc_smallint_21', '0=否 1=是',                'meta.item.refer_global.desc',                 0, 1, 1711929600000, 1, 1711929600000),
+('item', 'global_pick_item',             '全局选项集ID',     'meta.item.global_pick_item',             1, 1, 50, 0, 1, 1, 0, 'dbc_varchar_1',   '全局选项集ID/apiKey',      'meta.item.global_pick_item.desc',              0, 1, 1711929600000, 1, 1711929600000),
+('item', 'global_pick_item_apikey',      '全局选项集apiKey', 'meta.item.global_pick_item_apikey',      1, 1, 51, 0, 1, 1, 0, 'dbc_varchar_12',  '全局选项集apiKey',         'meta.item.global_pick_item_apikey.desc',       0, 1, 1711929600000, 1, 1711929600000),
+('item', 'is_external',                  '外部选项源',       'meta.item.is_external',                  6, 3, 52, 0, 1, 1, 0, 'dbc_smallint_22', '0=否 1=是',                'meta.item.is_external.desc',                  0, 1, 1711929600000, 1, 1711929600000),
+-- 日期相关
+('item', 'date_mode',                    '日期模式',         'meta.item.date_mode',                    6, 3, 53, 0, 1, 1, 0, 'dbc_smallint_23', '1=仅日期 2=日期+时间',     'meta.item.date_mode.desc',                    0, 1, 1711929600000, 1, 1711929600000),
+-- 关联/LOOKUP相关
+('item', 'cascade_delete',               '级联删除',         'meta.item.cascade_delete',               6, 3, 54, 0, 1, 1, 0, 'dbc_smallint_24', '0=不级联 1=级联 2=阻止',   'meta.item.cascade_delete.desc',               0, 1, 1711929600000, 1, 1711929600000),
+('item', 'is_detail',                    '明细关联',         'meta.item.is_detail',                    6, 3, 55, 0, 1, 1, 0, 'dbc_smallint_25', '0=否 1=是',                'meta.item.is_detail.desc',                    0, 1, 1711929600000, 1, 1711929600000),
+('item', 'can_batch_create',             '可批量创建',       'meta.item.can_batch_create',             6, 3, 56, 0, 1, 1, 0, 'dbc_smallint_26', '0=否 1=是',                'meta.item.can_batch_create.desc',              0, 1, 1711929600000, 1, 1711929600000),
+('item', 'is_copy_with_parent',          '随父复制',         'meta.item.is_copy_with_parent',          6, 3, 57, 0, 1, 1, 0, 'dbc_smallint_27', '0=否 1=是',                'meta.item.is_copy_with_parent.desc',          0, 1, 1711929600000, 1, 1711929600000),
+('item', 'is_mask',                      '掩码显示',         'meta.item.is_mask',                      6, 3, 58, 0, 1, 1, 0, 'dbc_smallint_28', '0=否 1=是',                'meta.item.is_mask.desc',                      0, 1, 1711929600000, 1, 1711929600000),
+('item', 'enable_multi_detail',          '启用多明细',       'meta.item.enable_multi_detail',          6, 3, 59, 0, 1, 1, 0, 'dbc_smallint_29', '0=否 1=是',                'meta.item.enable_multi_detail.desc',          0, 1, 1711929600000, 1, 1711929600000),
+('item', 'batch_create_mode',            '批量创建模式',     'meta.item.batch_create_mode',            6, 3, 60, 0, 1, 1, 0, 'dbc_smallint_30', '批量创建模式',             'meta.item.batch_create_mode.desc',            0, 1, 1711929600000, 1, 1711929600000),
+('item', 'batch_create_link_by_busitype','按业务类型创建',   'meta.item.batch_create_link_by_busitype',6, 3, 61, 0, 1, 1, 0, 'dbc_smallint_31', '按业务类型批量创建关联',   'meta.item.batch_create_link_by_busitype.desc',0, 1, 1711929600000, 1, 1711929600000),
+-- JOIN/LOOKUP字段
+('item', 'join_item',                    '关联字段',         'meta.item.join_item',                    1, 1, 62, 0, 1, 1, 0, 'dbc_varchar_13',  'LOOKUP关联的目标字段',     'meta.item.join_item.desc',                    0, 1, 1711929600000, 1, 1711929600000),
+('item', 'join_object',                  '关联对象',         'meta.item.join_object',                  1, 1, 63, 0, 1, 1, 0, 'dbc_varchar_14',  'LOOKUP关联的目标对象',     'meta.item.join_object.desc',                  0, 1, 1711929600000, 1, 1711929600000),
+('item', 'join_link',                    '关联关系',         'meta.item.join_link',                    1, 1, 64, 0, 1, 1, 0, 'dbc_varchar_15',  'LOOKUP使用的EntityLink',   'meta.item.join_link.desc',                    0, 1, 1711929600000, 1, 1711929600000),
+('item', 'link_label',                   '关联标签',         'meta.item.link_label',                   1, 1, 65, 0, 1, 1, 0, 'dbc_varchar_16',  'REFER/MULTIREF UI显示名',  'meta.item.link_label.desc',                   0, 1, 1711929600000, 1, 1711929600000),
+-- 多关联相关
+('item', 'refer_entity_ids',             '关联实体列表',     'meta.item.refer_entity_ids',             1, 1, 66, 0, 1, 1, 0, 'dbc_varchar_17',  'MULTIREF目标对象(逗号分隔)','meta.item.refer_entity_ids.desc',             0, 1, 1711929600000, 1, 1711929600000),
+('item', 'entity_or_data',               '实体或数据',       'meta.item.entity_or_data',               6, 3, 67, 0, 1, 1, 0, 'dbc_smallint_32', '1=实体关联 2=数据关联',    'meta.item.entity_or_data.desc',               0, 1, 1711929600000, 1, 1711929600000),
+('item', 'group_key',                    '分组key',          'meta.item.group_key',                    1, 1, 68, 0, 1, 1, 0, 'dbc_varchar_18',  'MULTIREF数据分组标识',     'meta.item.group_key.desc',                    0, 1, 1711929600000, 1, 1711929600000),
+('item', 'compound_sub',                 '复合子字段',       'meta.item.compound_sub',                 6, 3, 69, 0, 1, 1, 0, 'dbc_smallint_33', '0=否 1=是',                'meta.item.compound_sub.desc',                 0, 1, 1711929600000, 1, 1711929600000),
+('item', 'compound_api_key',             '复合字段apiKey',   'meta.item.compound_api_key',             1, 1, 70, 0, 1, 1, 0, 'dbc_varchar_19',  '子字段指向的父复合字段',   'meta.item.compound_api_key.desc',              0, 1, 1711929600000, 1, 1711929600000),
+-- 文本相关
+('item', 'multi_line_text',              '多行文本',         'meta.item.multi_line_text',              6, 3, 71, 0, 1, 1, 0, 'dbc_smallint_34', '0=单行 1=多行',            'meta.item.multi_line_text.desc',               0, 1, 1711929600000, 1, 1711929600000),
+('item', 'scan_code_entry_flg',          '扫码录入',         'meta.item.scan_code_entry_flg',          6, 3, 72, 0, 1, 1, 0, 'dbc_smallint_35', '0=否 1=是',                'meta.item.scan_code_entry_flg.desc',          0, 1, 1711929600000, 1, 1711929600000),
+('item', 'case_sensitive',               '大小写敏感',       'meta.item.case_sensitive',               6, 3, 73, 0, 1, 1, 0, 'dbc_smallint_36', '0=不敏感 1=敏感',          'meta.item.case_sensitive.desc',                0, 1, 1711929600000, 1, 1711929600000),
+-- 富文本相关
+('item', 'show_rows',                    '显示行数',         'meta.item.show_rows',                    8, 3, 74, 0, 1, 1, 0, 'dbc_smallint_37', '富文本显示行数',           'meta.item.show_rows.desc',                    0, 1, 1711929600000, 1, 1711929600000),
+-- 图片水印相关
+('item', 'watermark_flg',                '水印开关',         'meta.item.watermark_flg',                6, 3, 75, 0, 1, 1, 0, 'dbc_smallint_38', '0=关闭 1=开启',            'meta.item.watermark_flg.desc',                0, 1, 1711929600000, 1, 1711929600000),
+('item', 'watermark_time_flg',           '水印时间',         'meta.item.watermark_time_flg',           6, 3, 76, 0, 1, 1, 0, 'dbc_smallint_39', '0=不显示 1=显示拍摄时间',  'meta.item.watermark_time_flg.desc',           0, 1, 1711929600000, 1, 1711929600000),
+('item', 'watermark_login_user_flg',     '水印用户',         'meta.item.watermark_login_user_flg',     6, 3, 77, 0, 1, 1, 0, 'dbc_smallint_40', '0=不显示 1=显示登录用户',  'meta.item.watermark_login_user_flg.desc',     0, 1, 1711929600000, 1, 1711929600000),
+('item', 'watermark_location_flg',       '水印位置',         'meta.item.watermark_location_flg',       6, 3, 78, 0, 1, 1, 0, 'dbc_smallint_41', '0=不显示 1=显示拍摄位置',  'meta.item.watermark_location_flg.desc',       0, 1, 1711929600000, 1, 1711929600000),
+('item', 'watermark_join_field',         '水印关联字段',     'meta.item.watermark_join_field',         1, 1, 79, 0, 1, 1, 0, 'dbc_varchar_20',  '水印显示的关联字段值',     'meta.item.watermark_join_field.desc',          0, 1, 1711929600000, 1, 1711929600000),
+-- 大字段外置
+('item', 'ext_table',                    '外置扩展表',       'meta.item.ext_table',                    6, 3, 80, 0, 1, 1, 0, 'dbc_smallint_42', '0=否 1=是(超长文本外置)',   'meta.item.ext_table.desc',                    0, 1, 1711929600000, 1, 1711929600000);
 
 -- ============================================================
 -- Step 6: 插入 pickOption（选项值）的完整字段映射

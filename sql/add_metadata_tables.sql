@@ -69,12 +69,24 @@ CREATE TABLE IF NOT EXISTS p_common_metadata (
     dbc_int_9 INTEGER, dbc_int_10 INTEGER, dbc_int_11 INTEGER, dbc_int_12 INTEGER,
     dbc_int_13 INTEGER, dbc_int_14 INTEGER, dbc_int_15 INTEGER,
 
-    -- dbc_smallint_1~15
+    -- dbc_smallint_1~50
     dbc_smallint_1 SMALLINT, dbc_smallint_2 SMALLINT, dbc_smallint_3 SMALLINT,
     dbc_smallint_4 SMALLINT, dbc_smallint_5 SMALLINT, dbc_smallint_6 SMALLINT,
     dbc_smallint_7 SMALLINT, dbc_smallint_8 SMALLINT, dbc_smallint_9 SMALLINT,
     dbc_smallint_10 SMALLINT, dbc_smallint_11 SMALLINT, dbc_smallint_12 SMALLINT,
     dbc_smallint_13 SMALLINT, dbc_smallint_14 SMALLINT, dbc_smallint_15 SMALLINT,
+    dbc_smallint_16 SMALLINT, dbc_smallint_17 SMALLINT, dbc_smallint_18 SMALLINT,
+    dbc_smallint_19 SMALLINT, dbc_smallint_20 SMALLINT, dbc_smallint_21 SMALLINT,
+    dbc_smallint_22 SMALLINT, dbc_smallint_23 SMALLINT, dbc_smallint_24 SMALLINT,
+    dbc_smallint_25 SMALLINT, dbc_smallint_26 SMALLINT, dbc_smallint_27 SMALLINT,
+    dbc_smallint_28 SMALLINT, dbc_smallint_29 SMALLINT, dbc_smallint_30 SMALLINT,
+    dbc_smallint_31 SMALLINT, dbc_smallint_32 SMALLINT, dbc_smallint_33 SMALLINT,
+    dbc_smallint_34 SMALLINT, dbc_smallint_35 SMALLINT, dbc_smallint_36 SMALLINT,
+    dbc_smallint_37 SMALLINT, dbc_smallint_38 SMALLINT, dbc_smallint_39 SMALLINT,
+    dbc_smallint_40 SMALLINT, dbc_smallint_41 SMALLINT, dbc_smallint_42 SMALLINT,
+    dbc_smallint_43 SMALLINT, dbc_smallint_44 SMALLINT, dbc_smallint_45 SMALLINT,
+    dbc_smallint_46 SMALLINT, dbc_smallint_47 SMALLINT, dbc_smallint_48 SMALLINT,
+    dbc_smallint_49 SMALLINT, dbc_smallint_50 SMALLINT,
 
     -- dbc_decimal_1~5
     dbc_decimal_1 DECIMAL(20,4), dbc_decimal_2 DECIMAL(20,4), dbc_decimal_3 DECIMAL(20,4),
@@ -151,13 +163,24 @@ CREATE TABLE IF NOT EXISTS p_tenant_metadata (
     dbc_int_9 INTEGER, dbc_int_10 INTEGER, dbc_int_11 INTEGER, dbc_int_12 INTEGER,
     dbc_int_13 INTEGER, dbc_int_14 INTEGER, dbc_int_15 INTEGER,
 
-    -- dbc_smallint_1~15
+    -- dbc_smallint_1~50
     dbc_smallint_1 SMALLINT, dbc_smallint_2 SMALLINT, dbc_smallint_3 SMALLINT,
     dbc_smallint_4 SMALLINT, dbc_smallint_5 SMALLINT, dbc_smallint_6 SMALLINT,
     dbc_smallint_7 SMALLINT, dbc_smallint_8 SMALLINT, dbc_smallint_9 SMALLINT,
     dbc_smallint_10 SMALLINT, dbc_smallint_11 SMALLINT, dbc_smallint_12 SMALLINT,
     dbc_smallint_13 SMALLINT, dbc_smallint_14 SMALLINT, dbc_smallint_15 SMALLINT,
-
+    dbc_smallint_16 SMALLINT, dbc_smallint_17 SMALLINT, dbc_smallint_18 SMALLINT,
+    dbc_smallint_19 SMALLINT, dbc_smallint_20 SMALLINT, dbc_smallint_21 SMALLINT,
+    dbc_smallint_22 SMALLINT, dbc_smallint_23 SMALLINT, dbc_smallint_24 SMALLINT,
+    dbc_smallint_25 SMALLINT, dbc_smallint_26 SMALLINT, dbc_smallint_27 SMALLINT,
+    dbc_smallint_28 SMALLINT, dbc_smallint_29 SMALLINT, dbc_smallint_30 SMALLINT,
+    dbc_smallint_31 SMALLINT, dbc_smallint_32 SMALLINT, dbc_smallint_33 SMALLINT,
+    dbc_smallint_34 SMALLINT, dbc_smallint_35 SMALLINT, dbc_smallint_36 SMALLINT,
+    dbc_smallint_37 SMALLINT, dbc_smallint_38 SMALLINT, dbc_smallint_39 SMALLINT,
+    dbc_smallint_40 SMALLINT, dbc_smallint_41 SMALLINT, dbc_smallint_42 SMALLINT,
+    dbc_smallint_43 SMALLINT, dbc_smallint_44 SMALLINT, dbc_smallint_45 SMALLINT,
+    dbc_smallint_46 SMALLINT, dbc_smallint_47 SMALLINT, dbc_smallint_48 SMALLINT,
+    dbc_smallint_49 SMALLINT, dbc_smallint_50 SMALLINT,
     -- dbc_decimal_1~5
     dbc_decimal_1 DECIMAL(20,4), dbc_decimal_2 DECIMAL(20,4), dbc_decimal_3 DECIMAL(20,4),
     dbc_decimal_4 DECIMAL(20,4), dbc_decimal_5 DECIMAL(20,4),

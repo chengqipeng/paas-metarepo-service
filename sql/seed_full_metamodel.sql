@@ -111,28 +111,28 @@ INSERT INTO p_custom_entity (id, tenant_id, name_space, name, name_key, api_key,
 -- Account 字段
 INSERT INTO p_custom_item (id, tenant_id, entity_id, name, name_key, api_key, label, label_key, item_type, data_type, description, description_key, require_flg, delete_flg, custom_flg, enable_flg, creatable, updatable, item_order, created_at, created_by, updated_at, updated_by) VALUES
 (2001, 0, 1001, 'AccountName',     'item.account.name.name',     'Name__c',       '客户名称', 'item.account.name.label',     1, 1, '客户名称',     'item.account.name.desc',     1, 0, 0, 1, 1, 1, 1, 1711929600000, 1, 1711929600000, 1),
-(2002, 0, 1001, 'AccountPhone',    'item.account.phone.name',    'Phone__c',      '电话',     'item.account.phone.label',    5, 1, '客户电话',     'item.account.phone.desc',    0, 0, 0, 1, 1, 1, 2, 1711929600000, 1, 1711929600000, 1),
-(2003, 0, 1001, 'AccountIndustry', 'item.account.industry.name', 'Industry__c',   '行业',     'item.account.industry.label', 6, 3, '客户行业',     'item.account.industry.desc', 0, 0, 0, 1, 1, 1, 3, 1711929600000, 1, 1711929600000, 1),
-(2004, 0, 1001, 'AccountStatus',   'item.account.status.name',   'Status__c',     '状态',     'item.account.status.label',   6, 3, '客户状态',     'item.account.status.desc',   1, 0, 0, 1, 1, 1, 4, 1711929600000, 1, 1711929600000, 1),
-(2005, 0, 1001, 'AccountWebsite',  'item.account.website.name',  'Website__c',    '网站',     'item.account.website.label',  3, 1, '客户网站',     'item.account.website.desc',  0, 0, 0, 1, 1, 1, 5, 1711929600000, 1, 1711929600000, 1),
-(2006, 0, 1001, 'AccountEmail',    'item.account.email.name',    'Email__c',      '邮箱',     'item.account.email.label',    4, 1, '客户邮箱',     'item.account.email.desc',    0, 0, 0, 1, 1, 1, 6, 1711929600000, 1, 1711929600000, 1),
-(2007, 0, 1001, 'AccountAddress',  'item.account.address.name',  'Address__c',    '地址',     'item.account.address.label',  2, 1, '客户地址',     'item.account.address.desc',  0, 0, 0, 1, 1, 1, 7, 1711929600000, 1, 1711929600000, 1);
+(2002, 0, 1001, 'AccountPhone',    'item.account.phone.name',    'Phone__c',      '电话',     'item.account.phone.label',    13, 1, '客户电话',     'item.account.phone.desc',    0, 0, 0, 1, 1, 1, 2, 1711929600000, 1, 1711929600000, 1),
+(2003, 0, 1001, 'AccountIndustry', 'item.account.industry.name', 'Industry__c',   '行业',     'item.account.industry.label', 4, 3, '客户行业',     'item.account.industry.desc', 0, 0, 0, 1, 1, 1, 3, 1711929600000, 1, 1711929600000, 1),
+(2004, 0, 1001, 'AccountStatus',   'item.account.status.name',   'Status__c',     '状态',     'item.account.status.label',   4, 3, '客户状态',     'item.account.status.desc',   1, 0, 0, 1, 1, 1, 4, 1711929600000, 1, 1711929600000, 1),
+(2005, 0, 1001, 'AccountWebsite',  'item.account.website.name',  'Website__c',    '网站',     'item.account.website.label',  14, 1, '客户网站',     'item.account.website.desc',  0, 0, 0, 1, 1, 1, 5, 1711929600000, 1, 1711929600000, 1),
+(2006, 0, 1001, 'AccountEmail',    'item.account.email.name',    'Email__c',      '邮箱',     'item.account.email.label',    12, 1, '客户邮箱',     'item.account.email.desc',    0, 0, 0, 1, 1, 1, 6, 1711929600000, 1, 1711929600000, 1),
+(2007, 0, 1001, 'AccountAddress',  'item.account.address.name',  'Address__c',    '地址',     'item.account.address.label',  8, 1, '客户地址',     'item.account.address.desc',  0, 0, 0, 1, 1, 1, 7, 1711929600000, 1, 1711929600000, 1);
 
 -- Contact 字段
 INSERT INTO p_custom_item (id, tenant_id, entity_id, name, name_key, api_key, label, label_key, item_type, data_type, description, description_key, require_flg, delete_flg, custom_flg, enable_flg, creatable, updatable, item_order, refer_entity_id, created_at, created_by, updated_at, updated_by) VALUES
 (2101, 0, 1002, 'ContactName',    'item.contact.name.name',    'Name__c',      '姓名',     'item.contact.name.label',    1,  1, '联系人姓名',   'item.contact.name.desc',    1, 0, 0, 1, 1, 1, 1, NULL, 1711929600000, 1, 1711929600000, 1),
-(2102, 0, 1002, 'ContactEmail',   'item.contact.email.name',   'Email__c',     '邮箱',     'item.contact.email.label',   4,  1, '联系人邮箱',   'item.contact.email.desc',   0, 0, 0, 1, 1, 1, 2, NULL, 1711929600000, 1, 1711929600000, 1),
-(2103, 0, 1002, 'ContactPhone',   'item.contact.phone.name',   'Phone__c',     '电话',     'item.contact.phone.label',   5,  1, '联系人电话',   'item.contact.phone.desc',   0, 0, 0, 1, 1, 1, 3, NULL, 1711929600000, 1, 1711929600000, 1),
-(2104, 0, 1002, 'ContactAccount', 'item.contact.account.name', 'AccountId__c', '所属客户', 'item.contact.account.label', 19, 5, '所属客户关联', 'item.contact.account.desc', 0, 0, 0, 1, 1, 1, 4, 1001, 1711929600000, 1, 1711929600000, 1),
+(2102, 0, 1002, 'ContactEmail',   'item.contact.email.name',   'Email__c',     '邮箱',     'item.contact.email.label',   12, 1, '联系人邮箱',   'item.contact.email.desc',   0, 0, 0, 1, 1, 1, 2, NULL, 1711929600000, 1, 1711929600000, 1),
+(2103, 0, 1002, 'ContactPhone',   'item.contact.phone.name',   'Phone__c',     '电话',     'item.contact.phone.label',   13, 1, '联系人电话',   'item.contact.phone.desc',   0, 0, 0, 1, 1, 1, 3, NULL, 1711929600000, 1, 1711929600000, 1),
+(2104, 0, 1002, 'ContactAccount', 'item.contact.account.name', 'AccountId__c', '所属客户', 'item.contact.account.label', 5,  3, '所属客户关联', 'item.contact.account.desc', 0, 0, 0, 1, 1, 1, 4, 1001, 1711929600000, 1, 1711929600000, 1),
 (2105, 0, 1002, 'ContactTitle',   'item.contact.title.name',   'Title__c',     '职位',     'item.contact.title.label',   1,  1, '联系人职位',   'item.contact.title.desc',   0, 0, 0, 1, 1, 1, 5, NULL, 1711929600000, 1, 1711929600000, 1);
 
 -- Opportunity 字段
 INSERT INTO p_custom_item (id, tenant_id, entity_id, name, name_key, api_key, label, label_key, item_type, data_type, description, description_key, require_flg, delete_flg, custom_flg, enable_flg, creatable, updatable, item_order, refer_entity_id, created_at, created_by, updated_at, updated_by) VALUES
 (2201, 0, 1003, 'OppName',    'item.opp.name.name',    'Name__c',      '商机名称', 'item.opp.name.label',    1,  1, '商机名称',     'item.opp.name.desc',    1, 0, 0, 1, 1, 1, 1, NULL, 1711929600000, 1, 1711929600000, 1),
-(2202, 0, 1003, 'OppAmount',  'item.opp.amount.name',  'Amount__c',    '金额',     'item.opp.amount.label',  9,  4, '商机金额',     'item.opp.amount.desc',  0, 0, 0, 1, 1, 1, 2, NULL, 1711929600000, 1, 1711929600000, 1),
-(2203, 0, 1003, 'OppStage',   'item.opp.stage.name',   'Stage__c',     '阶段',     'item.opp.stage.label',   6,  3, '商机阶段',     'item.opp.stage.desc',   1, 0, 0, 1, 1, 1, 3, NULL, 1711929600000, 1, 1711929600000, 1),
-(2204, 0, 1003, 'OppClose',   'item.opp.close.name',   'CloseDate__c', '预计成交', 'item.opp.close.label',   11, 7, '预计成交日期', 'item.opp.close.desc',   1, 0, 0, 1, 1, 1, 4, NULL, 1711929600000, 1, 1711929600000, 1),
-(2205, 0, 1003, 'OppAccount', 'item.opp.account.name', 'AccountId__c', '关联客户', 'item.opp.account.label', 19, 5, '关联客户',     'item.opp.account.desc', 0, 0, 0, 1, 1, 1, 5, 1001, 1711929600000, 1, 1711929600000, 1);
+(2202, 0, 1003, 'OppAmount',  'item.opp.amount.name',  'Amount__c',    '金额',     'item.opp.amount.label',  10, 4, '商机金额',     'item.opp.amount.desc',  0, 0, 0, 1, 1, 1, 2, NULL, 1711929600000, 1, 1711929600000, 1),
+(2203, 0, 1003, 'OppStage',   'item.opp.stage.name',   'Stage__c',     '阶段',     'item.opp.stage.label',   4,  3, '商机阶段',     'item.opp.stage.desc',   1, 0, 0, 1, 1, 1, 3, NULL, 1711929600000, 1, 1711929600000, 1),
+(2204, 0, 1003, 'OppClose',   'item.opp.close.name',   'CloseDate__c', '预计成交', 'item.opp.close.label',   3,  3, '预计成交日期', 'item.opp.close.desc',   1, 0, 0, 1, 1, 1, 4, NULL, 1711929600000, 1, 1711929600000, 1),
+(2205, 0, 1003, 'OppAccount', 'item.opp.account.name', 'AccountId__c', '关联客户', 'item.opp.account.label', 5,  3, '关联客户',     'item.opp.account.desc', 0, 0, 0, 1, 1, 1, 5, 1001, 1711929600000, 1, 1711929600000, 1);
 
 -- ============================================================
 -- 6. p_custom_pickoption：PICKLIST 字段的选项值
