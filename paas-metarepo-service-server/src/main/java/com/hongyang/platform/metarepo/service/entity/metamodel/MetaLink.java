@@ -14,9 +14,9 @@ import lombok.EqualsAndHashCode;
 public class MetaLink extends BaseMetaCommonEntity {
 
     private Integer linkType;
-    private Long referItemApiKey;
-    private Long childMetamodelApiKey;
-    private Long parentMetamodelApiKey;
+    private String referItemApiKey;
+    private String childMetamodelApiKey;
+    private String parentMetamodelApiKey;
     private Integer cascadeDelete;
     private String description;
     private String descriptionKey;

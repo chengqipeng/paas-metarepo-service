@@ -93,9 +93,9 @@ public class EntityItem extends BaseMetaTenantEntity {
     // --- 选项集相关（SELECT/CHECK） ---
     /** 是否引用全局选项集：0=否，1=是 */
     private Integer referGlobal;
-    /** 全局选项集 ID（老系统 Long，新系统可能是 apiKey） */
-    private String globalPickItem;
     /** 全局选项集 apiKey */
+    private String globalPickItem;
+    /** 全局选项集 apiKey（冗余字段，与 globalPickItem 相同） */
     private String globalPickItemApikey;
     /** 是否外部选项源：0=否，1=是 */
     private Integer isExternal;
@@ -133,8 +133,8 @@ public class EntityItem extends BaseMetaTenantEntity {
     private String linkLabel;
 
     // --- 多关联相关（MULTIREF） ---
-    /** 关联实体 ID/apiKey 列表（逗号分隔，MULTIREF 支持的目标对象范围） */
-    private String referEntityIds;
+    /** 关联实体 apiKey 列表（逗号分隔，MULTIREF 支持的目标对象范围） */
+    private String referEntityApiKeys;
     /** 实体或数据模式：1=实体关联，2=数据关联 */
     private Integer entityOrData;
     /** 分组 key（MULTIREF 数据分组标识） */
@@ -167,8 +167,4 @@ public class EntityItem extends BaseMetaTenantEntity {
     private Integer watermarkLocationFlg;
     /** 水印关联字段（显示指定字段值作为水印内容） */
     private String watermarkJoinField;
-
-    // --- 大字段外置（TEXTAREA） ---
-    /** 是否外置到扩展表存储：0=否，1=是（超长文本存储优化） */
-    private Integer extTable;
 }

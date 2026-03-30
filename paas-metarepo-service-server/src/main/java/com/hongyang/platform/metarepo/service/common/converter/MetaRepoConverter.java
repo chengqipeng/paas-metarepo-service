@@ -147,7 +147,7 @@ public final class MetaRepoConverter {
         x.setJoinObject(e.getJoinObject());
         x.setJoinLink(e.getJoinLink());
         x.setLinkLabel(e.getLinkLabel());
-        x.setReferEntityIds(e.getReferEntityIds());
+        x.setReferEntityApiKeys(e.getReferEntityApiKeys());
         x.setEntityOrData(e.getEntityOrData());
         x.setGroupKey(e.getGroupKey());
         x.setCompoundSub(e.getCompoundSub());
@@ -161,7 +161,6 @@ public final class MetaRepoConverter {
         x.setWatermarkLoginUserFlg(e.getWatermarkLoginUserFlg());
         x.setWatermarkLocationFlg(e.getWatermarkLocationFlg());
         x.setWatermarkJoinField(e.getWatermarkJoinField());
-        x.setExtTable(e.getExtTable());
         x.setDeleteFlg(e.getDeleteFlg());
         x.setCreatedAt(e.getCreatedAt());
         x.setCreatedBy(e.getCreatedBy());
@@ -377,7 +376,7 @@ public final class MetaRepoConverter {
         e.setJoinObject(x.getJoinObject());
         e.setJoinLink(x.getJoinLink());
         e.setLinkLabel(x.getLinkLabel());
-        e.setReferEntityIds(x.getReferEntityIds());
+        e.setReferEntityApiKeys(x.getReferEntityApiKeys());
         e.setEntityOrData(x.getEntityOrData());
         e.setGroupKey(x.getGroupKey());
         e.setCompoundSub(x.getCompoundSub());
@@ -391,7 +390,6 @@ public final class MetaRepoConverter {
         e.setWatermarkLoginUserFlg(x.getWatermarkLoginUserFlg());
         e.setWatermarkLocationFlg(x.getWatermarkLocationFlg());
         e.setWatermarkJoinField(x.getWatermarkJoinField());
-        e.setExtTable(x.getExtTable());
         e.setDeleteFlg(x.getDeleteFlg());
         return e;
     }

@@ -58,14 +58,17 @@
 ```
 读取请求（tenantId + metamodelApiKey + entityApiKey）
     │
-    ├─→ 查 Common 层（p_common_metadata）
+    ├─→ 查 MetaModel 定义
+    │     获取 enable_common / enable_tenant / db_table
+    │
+    ├─→ if enable_common=1: 查 Common 层（p_common_metadata）
     │     WHERE metamodel_api_key=? AND entity_api_key=?
     │     通过 CommonMetadataConverter 转为业务 Entity
     │
-    ├─→ 查 Tenant 层（p_tenant_metadata 或 p_tenant_* 快捷表）
+    ├─→ if enable_tenant=1: 查 Tenant 层（db_table 指向的表，如 p_tenant_metadata）
     │     WHERE tenant_id=? AND metamodel_api_key=? AND entity_api_key=?
     │
-    └─→ 合并
+    └─→ 合并（仅当 enable_common=1 且 enable_tenant=1 时需要合并）
           Common 有 Tenant 无 → 用 Common
           同 apiKey → Tenant 覆盖 Common
           Tenant delete_flg=1 → 隐藏该条
@@ -108,7 +111,6 @@ CommonMetadata（大宽表行）
 | `description` | `descriptionKey` | 描述信息的国际化 Key |
 | `helpText` | `helpTextKey` | 帮助文本的国际化 Key |
 | `checkErrorMsg` | `checkErrorMsgKey` | 校验错误提示的国际化 Key |
-| `optionLabel` | `optionLabelKey` | 选项值显示文本的国际化 Key |
 
 **Key 格式规范：**
 
@@ -138,15 +140,17 @@ CommonMetadata（大宽表行）
 
 ## 3. 写入流程
 
-所有写操作写入 `p_tenant_metadata`（Tenant 级大宽表）：
+所有写操作写入 `p_meta_model.db_table` 指向的 Tenant 级表（当前为 `p_tenant_metadata`）：
 
 ```
-创建：Entity → CommonMetadataConverter.toTenantMetadata() → INSERT p_tenant_metadata
-更新：查旧值 → Entity → toTenantMetadata() → UPDATE/INSERT p_tenant_metadata
+创建：Entity → CommonMetadataConverter.toTenantMetadata() → INSERT {db_table}
+更新：查旧值 → Entity → toTenantMetadata() → UPDATE/INSERT {db_table}
 删除：
   - Tenant 已有记录 → 软删除（delete_flg=1）
-  - Common 级数据 → 插入 delete_flg=1 的 Tenant 记录（遮蔽删除）
+  - Common 级数据 → 插入 delete_flg=1 的 Tenant 记录到 {db_table}（遮蔽删除）
 ```
+
+> 注意：Common 级数据（`p_common_metadata`）由平台初始化或 Module 安装写入，业务层不直接写入 Common 表。
 
 ## 4. Java 类体系
 

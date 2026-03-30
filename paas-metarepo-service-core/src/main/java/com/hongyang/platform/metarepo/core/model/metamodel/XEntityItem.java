@@ -73,7 +73,7 @@ public class XEntityItem implements Serializable {
     private Integer realTimeCompute;
     /** 是否引用全局选项集 */
     private Integer referGlobal;
-    /** 全局选项集 ID */
+    /** 全局选项集 apiKey */
     private String globalPickItem;
     /** 全局选项集 apiKey */
     private String globalPickItemApikey;
@@ -105,8 +105,8 @@ public class XEntityItem implements Serializable {
     private String joinLink;
     /** 关联标签 */
     private String linkLabel;
-    /** 关联实体列表(逗号分隔) */
-    private String referEntityIds;
+    /** 关联实体apiKey列表(逗号分隔) */
+    private String referEntityApiKeys;
     /** 实体或数据模式 */
     private Integer entityOrData;
     /** 分组 key */
@@ -133,8 +133,6 @@ public class XEntityItem implements Serializable {
     private Integer watermarkLocationFlg;
     /** 水印关联字段 */
     private String watermarkJoinField;
-    /** 是否外置到扩展表 */
-    private Integer extTable;
     private Long createdAt;
     private Long createdBy;
     private Long updatedAt;

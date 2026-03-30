@@ -507,9 +507,9 @@ CREATE TABLE p_meta_module_metadata (
     PRIMARY KEY (id)
 );
 
--- D9. x_global_pickitem（全局选项集）
--- Entity: GlobalPickItem（不继承 BaseEntity）→ @TableName("x_global_pickitem")
-CREATE TABLE x_global_pickitem (
+-- D9. p_tenant_global_pickitem（全局选项集）
+-- Entity: GlobalPickItem → @TableName("p_tenant_global_pickitem")
+CREATE TABLE p_tenant_global_pickitem (
     id BIGINT NOT NULL, tenant_id BIGINT NOT NULL,
     api_key VARCHAR(100) NOT NULL,
     name VARCHAR(100), label VARCHAR(100) NOT NULL, label_key VARCHAR(100),
@@ -534,7 +534,7 @@ INSERT INTO p_meta_model (api_key, namespace, label, label_key, metamodel_type, 
 ('MetaLink',         'system', '元模型关联',   'meta.model.meta_link',   6, 0, 0, 0, 0, 0, 0, 0, 'p_meta_link',           '元模型间关联关系',     'meta.model.meta_link.desc',    0, 0, 1, 1711929600000, 1, 1711929600000),
 ('MetaOption',       'system', '元模型选项',   'meta.model.meta_option', 7, 0, 0, 0, 0, 0, 0, 0, 'p_meta_option',         '元模型字段选项值',     'meta.model.meta_option.desc',  0, 0, 1, 1711929600000, 1, 1711929600000),
 ('I18nResource',     'system', '多语言资源',   'meta.model.i18n',        8, 0, 0, 0, 0, 0, 0, 0, 'p_meta_i18n_resource',  '多语言资源元模型',     'meta.model.i18n.desc',         0, 0, 1, 1711929600000, 1, 1711929600000),
-('GlobalPickItem',   'system', '全局选项集',   'meta.model.global_pick', 9, 0, 0, 0, 0, 0, 0, 0, 'x_global_pickitem',     '全局选项集元模型',     'meta.model.global_pick.desc',  0, 1, 1, 1711929600000, 1, 1711929600000);
+('GlobalPickItem',   'system', '全局选项集',   'meta.model.global_pick', 9, 0, 0, 0, 0, 0, 0, 0, 'p_tenant_global_pickitem', '全局选项集元模型',     'meta.model.global_pick.desc',  0, 1, 1, 1711929600000, 1, 1711929600000);
 
 
 -- E2. 元模型字段项（完整映射，与 Entity Java 类对齐）
